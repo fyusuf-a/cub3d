@@ -6,20 +6,58 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 15:28:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/04/30 13:53:02 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/11 15:53:19 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void initialize_color(t_color *color)
+static void		initialize_color(t_color *color)
 {
 	color->r = -1;
 	color->g = -1;
 	color->b = -1;
 }
 
-void initialize_game(const char *file, t_game *game)
+static t_image	*initialize_image(t_game *game, t_2d_int res)
+{
+	int		size_line;
+	t_image	*ret;
+
+	ret = malloc(sizeof(t_image));
+	ret->res = res;
+	ret->ptr = mlx_new_image(game->conn->mlx_ptr, res.x, res.y);
+	ret->data = mlx_get_data_addr(ret->ptr, &(ret->bpp), &size_line,
+			&(ret->endian));
+	ret->bpp /= 8;
+	if (size_line != ret->res.x * ret->bpp)
+	{
+		error("initialize_game: unexpected size %d which is not equal to the "
+				"horizontal resolution %d times the number of bytes per pixel "
+				"%d in map image", size_line,
+				ret->res.x, ret->bpp);
+	}
+	return (ret);
+}
+
+static void		initialize_minimap(t_game *game)
+{
+	t_2d_int	res;
+
+	if (game->map->dim.x < game->map->dim.y)
+	{
+		res.y = game->config->resolution.y;
+		res.x = res.y / game->map->dim.y * game->map->dim.x;
+	}
+	else
+	{
+		res.x = game->config->resolution.x;
+		res.y = res.x / game->map->dim.x * game->map->dim.y;
+	}
+	game->img_map = initialize_image(game, res);
+}
+
+void			initialize_game(const char *file, t_game *game)
 {
 	game->player = malloc(sizeof(t_player));
 	game->player->pos.x = -1;
@@ -32,5 +70,7 @@ void initialize_game(const char *file, t_game *game)
 	if (!(game->conn->mlx_ptr = mlx_init()))
 		error("mlx: Connection could not be initialized");
 	parse(file, game);
-	game->conn->win_ptr = mlx_new_window(game->conn->mlx_ptr, game->config->resolution.x, game->config->resolution.y, "cub3d");
+	game->conn->win_ptr = mlx_new_window(game->conn->mlx_ptr,
+			game->config->resolution.x, game->config->resolution.y, "cub3d");
+	initialize_minimap(game);
 }

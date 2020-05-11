@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 15:22:35 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/04/27 11:46:32 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/11 16:24:08 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,31 +25,28 @@ int
 	static int	action_already_run = 0;
 	int			ret_gnl;
 
-	if (action_already_run || file->line == NULL)
+	if (action_already_run || !file->line)
 	{
+		if (file->line)
+			free(file->line);
 		ret_gnl = get_next_line(file->fd, &(file->line));
-		file->c = 0;
 		file->l++;
 		if (ret_gnl == -1)
-			error("get_next_line", "Returned error code");
+			parse_error(file, LINE_NB, "get_next_line returned an error code");
 		if (ret_gnl == 0)
 		{
 			action(file, game);
-			free(file->line);
 			return (GNL_FILE_END);
 		}
 	}
+	file->c = 0;
 	if (action(file, game) == GNL_DONE)
 	{
 		action_already_run = 0;
 		return (GNL_DONE);
 	}
-	else
-	{
-		action_already_run = 1;
-		free(file->line);
-		return (repeat_gnl(file, game, action));
-	}
+	action_already_run = 1;
+	return (repeat_gnl(file, game, action));
 }
 
 /*
@@ -72,22 +69,6 @@ int
 		file->c++;
 	}
 	return (number);
-}
-
-int
-	ft_strlen_while_elem(char *line, int start, const char *ens)
-{
-	while (line[start] && ft_elem(line[start], ens))
-		start++;
-	return (start);
-}
-
-int
-	ft_strlen_while_not_elem(char *line, int start, const char *ens)
-{
-	while (line[start] && !ft_elem(line[start], ens))
-		start++;
-	return (start);
 }
 
 int

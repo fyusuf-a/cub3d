@@ -6,16 +6,18 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/01 14:55:19 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/11 16:49:22 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D
-# define CUB3D
+#ifndef CUB3D_H
+# define CUB3D_H
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <errno.h>
+# include <math.h>
+# include <X11/Xlib.h>
 # include "libft/libft.h"
 # include "minilibx-linux/mlx.h"
 
@@ -24,14 +26,27 @@
 # define GNL_DONE		1
 # define GNL_NOT_DONE	2
 
+# ifndef M_PI
+#  define M_PI 3.14159265359
+# endif
+
+/*
+** Axis numbers
+*/
+
+# define YAXIS 0
+# define XAXIS 1
+
 /*
 ** minilibx keys
 */
 
-# define W 119
-# define S 115
-# define A 97
-# define D 100
+# define W		119
+# define S		115
+# define A		97
+# define D		100
+# define LEFT	65361
+# define RIGHT	65363
 
 /*
 ** Flag for error messages
@@ -59,6 +74,7 @@ typedef struct	s_player {
 }				t_player;
 
 typedef enum	e_object {
+	UNDEFINED,
 	VOID,
 	WALL,
 	OBJECT,
@@ -91,11 +107,25 @@ typedef struct	s_connection {
 	void		*win_ptr;
 }				t_connection;
 
+/*
+** Contrary to mlx, here bpp is Byte per pixel and not Bit per pixel
+*/
+typedef struct	s_image {
+	int			bpp;
+	t_2d_int	res;
+	int			endian;
+	void		*ptr;
+	char		*data;
+	char		*buffer;
+	int			updated;
+}				t_image;
+
 typedef struct	s_game {
 	t_map			*map;
 	t_player		*player;
 	t_config		*config;
 	t_connection	*conn;
+	t_image			*img_map;
 }				t_game;
 
 /*
@@ -106,6 +136,7 @@ typedef struct	s_game {
 typedef struct	s_file {
 	char		*path;
 	char		*line;
+	int			gnl_ret;
 	int			fd;
 	int			l;
 	int			c;
@@ -115,27 +146,33 @@ typedef struct	s_file {
 ** parse_first.c
 */
 
-t_file	*open_file(const char *path);
-void	close_file(t_file *file);
+t_file			*open_file(const char *path);
+void			close_file(t_file *file);
 
 /*
 ** parse_first.c
 */
 
-void	parse(const char *path, t_game *game);
-void	parse_first_pass(t_file *file, t_game *game);
+void			parse(const char *path, t_game *game);
+void			parse_first_pass(t_file *file, t_game *game);
 
 /*
 ** parse_second.c
 */
 
-void	parse_second_pass(t_file *file, t_game *game);
+void			parse_second_pass(t_file *file, t_game *game);
+
+/*
+** parse_second2.c
+*/
+
+int				parse_second_pass_map(t_file *file, t_game *game);
 
 /*
 ** parse_check.c
 */
 
-void	parse_check(const t_file *file, const t_game *game);
+void			parse_check(const t_file *file, const t_game *game);
 
 /*
 ** parse_utilities.c
@@ -146,31 +183,107 @@ void	parse_check(const t_file *file, const t_game *game);
 ** (indicating that action is done). Return is 0 if EOF is reached, 1 if
 ** action is done.
 */
-int	repeat_gnl(t_file *file, t_game *game,
-		int (*action) (t_file *file, t_game *game));
-int	parse_natural(t_file *file);
-int	ft_strlen_while_elem(char *line, int start, const char *ens);
-int	ft_strlen_while_not_elem(char *line, int start, const char *ens);
-int	gobble_while_elem(char *line, int start, const char *ens);
-int	gobble_while_not_elem(char *line, int start, const char *ens);
+int				repeat_gnl(t_file *file, t_game *game,
+							int (*action) (t_file *file, t_game *game));
+int				parse_natural(t_file *file);
+int				gobble_while_elem(char *line, int start, const char *ens);
+int				gobble_while_not_elem(char *line, int start, const char *ens);
+
+/*
+** initialize.c
+*/
+
+void			initialize_game(const char *path, t_game *game);
+
+/*
+** minimap.c
+*/
+
+double			map_dim_to_pixel(t_game *game, t_image *image, int axis,
+									double x);
+t_2d_int		map_size_to_pixel(t_game *game, t_image *image, t_2d size);
+t_2d_int		map_pos_to_pixel(t_game *game, t_image *image, t_2d pos);
+void			draw_minimap(t_game *game, int destroy);
+
+/*
+** minimap2.c
+*/
+void			draw_walls_and_contours(t_game *game);
+void			draw_player(t_game *game, int destroy);
+
+/*
+** draw.c
+*/
+
+/*
+** Helper structure for drawing lines
+*/
+typedef struct	s_line_params {
+	int			thickness;
+	t_color		color;
+}				t_line_params;
+void			draw_pixel(t_image *img, t_color color, t_2d_int pos);
+void			draw_rectangle(t_image *img, t_color color, t_2d_int origin,
+							t_2d_int dim);
+void			draw_rectangle_from_center(t_image *img, t_color color,
+							t_2d_int center, t_2d_int dim);
+void			draw(t_game *game, int destroy);
+
+/*
+** ray2.c
+*/
+
+void			draw_line(t_image *img, t_line_params *params, t_2d_int point1,
+							t_2d_int point2);
+
+/*
+** ray.c
+*/
+
+/*
+** Helper structure for performance while raycasting
+*/
+typedef struct	s_direction {
+	double		tangent;
+	t_2d		vector;
+}				t_direction;
+t_2d			contact_with_wall(t_game *game, double angle);
+
+/*
+** ray2.c
+*/
+
+t_2d			next_point_on_vertical_line(t_game *game, t_2d xpos, t_2d ypos,
+											t_direction *direction);
+t_2d			next_point_on_horizontal_line(t_game *game, t_2d xpos,
+							t_2d ypos, t_direction *direction);
 
 /*
 ** utilities.c
 */
 
-void	initialize_game(const char* path, t_game *game);
+t_object		what_is(t_game *game, t_2d pos);
+t_2d			what_cell(t_2d pos);
+double			dist(t_2d point1, t_2d point2);
+int				t_player_equal(t_player *player1, t_player *player2);
 
 /*
 ** error.c
 */
-void	error(const char *msg, ...);
-void	parse_error(const t_file *file, int flag, const char *msg, ...);
 
- /*
- ** debug.c
- */
- void	print_config(const t_config *c);
- void	print_map(const t_map *m);
- void	print_player(const t_player *p);
+void			error(const char *msg, ...);
+void			parse_error(const t_file *file, int flag, const char *msg, ...);
+
+/*
+** debug.c
+*/
+
+void			print_config(const t_config *c);
+void			initialize_map(const t_map *m);
+void			print_player(const t_player *p);
+
+t_color			g_white;
+t_color			g_black;
+t_color			g_red;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 11:36:26 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/04/30 13:39:13 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/01 16:46:13 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void
 	{
 		ft_dprintf(2, "(line %d", file->l);
 		if (flag & COLUMN_NB)
-			ft_dprintf(2, ", col %d", file->c);
+			ft_dprintf(2, ", col %d", file->c + 1);
 		ft_dprintf(2, ")");
 	}
 	ft_dprintf(2, ": ");

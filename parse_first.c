@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:45:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/04/30 13:40:50 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/01 16:29:18 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,11 @@ static int
 void
 	parse_first_pass(t_file *file, t_game *game)
 {
-	repeat_gnl(file, game, parse_first_pass_infos);
-	repeat_gnl(file, game, parse_first_pass_map);
-	repeat_gnl(file, game, parse_first_pass_eof);
+	if (repeat_gnl(file, game, parse_first_pass_infos) == GNL_FILE_END)
+		parse_error(file, LINE_NB || COLUMN_NB, "eof before map");
+	if (repeat_gnl(file, game, parse_first_pass_map) != GNL_FILE_END)
+		repeat_gnl(file, game, parse_first_pass_eof);
+	free(file->line);
 }
 
 void

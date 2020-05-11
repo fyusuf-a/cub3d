@@ -6,12 +6,11 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 13:28:32 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/04/30 13:42:28 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/11 16:18:24 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
 
 static void	recursive_check(const t_file *file, t_map *map, int x, int y)
 {
@@ -19,16 +18,20 @@ static void	recursive_check(const t_file *file, t_map *map, int x, int y)
 	{
 		map->grid[y][x] = WALL;
 		if (x - 1 < 0)
-			parse_error(file, 0, "Map is not closed on the left at position x = %d, y = %d", x, y);
+			parse_error(file, 0, "Map is not closed on the left "
+					"at position x = %d, y = %d", x, y);
 		recursive_check(file, map, x - 1, y);
 		if (x + 1 >= map->dim.x)
-			parse_error(file, 0, "Map is not closed on the right at position x = %d, y = %d", x, y);
+			parse_error(file, 0, "Map is not closed on the right "
+					"at position x = %d, y = %d", x, y);
 		recursive_check(file, map, x + 1, y);
 		if (y - 1 < 0)
-			parse_error(file, 0, "Map is not closed above at position x = %d, y = %d", x, y);
+			parse_error(file, 0, "Map is not closed above at position "
+					"x = %d, y = %d", x, y);
 		recursive_check(file, map, x, y - 1);
 		if (y + 1 >= map->dim.y)
-			parse_error(file, 0, "Map is not closed below at position x = %d, y = %d", x, y);
+			parse_error(file, 0, "Map is not closed below at position "
+					"x = %d, y = %d", x, y);
 		recursive_check(file, map, x, y + 1);
 	}
 }
@@ -57,7 +60,7 @@ static void	check_if_exist(const t_file *file, const t_game *game)
 		parse_error(file, 0, "Ceiling color is undefined");
 }
 
-void	parse_check(const t_file *file, const t_game *game)
+void		parse_check(const t_file *file, const t_game *game)
 {
 	t_map	copy;
 	int		i;
