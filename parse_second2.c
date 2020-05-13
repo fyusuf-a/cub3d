@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 16:19:57 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/11 16:20:35 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/13 10:43:13 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void
 	parse_second_pass_player(t_file *file, t_game *game, int i)
 {
 	if (file->line[file->c] == 'N')
-		game->player->angle = -M_PI / 1;
+		game->player->angle = -M_PI / 2;
 	if (file->line[file->c] == 'W')
 		game->player->angle = M_PI;
 	if (file->line[file->c] == 'E')
