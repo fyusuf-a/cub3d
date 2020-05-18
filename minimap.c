@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/07 15:29:13 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/18 16:27:19 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/18 17:12:50 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void		draw_fov(t_game *game, t_player *player, t_color color)
 	dim.x = 0.05;
 	dim.y = 0.05;
 	contact = contact_with_wall(game, player);
-	printf("contact : %f - %f\n", contact.x, contact.y);
 	draw_line(game->img_map, &params,
 		map_pos_to_pixel(game, game->img_map, player->pos),
 		map_pos_to_pixel(game, game->img_map, contact));
