@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/11 16:49:22 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/18 16:32:51 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ typedef struct	s_image {
 	void		*ptr;
 	char		*data;
 	char		*buffer;
-	int			updated;
+	int			buffered;
 }				t_image;
 
 typedef struct	s_game {
@@ -203,17 +203,24 @@ double			map_dim_to_pixel(t_game *game, t_image *image, int axis,
 									double x);
 t_2d_int		map_size_to_pixel(t_game *game, t_image *image, t_2d size);
 t_2d_int		map_pos_to_pixel(t_game *game, t_image *image, t_2d pos);
-void			draw_minimap(t_game *game, int destroy);
+void			draw_minimap(t_game *game, t_player *old_player, t_player *new_player);
 
 /*
 ** minimap2.c
 */
 void			draw_walls_and_contours(t_game *game);
-void			draw_player(t_game *game, int destroy);
+void			draw_player(t_game *game, t_player *player, t_color color);
 
 /*
 ** draw.c
 */
+
+/*
+** Working with image buffer or not
+*/
+
+# define UNBUFFERED	0
+# define BUFFERED 	1
 
 /*
 ** Helper structure for drawing lines
@@ -227,7 +234,7 @@ void			draw_rectangle(t_image *img, t_color color, t_2d_int origin,
 							t_2d_int dim);
 void			draw_rectangle_from_center(t_image *img, t_color color,
 							t_2d_int center, t_2d_int dim);
-void			draw(t_game *game, int destroy);
+void			draw(t_game *game, t_player *old_player, t_player *new_player);
 
 /*
 ** ray2.c
@@ -247,16 +254,22 @@ typedef struct	s_direction {
 	double		tangent;
 	t_2d		vector;
 }				t_direction;
-t_2d			contact_with_wall(t_game *game, double angle);
+t_2d			contact_with_wall(t_game *game, t_player *player);
 
 /*
 ** ray2.c
 */
 
-t_2d			next_point_on_vertical_line(t_game *game, t_2d xpos, t_2d ypos,
+t_2d			next_point_on_vertical_line(t_game *game, t_player *player, t_2d xpos, t_2d ypos,
 											t_direction *direction);
-t_2d			next_point_on_horizontal_line(t_game *game, t_2d xpos,
+t_2d			next_point_on_horizontal_line(t_game *game, t_player *player, t_2d xpos,
 							t_2d ypos, t_direction *direction);
+
+/*
+** image.c
+*/
+
+void			copy_from_buffer(t_image *img);
 
 /*
 ** utilities.c

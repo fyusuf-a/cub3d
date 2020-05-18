@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 09:14:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/11 15:54:45 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/18 16:04:12 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,34 @@ double	add_angle(double angle, double diff)
 	return (ret);
 }
 
+void	update_pos(int key, double step, t_player *new_player, t_player *player)
+{
+	if (key == W)
+	{
+		new_player->pos.x += step * cos(player->angle);
+		new_player->pos.y += step * sin(player->angle);
+	}
+	if (key == S)
+	{
+		new_player->pos.x -= step * cos(player->angle);
+		new_player->pos.y -= step * sin(player->angle);
+	}
+	if (key == A)
+	{
+		new_player->pos.x += step * sin(player->angle);
+		new_player->pos.y -= step * cos(player->angle);
+	}
+	if (key == D)
+	{
+		new_player->pos.x -= step * sin(player->angle);
+		new_player->pos.y += step * cos(player->angle);
+	}
+	if (key == LEFT)
+		new_player->angle = add_angle(new_player->angle, -step);
+	if (key == RIGHT)
+		new_player->angle = add_angle(new_player->angle, step);
+}
+
 int		key_hook(int key, t_game *game)
 {
 	t_player	new_player;
@@ -31,24 +59,12 @@ int		key_hook(int key, t_game *game)
 
 	step = 0.02;
 	new_player = *game->player;
-	if (key == W)
-		new_player.pos.y -= step;
-	if (key == S)
-		new_player.pos.y += step;
-	if (key == A)
-		new_player.pos.x -= step;
-	if (key == D)
-		new_player.pos.x += step;
-	if (key == LEFT)
-		new_player.angle = add_angle(new_player.angle, -step);
-	if (key == RIGHT)
-		new_player.angle = add_angle(new_player.angle, step);
+	update_pos(key, step, &new_player, game->player);
 	if (!t_player_equal(&new_player, game->player)
 			&& what_is(game, new_player.pos) == VOID)
 	{
-		draw(game, 1);
+		draw(game, game->player, &new_player);
 		*game->player = new_player;
-		draw(game, 0);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -69,7 +85,7 @@ int		main(int argc, char *argv[])
 	if (argc != 2)
 		error("Usage: cub3d map.cub");
 	initialize_game(argv[1], &game);
-	draw(&game, 0);
+	draw(&game, game.player, game.player);
 	mlx_hook(game.conn->win_ptr, KeyPress, KeyPressMask | KeyReleaseMask,
 				key_hook, &game);
 	/*mlx_key_hook(game.conn->win_ptr, key_hook, &game);*/

@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/07 15:29:13 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/11 16:15:32 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/18 16:27:19 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,34 +35,35 @@ t_2d_int	map_pos_to_pixel(t_game *game, t_image *image, t_2d pos)
 	return (map_size_to_pixel(game, image, pos));
 }
 
-void		draw_fov(t_game *game, int destroy)
+void		draw_fov(t_game *game, t_player *player, t_color color)
 {
 	t_2d			dim;
-	t_color			color;
 	t_2d			contact;
 	t_line_params	params;
 
-	if (destroy)
-		params.color = g_black;
-	else
-		params.color = g_red;
+	params.color = color;
 	params.thickness = map_dim_to_pixel(game, game->img_map, 0, 0.01);
 	dim.x = 0.05;
 	dim.y = 0.05;
-	contact = contact_with_wall(game, game->player->angle);
+	contact = contact_with_wall(game, player);
+	printf("contact : %f - %f\n", contact.x, contact.y);
 	draw_line(game->img_map, &params,
-		map_pos_to_pixel(game, game->img_map, game->player->pos),
+		map_pos_to_pixel(game, game->img_map, player->pos),
 		map_pos_to_pixel(game, game->img_map, contact));
 	draw_rectangle_from_center(game->img_map, color,
 			map_pos_to_pixel(game, game->img_map, contact),
 			map_size_to_pixel(game, game->img_map, dim));
 }
 
-void		draw_minimap(t_game *game, int destroy)
+void		draw_minimap(t_game *game, t_player *old_player, t_player *new_player)
 {
-	draw_player(game, destroy);
-	draw_fov(game, destroy);
+	game->img_map->buffered = 1;
+	draw_player(game, old_player, g_black);
+	draw_fov(game, old_player, g_black);
 	draw_walls_and_contours(game);
+	draw_player(game, new_player, g_white);
+	draw_fov(game, new_player, g_white);
+	copy_from_buffer(game->img_map);
 	mlx_put_image_to_window(game->conn->mlx_ptr, game->conn->win_ptr,
 			game->img_map->ptr, 0, 0);
 }

@@ -6,13 +6,13 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 16:32:11 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/11 16:34:06 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/18 17:09:16 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_2d		next_point_on_horizontal_line(t_game *game, t_2d xpos, t_2d ypos,
+t_2d		next_point_on_horizontal_line(t_game *game, t_player *player, t_2d xpos, t_2d ypos,
 											t_direction *direction)
 {
 	t_2d current;
@@ -23,13 +23,13 @@ t_2d		next_point_on_horizontal_line(t_game *game, t_2d xpos, t_2d ypos,
 		return (xpos);
 	xpos.x += direction->vector.x;
 	xpos.y += direction->vector.x * direction->tangent;
-	if (dist(game->player->pos, xpos) < dist(game->player->pos, ypos))
-		return (next_point_on_horizontal_line(game, xpos, ypos, direction));
+	if (dist(player->pos, xpos) < dist(player->pos, ypos))
+		return (next_point_on_horizontal_line(game, player, xpos, ypos, direction));
 	else
-		return (next_point_on_vertical_line(game, xpos, ypos, direction));
+		return (next_point_on_vertical_line(game, player, xpos, ypos, direction));
 }
 
-t_2d		next_point_on_vertical_line(t_game *game, t_2d xpos, t_2d ypos,
+t_2d		next_point_on_vertical_line(t_game *game, t_player *player, t_2d xpos, t_2d ypos,
 											t_direction *direction)
 {
 	t_2d current;
@@ -40,8 +40,8 @@ t_2d		next_point_on_vertical_line(t_game *game, t_2d xpos, t_2d ypos,
 		return (ypos);
 	ypos.y += direction->vector.y;
 	ypos.x += direction->vector.y / direction->tangent;
-	if (dist(game->player->pos, xpos) < dist(game->player->pos, ypos))
-		return (next_point_on_horizontal_line(game, xpos, ypos, direction));
+	if (dist(player->pos, xpos) < dist(player->pos, ypos))
+		return (next_point_on_horizontal_line(game, player, xpos, ypos, direction));
 	else
-		return (next_point_on_vertical_line(game, xpos, ypos, direction));
+		return (next_point_on_vertical_line(game, player, xpos, ypos, direction));
 }

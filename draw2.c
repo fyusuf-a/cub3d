@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 15:40:26 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/11 15:49:08 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/18 15:55:11 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void		draw_line(t_image *img, t_line_params *params, t_2d_int point1,
 	t_2d_int	temp_center;
 	t_2d_int	temp_dim;
 
-	img->updated = 1;
 	if (point1.x == point2.x)
 	{
 		temp_center.x = (point1.x + point2.x) / 2;
@@ -55,5 +54,4 @@ void		draw_line(t_image *img, t_line_params *params, t_2d_int point1,
 		return ;
 	}
 	draw_not_vertical_line(img, params, point1, point2);
-	img->updated = 1;
 }

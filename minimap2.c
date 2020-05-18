@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 16:08:01 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/11 16:16:59 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/18 16:01:31 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,13 @@ void			draw_walls_and_contours(t_game *game)
 	}
 }
 
-void			draw_player(t_game *game, int destroy)
+void			draw_player(t_game *game, t_player *player, t_color color)
 {
 	t_2d		dim;
-	t_color		color;
 
-	if (destroy)
-		color = g_black;
-	else
-		color = g_white;
 	dim.x = 0.05;
 	dim.y = 0.05;
 	draw_rectangle_from_center(game->img_map, color,
-			map_pos_to_pixel(game, game->img_map, game->player->pos),
+			map_pos_to_pixel(game, game->img_map, player->pos),
 			map_size_to_pixel(game, game->img_map, dim));
 }

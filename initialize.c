@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 15:28:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/11 15:53:19 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/18 16:13:25 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,14 @@ static void		initialize_color(t_color *color)
 	color->b = -1;
 }
 
-static t_image	*initialize_image(t_game *game, t_2d_int res)
+static t_image	*initialize_image(t_game *game, t_2d_int res, int alpha)
 {
 	int		size_line;
 	t_image	*ret;
+	int		i;
 
+	if (alpha < 0 || alpha > 255)
+		error("initialize_image: Incorrect value %d for alpha.", alpha);
 	ret = malloc(sizeof(t_image));
 	ret->res = res;
 	ret->ptr = mlx_new_image(game->conn->mlx_ptr, res.x, res.y);
@@ -37,6 +40,15 @@ static t_image	*initialize_image(t_game *game, t_2d_int res)
 				"%d in map image", size_line,
 				ret->res.x, ret->bpp);
 	}
+	i = 0;
+	if (ret->bpp > 3)
+		while (i < ret->res.x * ret->res.y)
+		{
+			ret->data[i * ret->bpp + 3] = alpha;
+			i++;
+		}
+	if (!(ret->buffer = malloc(ret->bpp * ret->res.x * ret->res.y)))
+		error("initialize_image: malloc failed");
 	return (ret);
 }
 
@@ -54,7 +66,8 @@ static void		initialize_minimap(t_game *game)
 		res.x = game->config->resolution.x;
 		res.y = res.x / game->map->dim.x * game->map->dim.y;
 	}
-	game->img_map = initialize_image(game, res);
+	game->img_map = initialize_image(game, res, 127);
+	game->img_map->buffered = 1;
 }
 
 void			initialize_game(const char *file, t_game *game)
