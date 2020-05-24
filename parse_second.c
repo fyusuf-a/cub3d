@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 20:45:34 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/13 15:03:52 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/24 21:09:02 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,29 @@ static void
 	if (ft_strchr(file->line + file->c, ' '))
 		parse_error(file, LINE_NB, "Space in path");
 	if (!ft_strncmp(file->line, "NO ", 3))
+	{
 		game->config->texture_no_path = ft_strdup(file->line + file->c);
+		game->config->texture_no =
+			initialize_texture(game, file->line + file->c);
+	}
 	else if (!ft_strncmp(file->line, "SO ", 3))
+	{
 		game->config->texture_so_path = ft_strdup(file->line + file->c);
+		game->config->texture_so =
+			initialize_texture(game, file->line + file->c);
+	}
 	else if (!ft_strncmp(file->line, "WE ", 3))
+	{
 		game->config->texture_we_path = ft_strdup(file->line + file->c);
+		game->config->texture_we =
+			initialize_texture(game, file->line + file->c);
+	}
 	else if (!ft_strncmp(file->line, "EA ", 3))
+	{
 		game->config->texture_ea_path = ft_strdup(file->line + file->c);
+		game->config->texture_ea =
+			initialize_texture(game, file->line + file->c);
+	}
 	else if (!ft_strncmp(file->line, "S ", 2))
 		game->config->sprite_path = ft_strdup(file->line + file->c);
 	else

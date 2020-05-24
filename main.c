@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 09:14:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/18 16:04:12 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/24 21:14:33 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	update_pos(int key, double step, t_player *new_player, t_player *player)
 		new_player->pos.y += step * cos(player->angle);
 	}
 	if (key == LEFT)
-		new_player->angle = add_angle(new_player->angle, -step);
+		new_player->angle = principal_measure(new_player->angle - step);
 	if (key == RIGHT)
-		new_player->angle = add_angle(new_player->angle, step);
+		new_player->angle = principal_measure(new_player->angle + step);
 }
 
 int		key_hook(int key, t_game *game)
@@ -79,9 +79,15 @@ int		main(int argc, char *argv[])
 	g_white.r = 255;
 	g_white.g = 255;
 	g_white.b = 255;
-	g_red.r = 0;
-	g_red.g = 255;
-	g_red.b = 255;
+	g_red.r = 255;
+	g_red.g = 0;
+	g_red.b = 0;
+	g_blue.r = 0;
+	g_blue.g = 0;
+	g_blue.b = 255;
+	g_green.r = 0;
+	g_green.g = 255;
+	g_green.b = 0;
 	if (argc != 2)
 		error("Usage: cub3d map.cub");
 	initialize_game(argv[1], &game);

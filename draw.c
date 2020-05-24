@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 13:17:08 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/18 16:11:08 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/24 21:09:42 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	draw_pixel(t_image *img, t_color color, t_2d_int pos)
 	array = img->buffered ? img->buffer : img->data;
 	if (pos.x >= 0 && pos.x < img->res.x && pos.y >= 0 && pos.y < img->res.y)
 	{
-		array[pos.y * img->res.x * img->bpp + pos.x * img->bpp] = color.r;
+		array[pos.y * img->res.x * img->bpp + pos.x * img->bpp] = color.b;
 		array[pos.y * img->res.x * img->bpp + pos.x * img->bpp + 1] = color.g;
-		array[pos.y * img->res.x * img->bpp + pos.x * img->bpp + 2] = color.b;
+		array[pos.y * img->res.x * img->bpp + pos.x * img->bpp + 2] = color.r;
 	}
 }
 
@@ -57,5 +57,6 @@ void	draw_rectangle_from_center(t_image *img, t_color color, t_2d_int center,
 
 void	draw(t_game *game, t_player *old_player, t_player *new_player)
 {
+	draw_view(game, new_player);
 	draw_minimap(game, old_player, new_player);
 }

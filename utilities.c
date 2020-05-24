@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/08 17:31:50 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/11 16:34:21 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/24 20:40:59 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,6 @@ t_object	what_is(t_game *game, t_2d pos)
 		return (game->map->grid[cell.y][cell.x]);
 	}
 	return (UNDEFINED);
-}
-
-t_2d_int	what_cell_int(t_2d pos)
-{
-	t_2d_int	cell;
-
-	cell.x = pos.x + 0.5;
-	cell.y = pos.y + 0.5;
-	return (cell);
 }
 
 t_2d		what_cell(t_2d pos)
@@ -53,4 +44,13 @@ int			t_player_equal(t_player *player1, t_player *player2)
 			&& player1->angle == player2->angle)
 		return (1);
 	return (0);
+}
+
+double		principal_measure(double angle)
+{
+	while (angle <= -M_PI)
+		angle += 2 * M_PI;
+	while (angle > M_PI)
+		angle -= 2 * M_PI;
+	return (angle);
 }
