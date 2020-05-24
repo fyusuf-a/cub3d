@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/24 21:16:17 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/24 23:51:59 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ typedef struct	s_image {
 	int			endian;
 	void		*ptr;
 	char		*data;
-	char		*buffer;
-	int			buffered;
+	/*char		*buffer;*/
+	/*int			buffered;*/
 }				t_image;
 
 typedef struct	s_config {
@@ -232,8 +232,8 @@ void			draw_player(t_game *game, t_player *player, t_color color);
 ** Working with image buffer or not
 */
 
-# define UNBUFFERED	0
-# define BUFFERED 	1
+/*# define UNBUFFERED	0*/
+/*# define BUFFERED 	1*/
 
 /*
 ** Helper structure for drawing lines
@@ -273,11 +273,13 @@ typedef struct	s_direction {
 }				t_direction;
 /*
 ** Another helper structure for performance while raycasting
+** x is the intersection with an horizontal line of the ray
+** y is the intersection with a vertical line of the ray
 */
-typedef struct	s_dda {
+typedef struct	s_iter {
 	t_contact	*x;
 	t_contact	*y;
-}				t_dda;
+}				t_iter;
 # define NORTH	0
 # define SOUTH	1
 # define EAST	2
@@ -289,9 +291,9 @@ t_contact		contact_with_wall(t_game *game, t_player *player);
 */
 
 t_contact		*next_point_on_vertical_line(t_game *game, t_player *player,
-										t_dda* dda, t_direction *direction);
+										t_iter* iter, t_direction *direction);
 t_contact		*next_point_on_horizontal_line(t_game *game, t_player *player,
-										t_dda* dda, t_direction *direction);
+										t_iter* iter, t_direction *direction);
 /*
 ** view.c
 */
@@ -307,7 +309,8 @@ void			draw_view(t_game *game, t_player *new_player);
 ** image.c
 */
 
-void			copy_from_buffer(t_image *img);
+/*void			copy_from_buffer(t_image *img);*/
+t_color			color_from_image(t_image *img, t_2d_int pos);
 
 /*
 ** utilities.c

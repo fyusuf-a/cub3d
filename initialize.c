@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 15:28:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/24 21:15:47 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/24 23:49:34 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static t_image	*initialize_minimap(t_game *game)
 	res.x /= 3;
 	res.y /= 3;
 	ret = initialize_image(game, res, 255);
-	ret->buffered = 1;
+	/*ret->buffered = 1;*/
 	return (ret);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 13:17:38 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/24 21:07:36 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/24 23:41:01 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 static t_contact	*next_point_bad_angle(t_game *game, t_player *player,
 						t_contact *pos, t_direction *direction)
 {
-	t_2d pos_cpy;
+	t_2d current;
 
-	pos_cpy = pos->impact;
-	pos_cpy.x += 0.01 * direction->vector.x;
-	pos_cpy.y += 0.01 * direction->vector.y;
-	if (what_is(game, pos_cpy) == WALL)
+	current = pos->impact;
+	current.x += 0.01 * direction->vector.x;
+	current.y += 0.01 * direction->vector.y;
+	if (what_is(game, current) == WALL)
 		return (pos);
 	pos->impact.x += direction->vector.x;
 	pos->impact.y += direction->vector.y;
@@ -28,17 +28,17 @@ static t_contact	*next_point_bad_angle(t_game *game, t_player *player,
 }
 
 static t_contact	*bad_angle(t_game *game, t_player *player,
-								t_dda *dda, t_direction *direction)
+								t_iter *iter, t_direction *direction)
 {
 	if (direction->vector.y == 0)
 	{
-		free(dda->y);
-		return (next_point_bad_angle(game, player, dda->x, direction));
+		free(iter->x);
+		return (next_point_bad_angle(game, player, iter->y, direction));
 	}
 	if (direction->vector.x == 0)
 	{
-		free(dda->x);
-		return (next_point_bad_angle(game, player, dda->y, direction));
+		free(iter->y);
+		return (next_point_bad_angle(game, player, iter->x, direction));
 	}
 	return (NULL);
 }
@@ -63,40 +63,40 @@ t_2d				what_direction(double angle)
 	return (direction);
 }
 
-static void			initialize_pos(t_player *player, t_contact *next_x,
-							t_contact *next_y, t_direction *direction)
+static void			initialize_pos(t_player *player, t_iter *iter,
+											t_direction *direction)
 {
-	next_x->impact = what_cell(player->pos);
-	next_x->impact.x += direction->vector.x * 0.5;
-	next_x->cardinal_point = direction->vector.y > 0 ? SOUTH : NORTH;
-	if (direction->vector.y == 0)
-		next_x->impact.y = player->pos.y;
-	next_y->impact = what_cell(player->pos);
-	next_y->impact.y += direction->vector.y * 0.5;
-	next_y->cardinal_point = direction->vector.x > 0 ? WEST : EAST;
+	iter->x->impact = what_cell(player->pos);
+	iter->x->impact.y += direction->vector.y * 0.5;
+	iter->x->cardinal_point = direction->vector.y > 0 ? SOUTH : NORTH;
 	if (direction->vector.x == 0)
-		next_y->impact.x = player->pos.x;
+		iter->x->impact.x = player->pos.x;
+	iter->y->impact = what_cell(player->pos);
+	iter->y->impact.x += direction->vector.x * 0.5;
+	iter->y->cardinal_point = direction->vector.x > 0 ? EAST : WEST;
+	if (direction->vector.y == 0)
+		iter->y->impact.y = player->pos.y;
 }
-
 t_contact			contact_with_wall(t_game *game, t_player *player)
 {
 	t_direction	direction;
-	t_dda		dda;
+	t_iter		iter;
 	t_contact	*contact;
 
-	dda.x = malloc(sizeof(t_contact));
-	dda.y = malloc(sizeof(t_contact));
+	iter.x = malloc(sizeof(t_contact));
+	iter.y = malloc(sizeof(t_contact));
 	direction.vector = what_direction(player->angle);
-	initialize_pos(player, dda.x, dda.y, &direction);
-	if ((contact = bad_angle(game, player, &dda, &direction)))
+	initialize_pos(player, &iter, &direction);
+	if ((contact = bad_angle(game, player, &iter, &direction)))
 		return (*contact);
 	direction.tangent = tan(player->angle);
-	dda.x->impact.y = direction.tangent * (dda.x->impact.x - player->pos.x)
+	iter.y->impact.y = direction.tangent * (iter.y->impact.x - player->pos.x)
 					+ player->pos.y;
-	dda.y->impact.x = (dda.y->impact.y - player->pos.y) / direction.tangent
+	iter.x->impact.x = (iter.x->impact.y - player->pos.y) / direction.tangent
 					+ player->pos.x;
-	if (dist(player->pos, dda.x->impact) < dist(player->pos, dda.y->impact))
-		return (*next_point_on_horizontal_line(game, player, &dda, &direction));
+	if (dist(player->pos, iter.x->impact) < dist(player->pos, iter.y->impact))
+		return (*next_point_on_horizontal_line(game, player, &iter,
+														&direction));
 	else
-		return (*next_point_on_vertical_line(game, player, &dda, &direction));
+		return (*next_point_on_vertical_line(game, player, &iter, &direction));
 }

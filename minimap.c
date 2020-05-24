@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/07 15:29:13 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/24 20:38:02 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/24 23:50:11 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void		draw_minimap(t_game *game, t_player *old_player,
 	double		fov;
 
 	fov = M_PI / 4;
-	game->img_map->buffered = 1;
+	/*game->img_map->buffered = 1;*/
 	draw_player(game, old_player, g_black);
 	draw_fov(game, old_player, g_black);
 	temp_player = *old_player;
@@ -77,7 +77,7 @@ void		draw_minimap(t_game *game, t_player *old_player,
 	draw_fov(game, &temp_player, g_white);
 	temp_player.angle = new_player->angle + fov / 2;
 	draw_fov(game, &temp_player, g_white);
-	copy_from_buffer(game->img_map);
+	/*copy_from_buffer(game->img_map);*/
 	mlx_put_image_to_window(game->conn->mlx_ptr, game->conn->win_ptr,
 			game->img_map->ptr, 0, 0);
 }

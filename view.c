@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/18 17:42:09 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/24 21:07:02 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/24 23:42:41 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,44 @@ static int	convert(t_image *img, double height)
 	return (height / SCREEN_WIDTH * img->res.y);
 }
 
-static void	draw_column(t_game *game, int i, double dist)
+t_color		find_pixel_color(t_game *game, t_contact *contact, int height, int total_height)
+{
+	t_image		*image;
+	t_2d_int	pos_in_texture;
+	double		dist;
+
+	if (contact->cardinal_point == NORTH)
+	{
+		image = game->config->texture_no;
+		dist = contact->impact.x - ((int)(contact->impact.x + 0.5) - 0.5);
+	}
+	else if (contact->cardinal_point == SOUTH)
+	{
+		image = game->config->texture_so;
+		dist = ((int)(contact->impact.x + 1.5) - 0.5) - contact->impact.x;
+	}
+	else if (contact->cardinal_point == EAST)
+	{
+		image = game->config->texture_ea;
+		dist = contact->impact.y - ((int)(contact->impact.y + 0.5) - 0.5);
+	}
+	else
+	{
+		image = game->config->texture_we;
+		dist = ((int)(contact->impact.y + 1.5) - 0.5) - contact->impact.y;
+	}
+	pos_in_texture.x = (double)image->res.x * dist;
+	pos_in_texture.y = (double)height / (double)total_height * image->res.y;
+	return (color_from_image(image, pos_in_texture));
+}
+
+static void	draw_column(t_game *game, int i, double dist, t_contact *contact)
 {
 	int			limit_below;
 	int			limit_above;
 	double		perceived_height;
 	t_2d_int	pos;
+	t_color		color;
 
 	pos.x = i;
 	pos.y = 0;
@@ -38,7 +70,11 @@ static void	draw_column(t_game *game, int i, double dist)
 		else if (pos.y > limit_above)
 			draw_pixel(game->img_view, game->config->ceiling, pos);
 		else
-			draw_pixel(game->img_view, g_black, pos);
+		{
+			color = find_pixel_color(game, contact,
+					pos.y - limit_below, limit_above - limit_below);
+			draw_pixel(game->img_view, color, pos);
+		}
 		pos.y++;
 	}
 }
@@ -60,7 +96,7 @@ void		draw_view(t_game *game, t_player *new_player)
 		contact = contact_with_wall(game, &temp_player);
 		distance = dist(temp_player.pos, contact.impact);
 		distance *= cos(new_player->angle - temp_player.angle);
-		draw_column(game, i, distance);
+		draw_column(game, i, distance, &contact);
 		temp_player.angle += angle_increment;
 		i++;
 	}
