@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 16:08:01 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/18 16:01:31 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/27 13:59:49 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static void		draw_contours_if_void(t_game *game, t_2d center, int i, int j)
 {
 	t_2d			point1;
 	t_2d			point2;
+	t_2d_int		point1_img;
+	t_2d_int		point2_img;
 	t_line_params	params;
 
 	if (game->map->grid[i][j] == VOID)
@@ -27,28 +29,30 @@ static void		draw_contours_if_void(t_game *game, t_2d center, int i, int j)
 		params.color = g_white;
 		params.thickness = map_dim_to_pixel(game, game->img_map,
 												0, 0.01);
-		draw_line(game->img_map, &params,
-			map_pos_to_pixel(game, game->img_map, point1),
-			map_pos_to_pixel(game, game->img_map, point2));
+		point1_img = map_pos_to_pixel(game, game->img_map, point1);
+		point2_img = map_pos_to_pixel(game, game->img_map, point2);
+		draw_line(game->img_map, &params, &point1_img, &point2_img);
 		point1.x = center.x + 0.5;
 		point1.y = center.y - 0.5;
-		draw_line(game->img_map, &params,
-			map_pos_to_pixel(game, game->img_map, point1),
-			map_pos_to_pixel(game, game->img_map, point2));
+		point1_img = map_pos_to_pixel(game, game->img_map, point1);
+		draw_line(game->img_map, &params, &point1_img, &point2_img);
 	}
 }
 
 static void		draw_if_wall(t_game *game, t_2d center, int i, int j)
 {
-	t_2d	square_dim;
+	t_2d		square_dim;
+	t_2d_int	square_dim_img;
+	t_2d_int	center_img;
 
+	center_img = map_pos_to_pixel(game, game->img_map, center);
 	square_dim.x = 1.0;
 	square_dim.y = 1.0;
+	square_dim_img = map_size_to_pixel(game, game->img_map, square_dim);
 	if (game->map->grid[i][j] == WALL)
 	{
-		draw_rectangle_from_center(game->img_map, g_white,
-			map_pos_to_pixel(game, game->img_map, center),
-			map_size_to_pixel(game, game->img_map, square_dim));
+		draw_rectangle_from_center(game->img_map, g_white, &center_img,
+				&square_dim_img);
 	}
 }
 
@@ -76,11 +80,14 @@ void			draw_walls_and_contours(t_game *game)
 
 void			draw_player(t_game *game, t_player *player, t_color color)
 {
+	t_2d_int	player_pos_img;
 	t_2d		dim;
+	t_2d_int	dim_img;
 
-	dim.x = 0.05;
-	dim.y = 0.05;
-	draw_rectangle_from_center(game->img_map, color,
-			map_pos_to_pixel(game, game->img_map, player->pos),
-			map_size_to_pixel(game, game->img_map, dim));
+	dim.x = 0.1;
+	dim.y = 0.1;
+	player_pos_img = map_pos_to_pixel(game, game->img_map, player->pos);
+	dim_img = map_size_to_pixel(game, game->img_map, dim);
+	draw_rectangle_from_center(game->img_map, color, &player_pos_img,
+								&dim_img);
 }

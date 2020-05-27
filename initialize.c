@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 15:28:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/24 23:49:34 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/27 14:37:04 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,6 @@ void			initialize_game(const char *file, t_game *game)
 	game->conn->win_ptr = mlx_new_window(game->conn->mlx_ptr,
 			game->config->resolution.x, game->config->resolution.y, "cub3d");
 	game->img_view = initialize_image(game, game->config->resolution, 0);
+	/*game->img_view->buffered = 1;*/
 	game->img_map = initialize_minimap(game);
 }

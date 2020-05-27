@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/24 23:51:59 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/27 13:30:45 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ typedef struct	s_image {
 	int			endian;
 	void		*ptr;
 	char		*data;
-	/*char		*buffer;*/
-	/*int			buffered;*/
+	char		*buffer;
+	int			buffered;
 }				t_image;
 
 typedef struct	s_config {
@@ -229,32 +229,25 @@ void			draw_player(t_game *game, t_player *player, t_color color);
 */
 
 /*
-** Working with image buffer or not
-*/
-
-/*# define UNBUFFERED	0*/
-/*# define BUFFERED 	1*/
-
-/*
 ** Helper structure for drawing lines
 */
 typedef struct	s_line_params {
 	int			thickness;
 	t_color		color;
 }				t_line_params;
-void			draw_pixel(t_image *img, t_color color, t_2d_int pos);
-void			draw_rectangle(t_image *img, t_color color, t_2d_int origin,
-							t_2d_int dim);
+void			draw_pixel(t_image *img, t_color color, t_2d_int *pos);
+void			draw_rectangle(t_image *img, t_color color, t_2d_int *origin,
+							t_2d_int *dim);
 void			draw_rectangle_from_center(t_image *img, t_color color,
-							t_2d_int center, t_2d_int dim);
+							t_2d_int *center, t_2d_int *dim);
 void			draw(t_game *game, t_player *old_player, t_player *new_player);
 
 /*
 ** ray2.c
 */
 
-void			draw_line(t_image *img, t_line_params *params, t_2d_int point1,
-							t_2d_int point2);
+void			draw_line(t_image *img, t_line_params *params, t_2d_int *point1,
+							t_2d_int *point2);
 
 /*
 ** ray.c
@@ -309,7 +302,7 @@ void			draw_view(t_game *game, t_player *new_player);
 ** image.c
 */
 
-/*void			copy_from_buffer(t_image *img);*/
+void			copy_from_buffer(t_image *img);
 t_color			color_from_image(t_image *img, t_2d_int pos);
 
 /*
