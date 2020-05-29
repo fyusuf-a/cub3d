@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/07 15:29:13 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/27 14:37:48 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/29 13:11:20 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_2d_int	map_pos_to_pixel(t_game *game, t_image *image, t_2d pos)
 void		draw_fov(t_game *game, t_player *player, t_color color)
 {
 	t_2d			dim;
-	t_contact		contact;
+	t_ray			*ray;
 	t_line_params	params;
 	t_2d_int		impact_img;
 	t_2d_int		player_pos_img;
@@ -48,10 +48,11 @@ void		draw_fov(t_game *game, t_player *player, t_color color)
 	params.thickness = map_dim_to_pixel(game, game->img_map, 0, 0.02);
 	dim.x = 0.1;
 	dim.y = 0.1;
-	contact = contact_with_wall(game, player);
+	ray = contact_with_wall(game, player);
 	player_pos_img = map_pos_to_pixel(game, game->img_map, player->pos);
 	dim_img = map_size_to_pixel(game, game->img_map, dim);
-	impact_img = map_pos_to_pixel(game, game->img_map, contact.impact);
+	impact_img = map_pos_to_pixel(game, game->img_map,
+											*(t_2d*)ray->list->content);
 	draw_rectangle_from_center(game->img_map, color, &impact_img, &dim_img);
 	draw_line(game->img_map, &params, &player_pos_img, &impact_img);
 }

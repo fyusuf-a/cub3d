@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/27 13:30:45 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/29 14:00:30 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,15 +106,10 @@ typedef struct	s_image {
 
 typedef struct	s_config {
 	t_2d_int	resolution;
-	char		*texture_no_path;
 	t_image		*texture_no;
-	char		*texture_so_path;
 	t_image		*texture_so;
-	char		*texture_we_path;
 	t_image		*texture_we;
-	char		*texture_ea_path;
 	t_image		*texture_ea;
-	char		*sprite_path;
 	t_color		floor;
 	t_color		ceiling;
 }				t_config;
@@ -124,13 +119,18 @@ typedef struct	s_connection {
 	void		*win_ptr;
 }				t_connection;
 
+typedef struct	s_ray {
+	t_list		*list;
+	int			cardinal_point;
+}				t_ray;
 typedef struct	s_game {
 	t_map			*map;
 	t_player		*player;
 	t_config		*config;
-	t_connection	*conn;
+	t_ray			*ray;
 	t_image			*img_view;
 	t_image			*img_map;
+	t_connection	*conn;
 }				t_game;
 
 /*
@@ -201,6 +201,12 @@ int				gobble_while_not_elem(char *line, int start, const char *ens);
 void			initialize_game(const char *path, t_game *game);
 
 /*
+** free.c
+*/
+
+void			free_game(t_game *game);
+
+/*
 ** initialize2.c
 */
 t_image			*initialize_image(t_game *game, t_2d_int res, int alpha);
@@ -243,7 +249,7 @@ void			draw_rectangle_from_center(t_image *img, t_color color,
 void			draw(t_game *game, t_player *old_player, t_player *new_player);
 
 /*
-** ray2.c
+** draw2.c
 */
 
 void			draw_line(t_image *img, t_line_params *params, t_2d_int *point1,
@@ -253,40 +259,39 @@ void			draw_line(t_image *img, t_line_params *params, t_2d_int *point1,
 ** ray.c
 */
 
-typedef struct	s_contact {
-	t_2d		impact;
-	int			cardinal_point;
-}				t_contact;
 /*
-** Helper structure for performance while raycasting
-*/
-typedef struct	s_direction {
-	double		tangent;
-	t_2d		vector;
-}				t_direction;
-/*
-** Another helper structure for performance while raycasting
+** A helper structure for raycasting
 ** x is the intersection with an horizontal line of the ray
 ** y is the intersection with a vertical line of the ray
 */
+# define HORIZONTAL 0
+# define VERTICAL	1
+
 typedef struct	s_iter {
-	t_contact	*x;
-	t_contact	*y;
+	t_2d		x;
+	t_2d		y;
+	int			current;
+	double		tangent;
+	t_2d		vector;
+	int			cardinal_point;
+	t_ray		*ray;
 }				t_iter;
 # define NORTH	0
 # define SOUTH	1
 # define EAST	2
 # define WEST	3
-t_contact		contact_with_wall(t_game *game, t_player *player);
+
+t_ray			*contact_with_wall(t_game *game, t_player *player);
 
 /*
 ** ray2.c
 */
 
-t_contact		*next_point_on_vertical_line(t_game *game, t_player *player,
-										t_iter* iter, t_direction *direction);
-t_contact		*next_point_on_horizontal_line(t_game *game, t_player *player,
-										t_iter* iter, t_direction *direction);
+void			free_ray(t_ray *ray);
+void			add_object_to_list(t_iter *iter);
+t_iter			*next_point_good_angle(t_game *game, t_player *player,
+										t_iter *iter);
+
 /*
 ** view.c
 */
@@ -334,5 +339,7 @@ t_color			g_black;
 t_color			g_red;
 t_color			g_blue;
 t_color			g_green;
+
+t_game			g_game;
 
 #endif
