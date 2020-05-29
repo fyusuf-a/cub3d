@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 09:14:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/24 21:14:33 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/29 15:12:28 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ int		key_hook(int key, t_game *game)
 	new_player = *game->player;
 	update_pos(key, step, &new_player, game->player);
 	if (!t_player_equal(&new_player, game->player)
-			&& what_is(game, new_player.pos) == VOID)
+			&& what_is(new_player.pos) == VOID)
 	{
-		draw(game, game->player, &new_player);
+		draw(game->player, &new_player);
 		*game->player = new_player;
 	}
 	return (EXIT_SUCCESS);
@@ -71,8 +71,6 @@ int		key_hook(int key, t_game *game)
 
 int		main(int argc, char *argv[])
 {
-	t_game	game;
-
 	g_black.r = 0;
 	g_black.g = 0;
 	g_black.b = 0;
@@ -90,12 +88,12 @@ int		main(int argc, char *argv[])
 	g_green.b = 0;
 	if (argc != 2)
 		error("Usage: cub3d map.cub");
-	initialize_game(argv[1], &game);
-	draw(&game, game.player, game.player);
-	mlx_hook(game.conn->win_ptr, KeyPress, KeyPressMask | KeyReleaseMask,
-				key_hook, &game);
-	/*mlx_key_hook(game.conn->win_ptr, key_hook, &game);*/
-	/*mlx_loop_hook(game.conn->win_ptr, loop_hook, &game);*/
-	mlx_loop(game.conn->mlx_ptr);
+	initialize_game(argv[1]);
+	draw(g_game.player, g_game.player);
+	mlx_hook(g_game.conn->win_ptr, KeyPress, KeyPressMask | KeyReleaseMask,
+				key_hook, &g_game);
+	/*mlx_key_hook(game.conn->win_ptr, key_hook, &g_game);*/
+	/*mlx_loop_hook(game.conn->win_ptr, loop_hook, &g_game);*/
+	mlx_loop(g_game.conn->mlx_ptr);
 	return (EXIT_SUCCESS);
 }

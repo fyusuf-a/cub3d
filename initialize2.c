@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/24 21:15:04 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/27 22:21:35 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/29 14:59:07 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void		initialize_alpha(t_image *image, int alpha)
 		}
 }
 
-t_image			*initialize_image(t_game *game, t_2d_int res, int alpha)
+t_image			*initialize_image(t_2d_int res, int alpha)
 {
 	int		size_line;
 	t_image	*ret;
@@ -35,7 +35,7 @@ t_image			*initialize_image(t_game *game, t_2d_int res, int alpha)
 	if (!(ret = malloc(sizeof(t_image))))
 		error("initialize_image: could not allocate image");
 	ret->res = res;
-	ret->ptr = mlx_new_image(game->conn->mlx_ptr, res.x, res.y);
+	ret->ptr = mlx_new_image(g_game.conn->mlx_ptr, res.x, res.y);
 	ret->data = mlx_get_data_addr(ret->ptr, &(ret->bpp), &size_line,
 			&(ret->endian));
 	ret->bpp /= 8;
@@ -52,24 +52,22 @@ t_image			*initialize_image(t_game *game, t_2d_int res, int alpha)
 	return (ret);
 }
 
-t_image			*initialize_texture(t_game *game, char *path)
+t_image			*initialize_texture(char *path)
 {
 	int		size_line;
-	t_image	*ret;
 	char	*needle;
+	t_image	*ret;
 
-	if (!(needle = ft_strrchr(path, '.')))
-		error("%s: File extension should be .xpm", path);
-	if (ft_strcmp(needle, ".xpm") != 0)
+	if (!(needle = ft_strrchr(path, '.')) || ft_strcmp(needle, ".xpm") != 0)
 		error("%s: File extension should be .xpm", path);
 	if (!(ret = malloc(sizeof(t_image))))
-		error("initialize_image: could not allocate image");
-	if (!(ret->ptr = mlx_xpm_file_to_image(game->conn->mlx_ptr, path,
+		error("initialize_texture: malloc failed");
+	if (!(ret->ptr = mlx_xpm_file_to_image(g_game.conn->mlx_ptr, path,
 											&(ret->res.x), &(ret->res.y))))
-		error("initialize_image: mlx_xpm_file_to_image failed");
+		error("initialize_texture: mlx_xpm_file_to_ret failed");
 	if (!(ret->data = mlx_get_data_addr(ret->ptr, &(ret->bpp),
 											&size_line, &(ret->endian))))
-		error("initialize_image: mlx_get_data_addr failed");
+		error("initialize_texture: mlx_get_data_addr failed");
 	ret->bpp /= 8;
 	if (size_line != ret->res.x * ret->bpp)
 	{

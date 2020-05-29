@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/29 14:00:30 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/29 17:49:17 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ typedef struct	s_config {
 	t_image		*texture_so;
 	t_image		*texture_we;
 	t_image		*texture_ea;
+	t_image		*texture_sprite;
 	t_color		floor;
 	t_color		ceiling;
 }				t_config;
@@ -158,26 +159,27 @@ void			close_file(t_file *file);
 ** parse_first.c
 */
 
-void			parse(const char *path, t_game *game);
-void			parse_first_pass(t_file *file, t_game *game);
+void			parse(const char *path);
+void			parse_first_pass(t_file *file);
 
 /*
 ** parse_second.c
 */
 
-void			parse_second_pass(t_file *file, t_game *game);
+void			parse_second_pass(t_file *file);
 
 /*
 ** parse_second2.c
 */
 
-int				parse_second_pass_map(t_file *file, t_game *game);
+int				parse_second_pass_map(t_file *file);
+void			parse_color(t_file *file, t_color *color);
 
 /*
 ** parse_check.c
 */
 
-void			parse_check(const t_file *file, const t_game *game);
+void			parse_check(const t_file *file);
 
 /*
 ** parse_utilities.c
@@ -188,8 +190,7 @@ void			parse_check(const t_file *file, const t_game *game);
 ** (indicating that action is done). Return is 0 if EOF is reached, 1 if
 ** action is done.
 */
-int				repeat_gnl(t_file *file, t_game *game,
-							int (*action) (t_file *file, t_game *game));
+int				repeat_gnl(t_file *file, int (*action) (t_file *file));
 int				parse_natural(t_file *file);
 int				gobble_while_elem(char *line, int start, const char *ens);
 int				gobble_while_not_elem(char *line, int start, const char *ens);
@@ -198,37 +199,38 @@ int				gobble_while_not_elem(char *line, int start, const char *ens);
 ** initialize.c
 */
 
-void			initialize_game(const char *path, t_game *game);
+void			initialize_game(const char *path);
 
 /*
 ** free.c
 */
 
-void			free_game(t_game *game);
+void			free_ray(t_ray *ray);
+void			free_game(void);
 
 /*
 ** initialize2.c
 */
-t_image			*initialize_image(t_game *game, t_2d_int res, int alpha);
-t_image			*initialize_texture(t_game *game, char *path);
+t_image			*initialize_image(t_2d_int res, int alpha);
+t_image			*initialize_texture(char *path);
 
 /*
 ** minimap.c
 */
 
-double			map_dim_to_pixel(t_game *game, t_image *image, int axis,
+double			map_dim_to_pixel(t_image *image, int axis,
 									double x);
-t_2d_int		map_size_to_pixel(t_game *game, t_image *image, t_2d size);
-t_2d_int		map_pos_to_pixel(t_game *game, t_image *image, t_2d pos);
-void			draw_fov(t_game *game, t_player *player, t_color color);
-void			draw_minimap(t_game *game, t_player *old_player,
+t_2d_int		map_size_to_pixel(t_image *image, t_2d size);
+t_2d_int		map_pos_to_pixel(t_image *image, t_2d pos);
+void			draw_fov(t_player *player, t_color color);
+void			draw_minimap(t_player *old_player,
 									t_player *new_player);
 
 /*
 ** minimap2.c
 */
-void			draw_walls_and_contours(t_game *game);
-void			draw_player(t_game *game, t_player *player, t_color color);
+void			draw_walls_and_contours(void);
+void			draw_player(t_player *player, t_color color);
 
 /*
 ** draw.c
@@ -246,7 +248,7 @@ void			draw_rectangle(t_image *img, t_color color, t_2d_int *origin,
 							t_2d_int *dim);
 void			draw_rectangle_from_center(t_image *img, t_color color,
 							t_2d_int *center, t_2d_int *dim);
-void			draw(t_game *game, t_player *old_player, t_player *new_player);
+void			draw(t_player *old_player, t_player *new_player);
 
 /*
 ** draw2.c
@@ -281,15 +283,15 @@ typedef struct	s_iter {
 # define EAST	2
 # define WEST	3
 
-t_ray			*contact_with_wall(t_game *game, t_player *player);
+t_ray			*contact_with_wall(t_player *player);
 
 /*
 ** ray2.c
 */
 
-void			free_ray(t_ray *ray);
+void			determine_cardinal_point(t_iter *iter);
 void			add_object_to_list(t_iter *iter);
-t_iter			*next_point_good_angle(t_game *game, t_player *player,
+void			next_point_good_angle(t_player *player,
 										t_iter *iter);
 
 /*
@@ -301,7 +303,7 @@ t_iter			*next_point_good_angle(t_game *game, t_player *player,
 # define EYE_HEIGHT			1.0
 # define SCREEN_DISTANCE	0.1
 
-void			draw_view(t_game *game, t_player *new_player);
+void			draw_view(t_player *new_player);
 
 /*
 ** image.c
@@ -313,7 +315,7 @@ t_color			color_from_image(t_image *img, t_2d_int pos);
 /*
 ** utilities.c
 */
-t_object		what_is(t_game *game, t_2d pos);
+t_object		what_is(t_2d pos);
 t_2d			what_cell(t_2d pos);
 double			dist(t_2d point1, t_2d point2);
 int				t_player_equal(t_player *player1, t_player *player2);

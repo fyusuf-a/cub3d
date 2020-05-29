@@ -6,16 +6,15 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:45:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/01 16:29:18 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/29 14:11:47 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 static int
-	parse_first_pass_infos(t_file *file, t_game *game)
+	parse_first_pass_infos(t_file *file)
 {
-	(void)game;
 	if (!ft_strcmp(file->line, "")
 		|| !ft_strncmp(file->line, "R ", 2)
 		|| !ft_strncmp(file->line, "NO ", 3)
@@ -30,7 +29,7 @@ static int
 }
 
 static int
-	parse_first_pass_map(t_file *file, t_game *game)
+	parse_first_pass_map(t_file *file)
 {
 	char	c;
 
@@ -43,18 +42,17 @@ static int
 					"Unauthorized character '%c'", c);
 		file->c++;
 	}
-	if (file->c > game->map->dim.x)
-		game->map->dim.x = file->c;
-	game->map->dim.y++;
+	if (file->c > g_game.map->dim.x)
+		g_game.map->dim.x = file->c;
+	g_game.map->dim.y++;
 	return (GNL_NOT_DONE);
 }
 
 static int
-	parse_first_pass_eof(t_file *file, t_game *game)
+	parse_first_pass_eof(t_file *file)
 {
 	static int	first = 1;
 
-	(void)game;
 	(void)file;
 	if (first)
 	{
@@ -67,17 +65,17 @@ static int
 }
 
 void
-	parse_first_pass(t_file *file, t_game *game)
+	parse_first_pass(t_file *file)
 {
-	if (repeat_gnl(file, game, parse_first_pass_infos) == GNL_FILE_END)
+	if (repeat_gnl(file, parse_first_pass_infos) == GNL_FILE_END)
 		parse_error(file, LINE_NB || COLUMN_NB, "eof before map");
-	if (repeat_gnl(file, game, parse_first_pass_map) != GNL_FILE_END)
-		repeat_gnl(file, game, parse_first_pass_eof);
+	if (repeat_gnl(file, parse_first_pass_map) != GNL_FILE_END)
+		repeat_gnl(file, parse_first_pass_eof);
 	free(file->line);
 }
 
 void
-	parse(const char *path, t_game *game)
+	parse(const char *path)
 {
 	t_file	*file;
 	char	*needle;
@@ -87,10 +85,10 @@ void
 		error("%s: File extension should be .cub", path);
 	if (ft_strcmp(needle, ".cub") != 0)
 		error("%s: File extension should be .cub", path);
-	parse_first_pass(file, game);
+	parse_first_pass(file);
 	close_file(file);
 	file = open_file(path);
-	parse_second_pass(file, game);
-	parse_check(file, game);
+	parse_second_pass(file);
+	parse_check(file);
 	close_file(file);
 }

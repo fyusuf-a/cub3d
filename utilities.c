@@ -6,22 +6,22 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/08 17:31:50 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/24 20:40:59 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/29 15:10:46 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_object	what_is(t_game *game, t_2d pos)
+t_object	what_is(t_2d pos)
 {
 	t_2d_int	cell;
 
 	if (pos.x >= -0.5 && pos.y >= -0.5 &&
-			pos.x <= game->map->dim.x + 0.5 && pos.y <= game->map->dim.y)
+			pos.x <= g_game.map->dim.x + 0.5 && pos.y <= g_game.map->dim.y)
 	{
 		cell.x = pos.x + 0.5;
 		cell.y = pos.y + 0.5;
-		return (game->map->grid[cell.y][cell.x]);
+		return (g_game.map->grid[cell.y][cell.x]);
 	}
 	return (UNDEFINED);
 }

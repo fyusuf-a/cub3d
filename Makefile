@@ -1,11 +1,11 @@
 NAME	= cub3d
 
-SRCS		= main.c initialize.c initialize2.c file.c error.c
+SRCS		= main.c initialize.c initialize2.c file.c error.c free.c
 SRCS		+= parse_first.c parse_second.c parse_second2.c parse_check.c parse_utilities.c
 SRCS		+= draw.c draw2.c minimap.c minimap2.c utilities.c ray.c ray2.c images.c view.c
 OBJS		= ${SRCS:.c=.o}
 DEBUG_ARGS = -Wextra -Wall -fsanitize=address -g3 -O0
-$(OBJS): EXTRA_ARGS := -Werror -Wextra -Wall
+$(OBJS): EXTRA_ARGS := -Wextra -Wall
 
 TESTS = debug.c
 #OBJS_TESTS= ${TESTS:.c=.o}

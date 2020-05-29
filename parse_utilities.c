@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 15:22:35 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/11 16:24:08 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/29 14:23:45 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@
 */
 
 int
-	repeat_gnl(t_file *file, t_game *game,
-			int (*action) (t_file *file, t_game *game))
+	repeat_gnl(t_file *file, int (*action) (t_file *file))
 {
 	static int	action_already_run = 0;
 	int			ret_gnl;
@@ -35,18 +34,18 @@ int
 			parse_error(file, LINE_NB, "get_next_line returned an error code");
 		if (ret_gnl == 0)
 		{
-			action(file, game);
+			action(file);
 			return (GNL_FILE_END);
 		}
 	}
 	file->c = 0;
-	if (action(file, game) == GNL_DONE)
+	if (action(file) == GNL_DONE)
 	{
 		action_already_run = 0;
 		return (GNL_DONE);
 	}
 	action_already_run = 1;
-	return (repeat_gnl(file, game, action));
+	return (repeat_gnl(file, action));
 }
 
 /*

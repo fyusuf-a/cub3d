@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 13:28:32 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/11 16:18:24 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/05/29 14:19:17 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,53 +36,43 @@ static void	recursive_check(const t_file *file, t_map *map, int x, int y)
 	}
 }
 
-static void	check_if_exist(const t_file *file, const t_game *game)
+static void	check_if_exist(const t_file *file)
 {
-	if (game->map->dim.x == 0)
+	if (g_game.map->dim.x == 0)
 		parse_error(file, 0, "Map is undefined");
-	if (game->player->pos.x == -1)
+	if (g_game.player->pos.x == -1)
 		parse_error(file, 0, "Player position is undefined");
-	if (!game->config->resolution.x)
+	if (!g_game.config->resolution.x)
 		parse_error(file, 0, "Resolution is undefined");
-	if (!game->config->texture_no_path)
-		parse_error(file, 0, "North texture is undefined");
-	if (!game->config->texture_so_path)
-		parse_error(file, 0, "South texture is undefined");
-	if (!game->config->texture_we_path)
-		parse_error(file, 0, "West texture is undefined");
-	if (!game->config->texture_ea_path)
-		parse_error(file, 0, "East texture is undefined");
-	if (!game->config->sprite_path)
-		parse_error(file, 0, "Sprite texture is undefined");
-	if (game->config->floor.r == -1)
+	if (g_game.config->floor.r == -1)
 		parse_error(file, 0, "Floor color is undefined");
-	if (game->config->ceiling.r == -1)
+	if (g_game.config->ceiling.r == -1)
 		parse_error(file, 0, "Ceiling color is undefined");
 }
 
-void		parse_check(const t_file *file, const t_game *game)
+void		parse_check(const t_file *file)
 {
 	t_map	copy;
 	int		i;
 	int		j;
 
-	check_if_exist(file, game);
-	if (!(copy.grid = malloc(game->map->dim.y * sizeof(t_object*))))
+	check_if_exist(file);
+	if (!(copy.grid = malloc(g_game.map->dim.y * sizeof(t_object*))))
 		error("parse_check: malloc failed");
 	i = 0;
-	while (i < game->map->dim.y)
+	while (i < g_game.map->dim.y)
 	{
-		if (!(copy.grid[i] = malloc(game->map->dim.x * sizeof(t_object))))
+		if (!(copy.grid[i] = malloc(g_game.map->dim.x * sizeof(t_object))))
 			error("parse_check: malloc failed");
 		j = 0;
-		while (j < game->map->dim.x)
+		while (j < g_game.map->dim.x)
 		{
-			copy.grid[i][j] = game->map->grid[i][j];
+			copy.grid[i][j] = g_game.map->grid[i][j];
 			j++;
 		}
 		i++;
 	}
-	copy.dim.x = game->map->dim.x;
-	copy.dim.y = game->map->dim.y;
-	recursive_check(file, &copy, game->player->pos.x, game->player->pos.y);
+	copy.dim.x = g_game.map->dim.x;
+	copy.dim.y = g_game.map->dim.y;
+	recursive_check(file, &copy, g_game.player->pos.x, g_game.player->pos.y);
 }
