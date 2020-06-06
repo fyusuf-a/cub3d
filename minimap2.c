@@ -6,13 +6,13 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 16:08:01 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/29 14:27:42 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/01 13:01:04 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void		draw_contours_if_void(t_2d center, int i, int j)
+static void		draw_contours(t_2d center, int i, int j)
 {
 	t_2d			point1;
 	t_2d			point2;
@@ -20,26 +20,23 @@ static void		draw_contours_if_void(t_2d center, int i, int j)
 	t_2d_int		point2_img;
 	t_line_params	params;
 
-	if (g_game.map->grid[i][j] == VOID)
-	{
-		point1.x = center.x - 0.5;
-		point1.y = center.y + 0.5;
-		point2.x = center.x + 0.5;
-		point2.y = center.y + 0.5;
-		params.color = g_white;
-		params.thickness = map_dim_to_pixel(g_game.img_map,
-												0, 0.01);
-		point1_img = map_pos_to_pixel(g_game.img_map, point1);
-		point2_img = map_pos_to_pixel(g_game.img_map, point2);
-		draw_line(g_game.img_map, &params, &point1_img, &point2_img);
-		point1.x = center.x + 0.5;
-		point1.y = center.y - 0.5;
-		point1_img = map_pos_to_pixel(g_game.img_map, point1);
-		draw_line(g_game.img_map, &params, &point1_img, &point2_img);
-	}
+	point1.x = center.x - 0.5;
+	point1.y = center.y + 0.5;
+	point2.x = center.x + 0.5;
+	point2.y = center.y + 0.5;
+	params.color = g_white;
+	params.thickness = map_dim_to_pixel(g_game.img_map,
+											0, 0.01);
+	point1_img = map_pos_to_pixel(g_game.img_map, point1);
+	point2_img = map_pos_to_pixel(g_game.img_map, point2);
+	draw_line(g_game.img_map, &params, &point1_img, &point2_img);
+	point1.x = center.x + 0.5;
+	point1.y = center.y - 0.5;
+	point1_img = map_pos_to_pixel(g_game.img_map, point1);
+	draw_line(g_game.img_map, &params, &point1_img, &point2_img);
 }
 
-static void		draw_if_wall(t_2d center, int i, int j)
+static void		draw_wall(t_2d center, int i, int j)
 {
 	t_2d		square_dim;
 	t_2d_int	square_dim_img;
@@ -49,11 +46,8 @@ static void		draw_if_wall(t_2d center, int i, int j)
 	square_dim.x = 1.0;
 	square_dim.y = 1.0;
 	square_dim_img = map_size_to_pixel(g_game.img_map, square_dim);
-	if (g_game.map->grid[i][j] == WALL)
-	{
-		draw_rectangle_from_center(g_game.img_map, g_white, &center_img,
+	draw_rectangle_from_center(g_game.img_map, g_white, &center_img,
 				&square_dim_img);
-	}
 }
 
 void			draw_walls_and_contours(void)
@@ -61,6 +55,7 @@ void			draw_walls_and_contours(void)
 	int		i;
 	int		j;
 	t_2d	center;
+	t_object	current;
 
 	i = 0;
 	while (i < g_game.map->dim.y)
@@ -70,8 +65,11 @@ void			draw_walls_and_contours(void)
 		{
 			center.x = j;
 			center.y = i;
-			draw_if_wall(center, i, j);
-			draw_contours_if_void(center, i, j);
+			current = g_game.map->grid[i][j];
+			if (current == WALL)
+				draw_wall(center, i, j);
+			if (current == VOID || current == OBJECT)
+				draw_contours(center, i, j);
 			j++;
 		}
 		i++;

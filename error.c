@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 11:36:26 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/01 16:46:13 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/05 16:04:03 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void
 	ft_zprintf(2, msg, &args);
 	va_end(args);
 	ft_dprintf(2, "\n");
+	free_game();
 	exit(EXIT_FAILURE);
 }
 
@@ -44,5 +45,6 @@ void
 	ft_zprintf(2, msg, &args);
 	va_end(args);
 	ft_dprintf(2, "\n");
+	free_game();
 	exit(EXIT_FAILURE);
 }

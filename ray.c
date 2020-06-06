@@ -6,34 +6,45 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 13:17:38 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/29 17:53:03 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/06 18:09:04 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	next_point_bad_angle(t_player *player, t_iter *iter)
+t_2d		displaced(t_contact *contact)
 {
-	t_2d		displaced;
-	t_object	current_object;
+	t_2d	ret;
 
-	displaced = iter->current == HORIZONTAL ? iter->x : iter->y;
-	displaced.x += 0.01 * iter->vector.x;
-	displaced.y += 0.01 * iter->vector.y;
-	current_object = what_is(displaced);
+	ret = contact->impact;
+	if (contact->cardinal_point == NORTH)
+		ret.y += 0.01;
+	else if (contact->cardinal_point == SOUTH)
+		ret.y -= 0.01;
+	else if (contact->cardinal_point == EAST)
+		ret.x -= 0.01;
+	else
+		ret.x += 0.01;
+	return (ret);
+}
+
+static void	next_point_bad_angle(const t_player *player, t_iter *iter)
+{
+	t_object	current_object;
+	t_contact	*contact;
+
+	contact = iter->current == HORIZONTAL ? &iter->x : &iter->y;
+	current_object = what_is(displaced(contact));
 	if (current_object == WALL || current_object == OBJECT)
 	{
-		add_object_to_list(iter);
+		add_object_to_list(iter, contact);
 		if (current_object == WALL)
-		{
-			determine_cardinal_point(iter);
 			return ;
-		}
 	}
 	if (iter->current == HORIZONTAL)
-		iter->x.y += iter->vector.y;
+		iter->x.impact.y += iter->vector.y;
 	else
-		iter->y.x += iter->vector.x;
+		iter->y.impact.x += iter->vector.x;
 	next_point_bad_angle(player, iter);
 }
 
@@ -57,41 +68,59 @@ t_2d		what_direction(double angle)
 	return (direction);
 }
 
-static void	initialize_iter(t_player *player, t_iter *iter)
+	/*if (what_is(player->pos) == OBJECT)*/
+	/*{*/
+		/*contact = malloc(sizeof(t_contact));*/
+		/*contact->cardinal_point = iter->x;*/
+		/*add_object_to_list(iter, contact);*/
+
+
+	/*}*/
+
+static void	initialize_iter(const t_player *player, t_iter *iter)
 {
-	iter->ray = malloc(sizeof(t_ray));
-	iter->ray->list = NULL;
-	iter->x = what_cell(player->pos);
-	iter->x.y += iter->vector.y * 0.5;
+	t_contact	*contact;
+
+	iter->vector = what_direction(player->angle);
+	iter->current = HORIZONTAL;
+	iter->x.cardinal_point = determine_cardinal_point(iter);
+	iter->current = VERTICAL;
+	iter->y.cardinal_point = determine_cardinal_point(iter);
+	iter->x.impact = what_cell(player->pos);
+	iter->y.impact = iter->x.impact;
+	iter->x.impact.y += iter->vector.y * 0.5;
 	if (iter->vector.x == 0)
-		iter->x.x = player->pos.x;
-	iter->y = what_cell(player->pos);
-	iter->y.x += iter->vector.x * 0.5;
+		iter->x.impact.x = player->pos.x;
+	iter->y.impact.x += iter->vector.x * 0.5;
 	if (iter->vector.y == 0)
-		iter->y.y = player->pos.y;
+		iter->y.impact.y = player->pos.y;
+	ft_lstclear(&iter->ray, del);
+	if (what_is(player->pos) == OBJECT)
+	{
+		contact = malloc(sizeof(t_contact));
+		contact->impact = player->pos;
+		add_object_to_list(iter, contact);
+	}
 }
 
-t_ray		*contact_with_wall(t_player *player)
+t_list		*contact_with_wall(const t_player *player, t_iter *iter)
 {
-	t_iter		iter;
-
-	iter.vector = what_direction(player->angle);
-	initialize_iter(player, &iter);
-	if (iter.vector.y == 0 || iter.vector.x == 0)
+	initialize_iter(player, iter);
+	if (iter->vector.y == 0 || iter->vector.x == 0)
 	{
-		iter.current = iter.vector.y == 0 ? VERTICAL : HORIZONTAL;
-		next_point_bad_angle(player, &iter);
+		iter->current = iter->vector.y == 0 ? VERTICAL : HORIZONTAL;
+		iter->x.cardinal_point = determine_cardinal_point(iter);
+		iter->y.cardinal_point = determine_cardinal_point(iter);
+		next_point_bad_angle(player, iter);
+		return (iter->ray);
 	}
-	else
-	{
-		iter.tangent = tan(player->angle);
-		iter.y.y = iter.tangent * (iter.y.x - player->pos.x)
-						+ player->pos.y;
-		iter.x.x = (iter.x.y - player->pos.y) / iter.tangent
-						+ player->pos.x;
-		iter.current = dist(player->pos, iter.x) < dist(player->pos, iter.y) ?
-							HORIZONTAL : VERTICAL;
-		next_point_good_angle(player, &iter);
-	}
-	return (iter.ray);
+	iter->tangent = tan(player->angle);
+	iter->y.impact.y = iter->tangent * (iter->y.impact.x - player->pos.x)
+					+ player->pos.y;
+	iter->x.impact.x = (iter->x.impact.y - player->pos.y) / iter->tangent
+					+ player->pos.x;
+	iter->current = dist(player->pos, iter->x.impact) <
+		dist(player->pos, iter->y.impact) ? HORIZONTAL : VERTICAL;
+	next_point_good_angle(player, iter);
+	return (iter->ray);
 }

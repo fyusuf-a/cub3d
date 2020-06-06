@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/07 15:29:13 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/29 17:40:35 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/06 17:34:39 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_2d_int	map_pos_to_pixel(t_image *image, t_2d pos)
 	return (map_size_to_pixel(image, pos));
 }
 
-void		draw_fov(t_player *player, t_color color)
+void		draw_fov(const t_player *player, t_color color)
 {
 	t_2d			dim;
 	t_line_params	params;
@@ -47,14 +47,13 @@ void		draw_fov(t_player *player, t_color color)
 	params.thickness = map_dim_to_pixel(g_game.img_map, 0, 0.02);
 	dim.x = 0.1;
 	dim.y = 0.1;
-	g_game.ray = contact_with_wall(player);
+	g_game.ray = contact_with_wall(player, &g_iter);
 	player_pos_img = map_pos_to_pixel(g_game.img_map, player->pos);
 	dim_img = map_size_to_pixel(g_game.img_map, dim);
 	impact_img = map_pos_to_pixel(g_game.img_map,
-							*(t_2d*)g_game.ray->list->content);
+							((t_contact*)(g_game.ray->content))->impact);
 	draw_rectangle_from_center(g_game.img_map, color, &impact_img, &dim_img);
 	draw_line(g_game.img_map, &params, &player_pos_img, &impact_img);
-	free_ray(g_game.ray);
 }
 
 void		draw_minimap(t_player *old_player, t_player *new_player)

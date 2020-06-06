@@ -6,73 +6,64 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 16:32:11 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/29 17:58:15 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/06 17:39:33 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void			determine_cardinal_point(t_iter *iter)
+int				determine_cardinal_point(t_iter *iter)
 {
 	if (iter->current == HORIZONTAL)
-		iter->ray->cardinal_point = iter->vector.y > 0 ? SOUTH : NORTH;
+		return (iter->vector.y > 0 ? NORTH : SOUTH);
 	else
-		iter->ray->cardinal_point = iter->vector.x > 0 ? EAST : WEST;
+		return (iter->vector.x > 0 ? WEST : EAST);
 }
 
-void			add_object_to_list(t_iter *iter)
+void			add_object_to_list(t_iter *iter, t_contact *contact)
 {
-	t_2d		*new_link;
+	t_contact	*cpy;
 
-	new_link = malloc(sizeof(t_2d));
-	*new_link = iter->current == HORIZONTAL ? iter->x : iter->y;
-	if (!iter->ray->list && !(iter->ray->list = ft_lstnew(new_link)))
-		error("add_object_to_list: could not create list");
-	else
+	cpy = malloc(sizeof(t_contact));
+	*cpy = *contact;
+	if (!iter->ray)
 	{
-		if (ft_lstadd_elem(&iter->ray->list, new_link))
-			error("add_object_to_list: could not add object to list");
+		if (!(iter->ray = ft_lstnew(cpy)))
+			error("add_object_to_list: could not create list");
+		return ;
 	}
+	if (ft_lstadd_elem(&iter->ray, cpy))
+		error("add_object_to_list: could not add object to list");
 }
 
-static void		update(t_player *player, t_iter *iter)
+static void		update(const t_player *player, t_iter *iter)
 {
 	if (iter->current == HORIZONTAL)
 	{
-		iter->x.y += 0.99 * iter->vector.y;
-		iter->x.x += iter->vector.y / iter->tangent;
+		iter->x.impact.y += iter->vector.y;
+		iter->x.impact.x += iter->vector.y / iter->tangent;
 	}
 	else
 	{
-		iter->y.x += 0.99 * iter->vector.x;
-		iter->y.y += iter->vector.x * iter->tangent;
+		iter->y.impact.x += iter->vector.x;
+		iter->y.impact.y += iter->vector.x * iter->tangent;
 	}
-	iter->current = (dist(player->pos, iter->x) < dist(player->pos, iter->y)) ?
-						HORIZONTAL : VERTICAL;
+	iter->current = dist(player->pos, iter->x.impact) <
+			dist(player->pos, iter->y.impact) ? HORIZONTAL : VERTICAL;
 }
 
-void			next_point_good_angle(t_player *player, t_iter *iter)
+void			next_point_good_angle(const t_player *player, t_iter *iter)
 {
 	t_object	current_object;
+	t_contact	*contact;
 
-	if (iter->current == HORIZONTAL)
-	{
-		iter->x.y += 0.01 * iter->vector.y;
-		current_object = what_is(iter->x);
-	}
-	else
-	{
-		iter->y.x += 0.01 * iter->vector.x;
-		current_object = what_is(iter->y);
-	}
+	contact = iter->current == HORIZONTAL ? &iter->x : &iter->y;
+	current_object = what_is(displaced(contact));
 	if (current_object == WALL || current_object == OBJECT)
 	{
-		add_object_to_list(iter);
+		add_object_to_list(iter, contact);
 		if (current_object == WALL)
-		{
-			determine_cardinal_point(iter);
 			return ;
-		}
 	}
 	update(player, iter);
 	next_point_good_angle(player, iter);

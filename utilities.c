@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/08 17:31:50 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/29 15:10:46 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/05 15:21:39 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ double		dist(t_2d point1, t_2d point2)
 int			t_player_equal(t_player *player1, t_player *player2)
 {
 	if (player1->pos.x == player2->pos.x && player1->pos.y == player2->pos.y
-			&& player1->angle == player2->angle)
+			&& principal_measure(player1->angle) ==
+											principal_measure(player2->angle))
 		return (1);
 	return (0);
 }
@@ -53,4 +54,9 @@ double		principal_measure(double angle)
 	while (angle > M_PI)
 		angle -= 2 * M_PI;
 	return (angle);
+}
+
+void	del(void *content)
+{
+	free((t_contact*)content);
 }

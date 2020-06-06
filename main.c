@@ -6,23 +6,11 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 09:14:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/29 15:12:28 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/06 18:23:46 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-double	add_angle(double angle, double diff)
-{
-	double ret;
-
-	ret = angle + diff;
-	while (ret <= -M_PI)
-		ret += 2 * M_PI;
-	while (ret > M_PI)
-		ret -= 2 * M_PI;
-	return (ret);
-}
 
 void	update_pos(int key, double step, t_player *new_player, t_player *player)
 {
@@ -47,21 +35,31 @@ void	update_pos(int key, double step, t_player *new_player, t_player *player)
 		new_player->pos.y += step * cos(player->angle);
 	}
 	if (key == LEFT)
-		new_player->angle = principal_measure(new_player->angle - step);
+		new_player->angle -= step;
 	if (key == RIGHT)
-		new_player->angle = principal_measure(new_player->angle + step);
+		new_player->angle += step;
 }
 
 int		key_hook(int key, t_game *game)
 {
 	t_player	new_player;
 	double		step;
+	t_object	current_object;
+	int			draw_bool;
+	t_2d		player_cell;
 
 	step = 0.02;
 	new_player = *game->player;
 	update_pos(key, step, &new_player, game->player);
-	if (!t_player_equal(&new_player, game->player)
-			&& what_is(new_player.pos) == VOID)
+	current_object = what_is(new_player.pos);
+	draw_bool = !t_player_equal(&new_player, game->player)
+		&& (current_object == VOID || current_object == OBJECT);
+	if (current_object == OBJECT)
+	{
+		player_cell = what_cell(new_player.pos);
+		draw_bool = draw_bool && dist(new_player.pos, player_cell) >= 0.5;
+	}
+	if (draw_bool)
 	{
 		draw(game->player, &new_player);
 		*game->player = new_player;
@@ -80,12 +78,6 @@ int		main(int argc, char *argv[])
 	g_red.r = 255;
 	g_red.g = 0;
 	g_red.b = 0;
-	g_blue.r = 0;
-	g_blue.g = 0;
-	g_blue.b = 255;
-	g_green.r = 0;
-	g_green.g = 255;
-	g_green.b = 0;
 	if (argc != 2)
 		error("Usage: cub3d map.cub");
 	initialize_game(argv[1]);
@@ -95,5 +87,6 @@ int		main(int argc, char *argv[])
 	/*mlx_key_hook(game.conn->win_ptr, key_hook, &g_game);*/
 	/*mlx_loop_hook(game.conn->win_ptr, loop_hook, &g_game);*/
 	mlx_loop(g_game.conn->mlx_ptr);
+	/*free_game();*/
 	return (EXIT_SUCCESS);
 }

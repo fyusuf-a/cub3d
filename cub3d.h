@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/29 17:49:17 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/05 16:08:56 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,20 +115,21 @@ typedef struct	s_config {
 	t_color		ceiling;
 }				t_config;
 
+typedef struct	s_contact {
+	t_2d		impact;
+	int			cardinal_point;
+}				t_contact;
+
 typedef struct	s_connection {
 	void		*mlx_ptr;
 	void		*win_ptr;
 }				t_connection;
 
-typedef struct	s_ray {
-	t_list		*list;
-	int			cardinal_point;
-}				t_ray;
 typedef struct	s_game {
 	t_map			*map;
 	t_player		*player;
 	t_config		*config;
-	t_ray			*ray;
+	t_list			*ray;
 	t_image			*img_view;
 	t_image			*img_map;
 	t_connection	*conn;
@@ -205,7 +206,6 @@ void			initialize_game(const char *path);
 ** free.c
 */
 
-void			free_ray(t_ray *ray);
 void			free_game(void);
 
 /*
@@ -222,7 +222,7 @@ double			map_dim_to_pixel(t_image *image, int axis,
 									double x);
 t_2d_int		map_size_to_pixel(t_image *image, t_2d size);
 t_2d_int		map_pos_to_pixel(t_image *image, t_2d pos);
-void			draw_fov(t_player *player, t_color color);
+void			draw_fov(const t_player *player, t_color color);
 void			draw_minimap(t_player *old_player,
 									t_player *new_player);
 
@@ -269,29 +269,31 @@ void			draw_line(t_image *img, t_line_params *params, t_2d_int *point1,
 # define HORIZONTAL 0
 # define VERTICAL	1
 
-typedef struct	s_iter {
-	t_2d		x;
-	t_2d		y;
-	int			current;
-	double		tangent;
-	t_2d		vector;
-	int			cardinal_point;
-	t_ray		*ray;
-}				t_iter;
 # define NORTH	0
 # define SOUTH	1
 # define EAST	2
 # define WEST	3
 
-t_ray			*contact_with_wall(t_player *player);
+typedef struct	s_iter {
+	t_contact	x;
+	t_contact	y;
+	int			current;
+	double		tangent;
+	t_2d		vector;
+	int			cardinal_point;
+	t_list		*ray;
+}				t_iter;
+
+t_2d			displaced(t_contact *contact);
+t_list			*contact_with_wall(const t_player *player, t_iter *iter);
 
 /*
 ** ray2.c
 */
 
-void			determine_cardinal_point(t_iter *iter);
-void			add_object_to_list(t_iter *iter);
-void			next_point_good_angle(t_player *player,
+int				determine_cardinal_point(t_iter *iter);
+void			add_object_to_list(t_iter *iter, t_contact *contact);
+void			next_point_good_angle(const t_player *player,
 										t_iter *iter);
 
 /*
@@ -320,6 +322,7 @@ t_2d			what_cell(t_2d pos);
 double			dist(t_2d point1, t_2d point2);
 int				t_player_equal(t_player *player1, t_player *player2);
 double			principal_measure(double angle);
+void			del(void *content);
 
 /*
 ** error.c
@@ -337,11 +340,10 @@ void			initialize_map(const t_map *m);
 void			print_player(const t_player *p);
 
 t_color			g_white;
-t_color			g_black;
 t_color			g_red;
-t_color			g_blue;
-t_color			g_green;
+t_color			g_black;
 
 t_game			g_game;
+t_iter			g_iter;
 
 #endif
