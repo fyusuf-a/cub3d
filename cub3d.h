@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/05 16:08:56 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/08 18:28:45 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ typedef struct	s_game {
 	t_list			*ray;
 	t_image			*img_view;
 	t_image			*img_map;
+	t_image			*drawn_texture;
 	t_connection	*conn;
 }				t_game;
 
@@ -282,19 +283,22 @@ typedef struct	s_iter {
 	t_2d		vector;
 	int			cardinal_point;
 	t_list		*ray;
+	void		(*next_point_update)(const t_player *player,
+							struct s_iter *iter);
 }				t_iter;
 
 t_2d			displaced(t_contact *contact);
 t_list			*contact_with_wall(const t_player *player, t_iter *iter);
+void			add_object_to_list(t_iter *iter, t_contact *contact);
 
 /*
 ** ray2.c
 */
 
 int				determine_cardinal_point(t_iter *iter);
-void			add_object_to_list(t_iter *iter, t_contact *contact);
-void			next_point_good_angle(const t_player *player,
-										t_iter *iter);
+void			initialize_iter(const t_player *player, t_iter *iter);
+void			good_angle_update(const t_player *player, t_iter *iter);
+void			bad_angle_update(const t_player *player, t_iter *iter);
 
 /*
 ** view.c
