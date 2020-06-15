@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 20:45:34 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/08 18:52:43 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/15 17:33:54 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	parse_texture(t_file *file, t_image **image)
 {
 	if (*image)
 		parse_error(file, LINE_NB, "Texture defined twice");
+	*image = NULL;
 	*image = initialize_texture(file->line + file->c);
 }
 
@@ -79,23 +80,7 @@ static int	parse_second_pass_infos(t_file *file)
 
 void		parse_second_pass(t_file *file)
 {
-	int i;
-	int j;
-
 	repeat_gnl(file, parse_second_pass_infos);
-	g_game.map->grid = malloc(g_game.map->dim.y * sizeof(t_object*));
-	i = 0;
-	while (i < g_game.map->dim.y)
-	{
-		g_game.map->grid[i] = malloc(g_game.map->dim.x * sizeof(t_object));
-		j = 0;
-		while (j < g_game.map->dim.x)
-		{
-			g_game.map->grid[i][j] = WALL;
-			j++;
-		}
-		i++;
-	}
 	repeat_gnl(file, parse_second_pass_map);
 	free(file->line);
 }

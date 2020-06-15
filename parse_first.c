@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:45:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/08 18:40:43 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/15 17:29:45 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,30 +65,42 @@ static int
 }
 
 void
+	allocate_map(void)
+{
+	int i;
+	int j;
+
+	if (!(g_game.map->grid = malloc(g_game.map->dim.y * sizeof(t_object*))))
+		error("allocate_map: malloc failed");
+	i = 0;
+	while (i < g_game.map->dim.y)
+	{
+		if (!(g_game.map->grid[i] =
+					malloc(g_game.map->dim.x * sizeof(t_object))))
+		{
+			while (i >= 0)
+				free(g_game.map->grid[i--]);
+			free(g_game.map->grid);
+			error("allocate_map: malloc failed");
+		}
+		j = 0;
+		while (j < g_game.map->dim.x)
+		{
+			g_game.map->grid[i][j] = WALL;
+			j++;
+		}
+		i++;
+	}
+	g_game.map->allocated = 1;
+}
+
+void
 	parse_first_pass(t_file *file)
 {
 	if (repeat_gnl(file, parse_first_pass_infos) == GNL_FILE_END)
 		parse_error(file, LINE_NB || COLUMN_NB, "eof before map");
 	if (repeat_gnl(file, parse_first_pass_map) != GNL_FILE_END)
 		repeat_gnl(file, parse_first_pass_eof);
+	allocate_map();
 	free(file->line);
-}
-
-void
-	parse(const char *path)
-{
-	t_file	*file;
-	char	*needle;
-
-	file = open_file(path);
-	if (!(needle = ft_strrchr(path, '.')))
-		error("%s: File extension should be .cub", path);
-	if (ft_strcmp(needle, ".cub") != 0)
-		error("%s: File extension should be .cub", path);
-	parse_first_pass(file);
-	close_file(file);
-	file = open_file(path);
-	parse_second_pass(file);
-	parse_check(file);
-	close_file(file);
 }

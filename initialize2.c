@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/24 21:15:04 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/08 18:52:51 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/15 17:25:45 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ t_image			*initialize_image(t_2d_int res, int alpha)
 				ret->res.x, ret->bpp);
 	}
 	initialize_alpha(ret, alpha);
-	if (!(ret->buffer = malloc(ret->bpp * ret->res.x * ret->res.y)))
-		error("initialize_image: could not allocate buffer");
+	/*if (!(ret->buffer = malloc(ret->bpp * ret->res.x * ret->res.y)))*/
+		/*error("initialize_image: could not allocate buffer");*/
 	return (ret);
 }
 
@@ -60,8 +60,10 @@ t_image			*initialize_texture(char *path)
 
 	if (!(needle = ft_strrchr(path, '.')) || ft_strcmp(needle, ".xpm") != 0)
 		error("%s: File extension should be .xpm", path);
+	close_file(open_file(path));
 	if (!(ret = malloc(sizeof(t_image))))
 		error("initialize_texture: malloc failed");
+	/*ret->buffer = NULL;*/
 	if (!(ret->ptr = mlx_xpm_file_to_image(g_game.conn->mlx_ptr, path,
 											&(ret->res.x), &(ret->res.y))))
 		error("initialize_texture: mlx_xpm_file_to_ret failed");

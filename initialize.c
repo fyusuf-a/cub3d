@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 15:28:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/08 18:40:14 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/15 17:21:25 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,14 @@ void			initialize_game(const char *file)
 	if (!(g_game.conn = malloc(sizeof(t_connection))))
 		error("initialize_game: could not allocate connection");
 	if (!(g_game.conn->mlx_ptr = mlx_init()))
-		error("mlx: Connection could not be initialized");
+		error("initialize_game : mlx_init failed");
 	parse(file);
-	g_game.conn->win_ptr = mlx_new_window(g_game.conn->mlx_ptr,
-			g_game.config->resolution.x, g_game.config->resolution.y, "cub3d");
+	if (!(g_game.conn->win_ptr = mlx_new_window(g_game.conn->mlx_ptr,
+			g_game.config->resolution.x, g_game.config->resolution.y, "cub3d")))
+		error("initialize_game: mlx_new_window failed");
 	g_game.img_view = initialize_image(g_game.config->resolution, 0);
 	/*g_game.img_view->buffered = 1;*/
 	g_game.img_map = initialize_minimap();
+	g_game.screen_height = 2 * SCREEN_DISTANCE *
+		(double)g_game.img_view->res.y / (double)g_game.img_view->res.x;
 }

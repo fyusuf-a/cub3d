@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/08 17:31:50 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/05 15:21:39 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/15 17:16:19 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,4 @@ double		principal_measure(double angle)
 	while (angle > M_PI)
 		angle -= 2 * M_PI;
 	return (angle);
-}
-
-void	del(void *content)
-{
-	free((t_contact*)content);
 }

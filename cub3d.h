@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/08 18:28:45 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/15 17:53:55 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef enum	e_object {
 typedef struct	s_map {
 	t_2d_int	dim;
 	t_object	**grid;
+	int			allocated;
 }				t_map;
 
 typedef struct	s_color {
@@ -100,8 +101,8 @@ typedef struct	s_image {
 	int			endian;
 	void		*ptr;
 	char		*data;
-	char		*buffer;
-	int			buffered;
+	/*char		*buffer;*/
+	/*int			buffered;*/
 }				t_image;
 
 typedef struct	s_config {
@@ -125,6 +126,12 @@ typedef struct	s_connection {
 	void		*win_ptr;
 }				t_connection;
 
+/*
+** In the following structure, drawn_texture points to the current drawn
+** texture (it is not mallocated per se) and screen_height is the height
+** of the screen in raycasting (included here because it depends on macro
+** SCREEN_DISTANCE and macros cannot have variables in the norm).
+*/
 typedef struct	s_game {
 	t_map			*map;
 	t_player		*player;
@@ -134,13 +141,18 @@ typedef struct	s_game {
 	t_image			*img_map;
 	t_image			*drawn_texture;
 	t_connection	*conn;
+	double			screen_height;
+	t_2d_int		pencil;
 }				t_game;
+
+/*
+** file.c
+*/
 
 /*
 ** l is the line number, c the column number and file the content of the
 ** current line
 */
-
 typedef struct	s_file {
 	char		*path;
 	char		*line;
@@ -149,44 +161,13 @@ typedef struct	s_file {
 	int			l;
 	int			c;
 }				t_file;
-
-/*
-** parse_first.c
-*/
-
 t_file			*open_file(const char *path);
 void			close_file(t_file *file);
 
 /*
-** parse_first.c
+** parse.c
 */
-
-void			parse(const char *path);
-void			parse_first_pass(t_file *file);
-
-/*
-** parse_second.c
-*/
-
-void			parse_second_pass(t_file *file);
-
-/*
-** parse_second2.c
-*/
-
-int				parse_second_pass_map(t_file *file);
-void			parse_color(t_file *file, t_color *color);
-
-/*
-** parse_check.c
-*/
-
-void			parse_check(const t_file *file);
-
-/*
-** parse_utilities.c
-*/
-
+void	parse(const char *path);
 /*
 ** Repeats action until EOF has been reached, or when action returns 0
 ** (indicating that action is done). Return is 0 if EOF is reached, 1 if
@@ -198,16 +179,41 @@ int				gobble_while_elem(char *line, int start, const char *ens);
 int				gobble_while_not_elem(char *line, int start, const char *ens);
 
 /*
+** parse_first.c
+*/
+void			parse_first_pass(t_file *file);
+
+/*
+** parse_second.c
+*/
+void			parse_second_pass(t_file *file);
+
+/*
+** parse_second2.c
+*/
+int				parse_second_pass_map(t_file *file);
+void			parse_color(t_file *file, t_color *color);
+
+/*
+** parse_check.c
+*/
+void			parse_check(const t_file *file);
+
+/*
 ** initialize.c
 */
-
 void			initialize_game(const char *path);
 
 /*
 ** free.c
 */
-
 void			free_game(void);
+
+/*
+** free2.c
+*/
+void			free_ray(t_list *ray);
+void			del(void *content);
 
 /*
 ** initialize2.c
@@ -218,7 +224,6 @@ t_image			*initialize_texture(char *path);
 /*
 ** minimap.c
 */
-
 double			map_dim_to_pixel(t_image *image, int axis,
 									double x);
 t_2d_int		map_size_to_pixel(t_image *image, t_2d size);
@@ -254,7 +259,6 @@ void			draw(t_player *old_player, t_player *new_player);
 /*
 ** draw2.c
 */
-
 void			draw_line(t_image *img, t_line_params *params, t_2d_int *point1,
 							t_2d_int *point2);
 
@@ -294,7 +298,6 @@ void			add_object_to_list(t_iter *iter, t_contact *contact);
 /*
 ** ray2.c
 */
-
 int				determine_cardinal_point(t_iter *iter);
 void			initialize_iter(const t_player *player, t_iter *iter);
 void			good_angle_update(const t_player *player, t_iter *iter);
@@ -303,19 +306,25 @@ void			bad_angle_update(const t_player *player, t_iter *iter);
 /*
 ** view.c
 */
-
 # define WALL_HEIGHT		2.0
-# define SCREEN_WIDTH		1.0
 # define EYE_HEIGHT			1.0
 # define SCREEN_DISTANCE	0.1
 
+int				convert_height(t_image *img, double height);
 void			draw_view(t_player *new_player);
+void			draw_texture(double perceived_height, double dist,
+								int limit_above, int ignore_black);
+
+/*
+** view2.c
+*/
+void			draw_sprites_column(const t_player *temp_player,
+						const t_player *new_player, const t_list *ray);
 
 /*
 ** image.c
 */
-
-void			copy_from_buffer(t_image *img);
+/*void			copy_from_buffer(t_image *img);*/
 t_color			color_from_image(t_image *img, t_2d_int pos);
 
 /*
@@ -326,19 +335,22 @@ t_2d			what_cell(t_2d pos);
 double			dist(t_2d point1, t_2d point2);
 int				t_player_equal(t_player *player1, t_player *player2);
 double			principal_measure(double angle);
-void			del(void *content);
+
+/*
+** utilities2.c
+*/
+double			abs_val(double x);
+int				pos_equals(t_2d pos1, t_2d pos2);
 
 /*
 ** error.c
 */
-
 void			error(const char *msg, ...);
 void			parse_error(const t_file *file, int flag, const char *msg, ...);
 
 /*
 ** debug.c
 */
-
 void			print_config(const t_config *c);
 void			initialize_map(const t_map *m);
 void			print_player(const t_player *p);

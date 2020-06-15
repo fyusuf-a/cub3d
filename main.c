@@ -6,13 +6,14 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 09:14:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/08 19:18:19 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/15 17:54:36 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	update_pos(int key, double step, t_player *new_player, t_player *player)
+void
+	update_pos(int key, double step, t_player *new_player, t_player *player)
 {
 	if (key == W)
 	{
@@ -40,7 +41,32 @@ void	update_pos(int key, double step, t_player *new_player, t_player *player)
 		new_player->angle += step;
 }
 
-int		key_hook(int key, t_game *game)
+static int
+	far_from_wall(t_2d pos)
+{
+	t_2d new_pos;
+
+	new_pos = pos;
+	new_pos.x += SCREEN_DISTANCE;
+	if (what_is(new_pos) == WALL)
+		return (0);
+	new_pos = pos;
+	new_pos.x -= SCREEN_DISTANCE;
+	if (what_is(new_pos) == WALL)
+		return (0);
+	new_pos = pos;
+	new_pos.y += SCREEN_DISTANCE;
+	if (what_is(new_pos) == WALL)
+		return (0);
+	new_pos = pos;
+	new_pos.y -= SCREEN_DISTANCE;
+	if (what_is(new_pos) == WALL)
+		return (0);
+	return (1);
+}
+
+int
+	key_hook(int key, t_game *game)
 {
 	t_player	new_player;
 	double		step;
@@ -48,16 +74,18 @@ int		key_hook(int key, t_game *game)
 	int			draw_bool;
 	t_2d		player_cell;
 
-	step = 0.02;
+	step = 0.1;
 	new_player = *game->player;
 	update_pos(key, step, &new_player, game->player);
 	current_object = what_is(new_player.pos);
 	draw_bool = !t_player_equal(&new_player, game->player)
-		&& (current_object == VOID || current_object == OBJECT);
+		&& (current_object == VOID || current_object == OBJECT)
+		&& far_from_wall(new_player.pos);
 	if (current_object == OBJECT)
 	{
 		player_cell = what_cell(new_player.pos);
-		draw_bool = draw_bool && dist(new_player.pos, player_cell) >= 0.5;
+		draw_bool = draw_bool &&
+			dist(new_player.pos, player_cell) >= 0.5 + SCREEN_DISTANCE;
 	}
 	if (draw_bool)
 	{
@@ -67,7 +95,8 @@ int		key_hook(int key, t_game *game)
 	return (EXIT_SUCCESS);
 }
 
-int		main(int argc, char *argv[])
+int
+	main(int argc, char *argv[])
 {
 	g_black.r = 0;
 	g_black.g = 0;
@@ -87,6 +116,6 @@ int		main(int argc, char *argv[])
 	/*mlx_key_hook(game.conn->win_ptr, key_hook, &g_game);*/
 	/*mlx_loop_hook(game.conn->win_ptr, loop_hook, &g_game);*/
 	mlx_loop(g_game.conn->mlx_ptr);
-	/*free_game();*/
+	free_game();
 	return (EXIT_SUCCESS);
 }

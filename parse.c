@@ -1,16 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_utilities.c                                  :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/11 15:22:35 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/08 18:53:26 by fyusuf-a         ###   ########.fr       */
+/*   Created: 2020/06/15 17:29:13 by fyusuf-a          #+#    #+#             */
+/*   Updated: 2020/06/15 17:32:25 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void
+	parse(const char *path)
+{
+	t_file	*file;
+	char	*needle;
+
+	file = open_file(path);
+	if (!(needle = ft_strrchr(path, '.')))
+		error("%s: File extension should be .cub", path);
+	if (ft_strcmp(needle, ".cub") != 0)
+		error("%s: File extension should be .cub", path);
+	parse_first_pass(file);
+	close_file(file);
+	file = open_file(path);
+	parse_second_pass(file);
+	parse_check(file);
+	close_file(file);
+}
 
 /*
 ** Repeats action until EOF has been reached, or when action returns

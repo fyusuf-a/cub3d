@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 13:17:08 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/08 18:53:56 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/15 11:37:32 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,5 @@ void	draw_rectangle_from_center(t_image *img, t_color color,
 void	draw(t_player *old_player, t_player *new_player)
 {
 	draw_view(new_player);
-	/*draw_minimap(old_player, new_player);*/
+	draw_minimap(old_player, new_player);
 }

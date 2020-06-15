@@ -6,13 +6,13 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 15:00:18 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/05/27 22:56:41 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/15 17:26:01 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	copy_from_buffer(t_image *img)
+/*void	copy_from_buffer(t_image *img)
 {
 	int i;
 
@@ -24,7 +24,7 @@ void	copy_from_buffer(t_image *img)
 		img->data[i * img->bpp + 2] = img->buffer[i * img->bpp + 2];
 		i++;
 	}
-}
+}*/
 
 t_color	color_from_image(t_image *img, t_2d_int pos)
 {

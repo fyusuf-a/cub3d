@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 13:17:38 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/06 18:47:35 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/13 11:35:23 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void		add_object_to_list(t_iter *iter, t_contact *contact)
 			error("add_object_to_list: could not create list");
 		return ;
 	}
-	if (ft_lstadd_elem(&iter->ray, cpy))
+	if (ft_lstadd_front_elem(&iter->ray, cpy))
 		error("add_object_to_list: could not add object to list");
 }
 
