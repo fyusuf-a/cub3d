@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 16:08:01 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 11:20:33 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 11:31:45 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ static void		draw_contours(t_2d center, int j)
 											0, 0.01);
 	point1_img = map_pos_to_pixel(g_game.img_map, point1);
 	point2_img = map_pos_to_pixel(g_game.img_map, point2);
-	draw_line(g_game.img_map, &params, &point1_img, &point2_img);
+	draw_line(g_game.img_map, &params, point1_img, point2_img);
 	point1.x = center.x + 0.5;
 	point1.y = center.y - 0.5;
 	point1_img = map_pos_to_pixel(g_game.img_map, point1);
-	draw_line(g_game.img_map, &params, &point1_img, &point2_img);
+	draw_line(g_game.img_map, &params, point1_img, point2_img);
 }
 
 static void		draw_wall(t_2d center)
@@ -46,8 +46,8 @@ static void		draw_wall(t_2d center)
 	square_dim.x = 1.0;
 	square_dim.y = 1.0;
 	square_dim_img = map_size_to_pixel(g_game.img_map, square_dim);
-	draw_rectangle_from_center(g_game.img_map, g_white, &center_img,
-				&square_dim_img);
+	draw_rectangle_from_center(g_game.img_map, g_white, center_img,
+				square_dim_img);
 }
 
 void			draw_walls_and_contours(void)
@@ -86,6 +86,6 @@ void			draw_player(t_player *player, t_color color)
 	dim.y = 0.1;
 	player_pos_img = map_pos_to_pixel(g_game.img_map, player->pos);
 	dim_img = map_size_to_pixel(g_game.img_map, dim);
-	draw_rectangle_from_center(g_game.img_map, color, &player_pos_img,
-								&dim_img);
+	draw_rectangle_from_center(g_game.img_map, color, player_pos_img,
+								dim_img);
 }

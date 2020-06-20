@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/18 17:42:09 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 11:21:14 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 11:32:18 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void
 			g_game.pencil.y++;
 			continue ;
 		}
-		draw_pixel(g_game.img_view, color, &g_game.pencil);
+		draw_pixel(g_game.img_view, color, g_game.pencil);
 		g_game.pencil.y++;
 	}
 }
@@ -95,13 +95,13 @@ static void
 	while (g_game.pencil.y < limit_above &&
 				g_game.pencil.y < g_game.img_view->res.y)
 	{
-		draw_pixel(g_game.img_view, g_game.config.ceiling, &g_game.pencil);
+		draw_pixel(g_game.img_view, g_game.config.ceiling, g_game.pencil);
 		g_game.pencil.y++;
 	}
 	draw_texture(perceived_height, dist_to_corner, limit_above, 0);
 	while (g_game.pencil.y < g_game.img_view->res.y)
 	{
-		draw_pixel(g_game.img_view, g_game.config.floor, &g_game.pencil);
+		draw_pixel(g_game.img_view, g_game.config.floor, g_game.pencil);
 		g_game.pencil.y++;
 	}
 }

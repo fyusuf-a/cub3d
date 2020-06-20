@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/07 15:29:13 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 11:20:15 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 11:30:54 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void		draw_fov(const t_player *player, t_color color)
 	dim_img = map_size_to_pixel(g_game.img_map, dim);
 	impact_img = map_pos_to_pixel(g_game.img_map,
 							((t_contact*)(g_game.ray->content))->impact);
-	draw_rectangle_from_center(g_game.img_map, color, &impact_img, &dim_img);
-	draw_line(g_game.img_map, &params, &player_pos_img, &impact_img);
+	draw_rectangle_from_center(g_game.img_map, color, impact_img, dim_img);
+	draw_line(g_game.img_map, &params, player_pos_img, impact_img);
 }
 
 void		draw_minimap(t_player *old_player, t_player *new_player)

@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 15:28:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 11:11:32 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 11:24:19 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,12 @@ static t_image	*initialize_minimap(void)
 	return (ret);
 }
 
-/*void			initialize_config(void)*/
-/*{*/
-	/*if (!(g_game.config = malloc(sizeof(t_config))))*/
-		/*error("malloc: could not allocate config");*/
-/*}*/
-
 void			initialize_game(const char *file)
 {
-	/*if (!(g_game.player = malloc(sizeof(t_player))))*/
-		/*error("initialize_game: could not allocate player");*/
 	g_game.player.pos.x = -1;
 	g_game.player.pos.y = -1;
-	/*if (!(g_game.map = malloc(sizeof(t_map))))*/
-		/*error("initialize_game: could not allocate map");*/
-	/*initialize_config();*/
 	initialize_color(&(g_game.config.floor));
 	initialize_color(&(g_game.config.ceiling));
-	/*if (!(g_game.conn = malloc(sizeof(t_connection))))*/
-		/*error("initialize_game: could not allocate connection");*/
 	if (!(g_game.conn.mlx_ptr = mlx_init()))
 		error("initialize_game : mlx_init failed");
 	parse(file);
