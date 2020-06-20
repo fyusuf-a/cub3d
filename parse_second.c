@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 20:45:34 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/15 17:33:54 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 11:17:47 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ static void	parse_path(t_file *file)
 	if (ft_strchr(file->line + file->c, ' '))
 		parse_error(file, LINE_NB, "Space in path");
 	if (!ft_strncmp(file->line, "NO ", 3))
-		parse_texture(file, &g_game.config->texture_no);
+		parse_texture(file, &g_game.config.texture_no);
 	else if (!ft_strncmp(file->line, "SO ", 3))
-		parse_texture(file, &g_game.config->texture_so);
+		parse_texture(file, &g_game.config.texture_so);
 	else if (!ft_strncmp(file->line, "WE ", 3))
-		parse_texture(file, &g_game.config->texture_we);
+		parse_texture(file, &g_game.config.texture_we);
 	else if (!ft_strncmp(file->line, "EA ", 3))
-		parse_texture(file, &g_game.config->texture_ea);
+		parse_texture(file, &g_game.config.texture_ea);
 	else if (!ft_strncmp(file->line, "S ", 2))
-		parse_texture(file, &g_game.config->texture_sprite);
+		parse_texture(file, &g_game.config.texture_sprite);
 	else
 		parse_error(file, LINE_NB, "Very bad error: line identifier unknown");
 }
@@ -42,10 +42,10 @@ static void	parse_path(t_file *file)
 static void	parse_resolution(t_file *file)
 {
 	file->c = gobble_while_elem(file->line, file->c, " ");
-	if ((g_game.config->resolution.x = parse_natural(file)) <= 0)
+	if ((g_game.config.resolution.x = parse_natural(file)) <= 0)
 		parse_error(file, LINE_NB | COLUMN_NB, "Bad horizontal resolution");
 	file->c = gobble_while_elem(file->line, file->c, " ");
-	if ((g_game.config->resolution.y = parse_natural(file)) <= 0)
+	if ((g_game.config.resolution.y = parse_natural(file)) <= 0)
 		parse_error(file, LINE_NB | COLUMN_NB, "Bad vertical resolution");
 	if (ft_strcmp(file->line + file->c, ""))
 		parse_error(file, LINE_NB | COLUMN_NB, "Trailing characters");
@@ -70,9 +70,9 @@ static int	parse_second_pass_infos(t_file *file)
 		parse_path(file);
 	}
 	else if (!ft_strncmp(file->line, "F ", 2))
-		parse_color(file, &(g_game.config->floor));
+		parse_color(file, &(g_game.config.floor));
 	else if (!ft_strncmp(file->line, "C ", 2))
-		parse_color(file, &(g_game.config->ceiling));
+		parse_color(file, &(g_game.config.ceiling));
 	else
 		return (GNL_DONE);
 	return (GNL_NOT_DONE);

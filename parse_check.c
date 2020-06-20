@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 13:28:32 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/15 17:28:08 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 11:19:46 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,15 @@ static void	recursive_check(const t_file *file, t_map *map, int x, int y)
 
 static void	check_if_exist(const t_file *file)
 {
-	if (g_game.map->dim.x == 0)
+	if (g_game.map.dim.x == 0)
 		parse_error(file, 0, "Map is undefined");
-	if (g_game.player->pos.x == -1)
+	if (g_game.player.pos.x == -1)
 		parse_error(file, 0, "Player position is undefined");
-	if (!g_game.config->resolution.x)
+	if (!g_game.config.resolution.x)
 		parse_error(file, 0, "Resolution is undefined");
-	if (g_game.config->floor.r == -1)
+	if (g_game.config.floor.r == -1)
 		parse_error(file, 0, "Floor color is undefined");
-	if (g_game.config->ceiling.r == -1)
+	if (g_game.config.ceiling.r == -1)
 		parse_error(file, 0, "Ceiling color is undefined");
 }
 
@@ -57,22 +57,22 @@ void		parse_check(const t_file *file)
 	int		j;
 
 	check_if_exist(file);
-	if (!(copy.grid = malloc(g_game.map->dim.y * sizeof(t_object*))))
+	if (!(copy.grid = malloc(g_game.map.dim.y * sizeof(t_object*))))
 		error("parse_check: malloc failed");
 	i = 0;
-	while (i < g_game.map->dim.y)
+	while (i < g_game.map.dim.y)
 	{
-		if (!(copy.grid[i] = malloc(g_game.map->dim.x * sizeof(t_object))))
+		if (!(copy.grid[i] = malloc(g_game.map.dim.x * sizeof(t_object))))
 			error("parse_check: malloc failed");
 		j = 0;
-		while (j < g_game.map->dim.x)
+		while (j < g_game.map.dim.x)
 		{
-			copy.grid[i][j] = g_game.map->grid[i][j];
+			copy.grid[i][j] = g_game.map.grid[i][j];
 			j++;
 		}
 		i++;
 	}
-	copy.dim.x = g_game.map->dim.x;
-	copy.dim.y = g_game.map->dim.y;
-	recursive_check(file, &copy, g_game.player->pos.x, g_game.player->pos.y);
+	copy.dim.x = g_game.map.dim.x;
+	copy.dim.y = g_game.map.dim.y;
+	recursive_check(file, &copy, g_game.player.pos.x, g_game.player.pos.y);
 }

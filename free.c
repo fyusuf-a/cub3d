@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/29 13:46:43 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/15 17:20:36 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 11:16:18 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ static void
 	}
 	if (map->grid)
 		free(map->grid);
-	free(map);
+	/*free(map);*/
 }
 
 static void
 	free_image(t_image *image)
 {
 	if (image->ptr)
-		mlx_destroy_image(g_game.conn->mlx_ptr, image->ptr);
+		mlx_destroy_image(g_game.conn.mlx_ptr, image->ptr);
 	/*if (image->buffer)*/
 		/*free(image->buffer);*/
 	free(image);
@@ -55,35 +55,35 @@ static void
 		free_image(config->texture_ea);
 	if (config->texture_sprite)
 		free_image(config->texture_sprite);
-	free(config);
+	/*free(config);*/
 }
 
 static void
 	free_img_map_img_view_conn(void)
 {
-	if (g_game.conn->mlx_ptr)
+	if (g_game.conn.mlx_ptr)
 	{
 		if (g_game.img_map)
-			mlx_destroy_image(g_game.conn->mlx_ptr, g_game.img_map);
+			mlx_destroy_image(g_game.conn.mlx_ptr, g_game.img_map);
 		if (g_game.img_view)
-			mlx_destroy_image(g_game.conn->mlx_ptr, g_game.img_view);
-		if (g_game.conn->win_ptr)
-			mlx_destroy_window(g_game.conn->mlx_ptr, g_game.conn->win_ptr);
+			mlx_destroy_image(g_game.conn.mlx_ptr, g_game.img_view);
+		if (g_game.conn.win_ptr)
+			mlx_destroy_window(g_game.conn.mlx_ptr, g_game.conn.win_ptr);
 	}
-	free(g_game.conn);
+	/*free(g_game.conn);*/
 }
 
 void
 	free_game(void)
 {
-	if (g_game.map)
-		free_map(g_game.map);
-	if (g_game.player)
-		free(g_game.player);
-	if (g_game.config)
-		free_config(g_game.config);
+	/*if (g_game.map)*/
+	free_map(&g_game.map);
+	/*if (g_game.player)*/
+		/*free(&g_game.player);*/
+	/*if (g_game.config)*/
+	free_config(&g_game.config);
 	if (g_game.ray)
 		free_ray(g_game.ray);
-	if (g_game.conn)
+	/*if (g_game.conn)*/
 		free_img_map_img_view_conn();
 }

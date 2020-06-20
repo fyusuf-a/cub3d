@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:45:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/15 17:29:45 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 11:17:02 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ static int
 					"Unauthorized character '%c'", c);
 		file->c++;
 	}
-	if (file->c > g_game.map->dim.x)
-		g_game.map->dim.x = file->c;
-	g_game.map->dim.y++;
+	if (file->c > g_game.map.dim.x)
+		g_game.map.dim.x = file->c;
+	g_game.map.dim.y++;
 	return (GNL_NOT_DONE);
 }
 
@@ -70,28 +70,28 @@ void
 	int i;
 	int j;
 
-	if (!(g_game.map->grid = malloc(g_game.map->dim.y * sizeof(t_object*))))
+	if (!(g_game.map.grid = malloc(g_game.map.dim.y * sizeof(t_object*))))
 		error("allocate_map: malloc failed");
 	i = 0;
-	while (i < g_game.map->dim.y)
+	while (i < g_game.map.dim.y)
 	{
-		if (!(g_game.map->grid[i] =
-					malloc(g_game.map->dim.x * sizeof(t_object))))
+		if (!(g_game.map.grid[i] =
+					malloc(g_game.map.dim.x * sizeof(t_object))))
 		{
 			while (i >= 0)
-				free(g_game.map->grid[i--]);
-			free(g_game.map->grid);
+				free(g_game.map.grid[i--]);
+			free(g_game.map.grid);
 			error("allocate_map: malloc failed");
 		}
 		j = 0;
-		while (j < g_game.map->dim.x)
+		while (j < g_game.map.dim.x)
 		{
-			g_game.map->grid[i][j] = WALL;
+			g_game.map.grid[i][j] = WALL;
 			j++;
 		}
 		i++;
 	}
-	g_game.map->allocated = 1;
+	g_game.map.allocated = 1;
 }
 
 void

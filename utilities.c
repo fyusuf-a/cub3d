@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/08 17:31:50 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/15 17:16:19 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 11:21:52 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ t_object	what_is(t_2d pos)
 	t_2d_int	cell;
 
 	if (pos.x >= -0.5 && pos.y >= -0.5 &&
-			pos.x <= g_game.map->dim.x + 0.5 && pos.y <= g_game.map->dim.y)
+			pos.x <= g_game.map.dim.x + 0.5 && pos.y <= g_game.map.dim.y)
 	{
 		cell.x = pos.x + 0.5;
 		cell.y = pos.y + 0.5;
-		return (g_game.map->grid[cell.y][cell.x]);
+		return (g_game.map.grid[cell.y][cell.x]);
 	}
 	return (UNDEFINED);
 }

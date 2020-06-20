@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 09:14:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/15 17:54:36 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 11:13:54 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,10 @@ int
 	t_2d		player_cell;
 
 	step = 0.1;
-	new_player = *game->player;
-	update_pos(key, step, &new_player, game->player);
+	new_player = game->player;
+	update_pos(key, step, &new_player, &game->player);
 	current_object = what_is(new_player.pos);
-	draw_bool = !t_player_equal(&new_player, game->player)
+	draw_bool = !t_player_equal(&new_player, &game->player)
 		&& (current_object == VOID || current_object == OBJECT)
 		&& far_from_wall(new_player.pos);
 	if (current_object == OBJECT)
@@ -89,8 +89,8 @@ int
 	}
 	if (draw_bool)
 	{
-		draw(game->player, &new_player);
-		*game->player = new_player;
+		draw(&game->player, &new_player);
+		game->player = new_player;
 	}
 	return (EXIT_SUCCESS);
 }
@@ -110,12 +110,12 @@ int
 	if (argc != 2)
 		error("Usage: cub3d map.cub");
 	initialize_game(argv[1]);
-	draw(g_game.player, g_game.player);
-	mlx_hook(g_game.conn->win_ptr, KeyPress, KeyPressMask | KeyReleaseMask,
+	draw(&g_game.player, &g_game.player);
+	mlx_hook(g_game.conn.win_ptr, KeyPress, KeyPressMask | KeyReleaseMask,
 				key_hook, &g_game);
 	/*mlx_key_hook(game.conn->win_ptr, key_hook, &g_game);*/
 	/*mlx_loop_hook(game.conn->win_ptr, loop_hook, &g_game);*/
-	mlx_loop(g_game.conn->mlx_ptr);
+	mlx_loop(g_game.conn.mlx_ptr);
 	free_game();
 	return (EXIT_SUCCESS);
 }

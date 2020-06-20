@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/18 17:42:09 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/15 17:55:57 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 11:21:14 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,25 +52,25 @@ static void
 {
 	if (contact->cardinal_point == SOUTH)
 	{
-		g_game.drawn_texture = g_game.config->texture_no;
+		g_game.drawn_texture = g_game.config.texture_no;
 		*dist_to_corner = contact->impact.x
 							- ((int)(contact->impact.x + 0.5) - 0.5);
 	}
 	else if (contact->cardinal_point == NORTH)
 	{
-		g_game.drawn_texture = g_game.config->texture_so;
+		g_game.drawn_texture = g_game.config.texture_so;
 		*dist_to_corner = ((int)(contact->impact.x + 1.5) - 0.5)
 							- contact->impact.x;
 	}
 	else if (contact->cardinal_point == WEST)
 	{
-		g_game.drawn_texture = g_game.config->texture_ea;
+		g_game.drawn_texture = g_game.config.texture_ea;
 		*dist_to_corner = contact->impact.y
 							- ((int)(contact->impact.y + 0.5) - 0.5);
 	}
 	else
 	{
-		g_game.drawn_texture = g_game.config->texture_we;
+		g_game.drawn_texture = g_game.config.texture_we;
 		*dist_to_corner = ((int)(contact->impact.y + 1.5) - 0.5)
 							- contact->impact.y;
 	}
@@ -95,13 +95,13 @@ static void
 	while (g_game.pencil.y < limit_above &&
 				g_game.pencil.y < g_game.img_view->res.y)
 	{
-		draw_pixel(g_game.img_view, g_game.config->ceiling, &g_game.pencil);
+		draw_pixel(g_game.img_view, g_game.config.ceiling, &g_game.pencil);
 		g_game.pencil.y++;
 	}
 	draw_texture(perceived_height, dist_to_corner, limit_above, 0);
 	while (g_game.pencil.y < g_game.img_view->res.y)
 	{
-		draw_pixel(g_game.img_view, g_game.config->floor, &g_game.pencil);
+		draw_pixel(g_game.img_view, g_game.config.floor, &g_game.pencil);
 		g_game.pencil.y++;
 	}
 }
@@ -114,7 +114,7 @@ void
 
 	temp_player = *new_player;
 	temp_player.angle = new_player->angle - (M_PI / 4) / 2;
-	angle_increment = (M_PI / 4) / ((double)g_game.config->resolution.x);
+	angle_increment = (M_PI / 4) / ((double)g_game.config.resolution.x);
 	g_game.pencil.x = 0;
 	while (g_game.pencil.x < g_game.img_view->res.x)
 	{
@@ -126,7 +126,7 @@ void
 		g_game.pencil.x++;
 	}
 	/*copy_from_buffer(g_game.img_view);*/
-	if (mlx_put_image_to_window(g_game.conn->mlx_ptr, g_game.conn->win_ptr,
+	if (mlx_put_image_to_window(g_game.conn.mlx_ptr, g_game.conn.win_ptr,
 			g_game.img_view->ptr, 0, 0) < 0)
 		error("draw_view: mlx_put_image_to_window failed");
 }

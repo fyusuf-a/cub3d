@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/24 21:15:04 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/15 17:25:45 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 11:14:32 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_image			*initialize_image(t_2d_int res, int alpha)
 	if (!(ret = malloc(sizeof(t_image))))
 		error("initialize_image: could not allocate image");
 	ret->res = res;
-	ret->ptr = mlx_new_image(g_game.conn->mlx_ptr, res.x, res.y);
+	ret->ptr = mlx_new_image(g_game.conn.mlx_ptr, res.x, res.y);
 	ret->data = mlx_get_data_addr(ret->ptr, &(ret->bpp), &size_line,
 			&(ret->endian));
 	ret->bpp /= 8;
@@ -64,7 +64,7 @@ t_image			*initialize_texture(char *path)
 	if (!(ret = malloc(sizeof(t_image))))
 		error("initialize_texture: malloc failed");
 	/*ret->buffer = NULL;*/
-	if (!(ret->ptr = mlx_xpm_file_to_image(g_game.conn->mlx_ptr, path,
+	if (!(ret->ptr = mlx_xpm_file_to_image(g_game.conn.mlx_ptr, path,
 											&(ret->res.x), &(ret->res.y))))
 		error("initialize_texture: mlx_xpm_file_to_ret failed");
 	if (!(ret->data = mlx_get_data_addr(ret->ptr, &(ret->bpp),

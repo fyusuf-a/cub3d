@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 16:08:01 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/15 17:24:58 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 11:20:33 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ void			draw_walls_and_contours(void)
 	t_object	current;
 
 	i = 0;
-	while (i < g_game.map->dim.y)
+	while (i < g_game.map.dim.y)
 	{
 		j = 0;
-		while (j < g_game.map->dim.x)
+		while (j < g_game.map.dim.x)
 		{
 			center.x = j;
 			center.y = i;
-			current = g_game.map->grid[i][j];
+			current = g_game.map.grid[i][j];
 			if (current == WALL)
 				draw_wall(center);
 			if (current == VOID || current == OBJECT)
