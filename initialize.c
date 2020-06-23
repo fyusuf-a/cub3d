@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 15:28:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 11:24:19 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 13:11:45 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,19 @@ static t_image	*initialize_minimap(void)
 	return (ret);
 }
 
-void			initialize_game(const char *file)
+void			initialize_config(void)
 {
-	g_game.player.pos.x = -1;
-	g_game.player.pos.y = -1;
 	initialize_color(&(g_game.config.floor));
 	initialize_color(&(g_game.config.ceiling));
+
+}
+
+void			initialize_game(const char *file)
+{
+	g_game.map.grid = NULL;
+	g_game.player.pos.x = -1;
+	g_game.player.pos.y = -1;
+	initialize_config();
 	if (!(g_game.conn.mlx_ptr = mlx_init()))
 		error("initialize_game : mlx_init failed");
 	parse(file);

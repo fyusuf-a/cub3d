@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/15 18:06:02 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 13:11:01 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,14 +133,14 @@ typedef struct	s_connection {
 ** SCREEN_DISTANCE and macros cannot have variables in the norm).
 */
 typedef struct	s_game {
-	t_map			*map;
-	t_player		*player;
-	t_config		*config;
+	t_map			map;
+	t_player		player;
+	t_config		config;
 	t_list			*ray;
 	t_image			*img_view;
 	t_image			*img_map;
 	t_image			*drawn_texture;
-	t_connection	*conn;
+	t_connection	conn;
 	double			screen_height;
 	t_2d_int		pencil;
 }				t_game;
@@ -249,18 +249,18 @@ typedef struct	s_line_params {
 	int			thickness;
 	t_color		color;
 }				t_line_params;
-void			draw_pixel(t_image *img, t_color color, t_2d_int *pos);
-void			draw_rectangle(t_image *img, t_color color, t_2d_int *origin,
-							t_2d_int *dim);
+void			draw_pixel(t_image *img, t_color color, t_2d_int pos);
+void			draw_rectangle(t_image *img, t_color color, t_2d_int origin,
+							t_2d_int dim);
 void			draw_rectangle_from_center(t_image *img, t_color color,
-							t_2d_int *center, t_2d_int *dim);
+							t_2d_int center, t_2d_int dim);
 void			draw(t_player *old_player, t_player *new_player);
 
 /*
 ** draw2.c
 */
-void			draw_line(t_image *img, t_line_params *params, t_2d_int *point1,
-							t_2d_int *point2);
+void			draw_line(t_image *img, t_line_params *params, t_2d_int point1,
+							t_2d_int point2);
 
 /*
 ** ray.c
@@ -326,6 +326,11 @@ void			draw_sprites_column(const t_player *temp_player,
 */
 /*void			copy_from_buffer(t_image *img);*/
 t_color			color_from_image(t_image *img, t_2d_int pos);
+
+/*
+** bmp.c
+*/
+void			print_bmp(const t_image *img, const char *path);
 
 /*
 ** utilities.c

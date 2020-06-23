@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 09:14:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 11:13:54 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/20 13:12:26 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int
 		error("Usage: cub3d map.cub");
 	initialize_game(argv[1]);
 	draw(&g_game.player, &g_game.player);
+	print_bmp(g_game.img_view, "./screenshot.bmp");
 	mlx_hook(g_game.conn.win_ptr, KeyPress, KeyPressMask | KeyReleaseMask,
 				key_hook, &g_game);
 	/*mlx_key_hook(game.conn->win_ptr, key_hook, &g_game);*/
