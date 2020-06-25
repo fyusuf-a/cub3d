@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 09:14:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 13:12:26 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/24 21:33:55 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int
 				key_hook, &g_game);
 	/*mlx_key_hook(game.conn->win_ptr, key_hook, &g_game);*/
 	/*mlx_loop_hook(game.conn->win_ptr, loop_hook, &g_game);*/
-	mlx_loop(g_game.conn.mlx_ptr);
+	/*mlx_loop(g_game.conn.mlx_ptr);*/
 	free_game();
 	return (EXIT_SUCCESS);
 }

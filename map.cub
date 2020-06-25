@@ -1,0 +1,15 @@
+R 800 600
+NO ./textures/eagle.xpm
+SO ./textures/bluestone.xpm
+WE ./textures/wall_1.xpm
+EA ./textures/wood.xpm
+
+
+S ./textures/pillar.xpm
+F 220,100,0
+C 225,30,0
+
+111
+101
+1N1
+111
