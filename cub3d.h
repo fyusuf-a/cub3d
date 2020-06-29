@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 12:19:33 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 13:22:16 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@
 
 # ifndef M_PI
 #  define M_PI 3.14159265359
+# endif
+
+# ifndef BONUS
+#  define BONUS 0
 # endif
 
 /*
@@ -90,8 +94,8 @@ typedef struct	s_image {
 	int			endian;
 	void		*ptr;
 	char		*data;
-	/*char		*buffer;*/
-	/*int			buffered;*/
+	char		*buffer;
+	int			buffered;
 }				t_image;
 
 typedef struct	s_config {
@@ -224,7 +228,7 @@ void			initialize_game(const char *path);
 /*
 ** free.c
 */
-void			free_game(void);
+int				free_and_exit_game(t_game *game);
 
 /*
 ** free2.c
