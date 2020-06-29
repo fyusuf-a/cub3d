@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 13:11:01 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 12:19:33 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,6 @@
 
 # define YAXIS 0
 # define XAXIS 1
-
-/*
-** minilibx keys
-*/
-
-# define W		119
-# define S		115
-# define A		97
-# define D		100
-# define LEFT	65361
-# define RIGHT	65363
 
 /*
 ** Flag for error messages
@@ -127,12 +116,26 @@ typedef struct	s_connection {
 }				t_connection;
 
 /*
+** A structure to remember which key was pressed
+*/
+typedef struct	s_keyboard {
+	int			w;
+	int			s;
+	int			a;
+	int			d;
+	int			left;
+	int			right;
+	int			escape;
+}				t_keyboard;
+
+/*
 ** In the following structure, drawn_texture points to the current drawn
 ** texture (it is not mallocated per se) and screen_height is the height
 ** of the screen in raycasting (included here because it depends on macro
 ** SCREEN_DISTANCE and macros cannot have variables in the norm).
 */
 typedef struct	s_game {
+	t_keyboard		keyboard;
 	t_map			map;
 	t_player		player;
 	t_config		config;
@@ -144,6 +147,20 @@ typedef struct	s_game {
 	double			screen_height;
 	t_2d_int		pencil;
 }				t_game;
+
+/*
+** key.c
+*/
+# define W		119
+# define S		115
+# define A		97
+# define D		100
+# define LEFT	65361
+# define RIGHT	65363
+# define ESCAPE	65307
+
+int				key_pressed(int key);
+int				key_released(int key);
 
 /*
 ** file.c

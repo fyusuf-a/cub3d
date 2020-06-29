@@ -6,38 +6,38 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 09:14:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/24 21:33:55 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 12:17:50 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 void
-	update_pos(int key, double step, t_player *new_player, t_player *player)
+	update_pos(double step, t_player *new_player, t_player *player)
 {
-	if (key == W)
+	if (g_game.keyboard.w)
 	{
 		new_player->pos.x += step * cos(player->angle);
 		new_player->pos.y += step * sin(player->angle);
 	}
-	if (key == S)
+	if (g_game.keyboard.s)
 	{
 		new_player->pos.x -= step * cos(player->angle);
 		new_player->pos.y -= step * sin(player->angle);
 	}
-	if (key == A)
+	if (g_game.keyboard.a)
 	{
 		new_player->pos.x += step * sin(player->angle);
 		new_player->pos.y -= step * cos(player->angle);
 	}
-	if (key == D)
+	if (g_game.keyboard.d)
 	{
 		new_player->pos.x -= step * sin(player->angle);
 		new_player->pos.y += step * cos(player->angle);
 	}
-	if (key == LEFT)
+	if (g_game.keyboard.left)
 		new_player->angle -= step;
-	if (key == RIGHT)
+	if (g_game.keyboard.right)
 		new_player->angle += step;
 }
 
@@ -66,7 +66,7 @@ static int
 }
 
 int
-	key_hook(int key, t_game *game)
+	main_loop(t_game *game)
 {
 	t_player	new_player;
 	double		step;
@@ -76,7 +76,7 @@ int
 
 	step = 0.1;
 	new_player = game->player;
-	update_pos(key, step, &new_player, &game->player);
+	update_pos(step, &new_player, &game->player);
 	current_object = what_is(new_player.pos);
 	draw_bool = !t_player_equal(&new_player, &game->player)
 		&& (current_object == VOID || current_object == OBJECT)
@@ -92,6 +92,7 @@ int
 		draw(&game->player, &new_player);
 		game->player = new_player;
 	}
+	mlx_do_sync(g_game.conn.mlx_ptr);
 	return (EXIT_SUCCESS);
 }
 
@@ -111,12 +112,14 @@ int
 		error("Usage: cub3d map.cub");
 	initialize_game(argv[1]);
 	draw(&g_game.player, &g_game.player);
-	print_bmp(g_game.img_view, "./screenshot.bmp");
-	mlx_hook(g_game.conn.win_ptr, KeyPress, KeyPressMask | KeyReleaseMask,
-				key_hook, &g_game);
-	/*mlx_key_hook(game.conn->win_ptr, key_hook, &g_game);*/
-	/*mlx_loop_hook(game.conn->win_ptr, loop_hook, &g_game);*/
-	/*mlx_loop(g_game.conn.mlx_ptr);*/
+	/*print_bmp(g_game.img_view, "./screenshot.bmp");*/
+	mlx_do_key_autorepeaton(g_game.conn.mlx_ptr);
+	mlx_hook(g_game.conn.win_ptr, KeyPress, KeyPressMask,
+				key_pressed, &g_game);
+	mlx_hook(g_game.conn.win_ptr, KeyRelease, KeyReleaseMask,
+				key_released, &g_game);
+	mlx_loop_hook(g_game.conn.mlx_ptr, main_loop, &g_game);
+	mlx_loop(g_game.conn.mlx_ptr);
 	free_game();
 	return (EXIT_SUCCESS);
 }

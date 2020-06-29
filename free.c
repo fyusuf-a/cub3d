@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/29 13:46:43 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 11:25:08 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 11:55:19 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ static void
 void
 	free_game(void)
 {
+	mlx_do_key_autorepeaton(g_game.conn.mlx_ptr);
 	free_map(&g_game.map);
 	free_config(&g_game.config);
 	if (g_game.ray)
