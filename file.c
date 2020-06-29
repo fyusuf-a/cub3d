@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 09:08:44 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 12:50:40 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 16:24:12 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_file	*open_file(const char *path)
 
 	ret = malloc(sizeof(t_file));
 	ret->line = NULL;
-	ret->path = path;
+	ret->path = ft_strdup(path);
 	if ((ret->fd = open(path, O_RDONLY)) < 0)
 		error("Could not open file \"%s\"", path);
 	ret->l = 0;
@@ -29,5 +29,6 @@ t_file	*open_file(const char *path)
 void	close_file(t_file *file)
 {
 	close(file->fd);
+	free(file->path);
 	free(file);
 }
