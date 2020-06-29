@@ -6,7 +6,7 @@ SRCS		+= draw.c draw2.c minimap.c minimap2.c ray.c ray2.c images.c
 SRCS		+= view.c view2.c key.c bmp.c
 SRCS    += utilities.c utilities2.c
 OBJS		= ${SRCS:.c=.o}
-DEBUG_ARGS = -Wextra -Wall -fsanitize=address -g3 -O3
+DEBUG_ARGS = -Wextra -Wall -fsanitize=address -fno-omit-frame-pointer -g3 -O3
 $(OBJS): EXTRA_ARGS := -Wextra -Wall
 
 TESTS = debug.c

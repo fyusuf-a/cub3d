@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 13:17:08 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 11:28:34 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 13:06:41 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	draw_pixel(t_image *img, t_color color, t_2d_int pos)
 {
 	char	*array;
 
-	/*array = img->buffered ? img->buffer : img->data;*/
+	array = img->buffered ? img->buffer : img->data;
 	array = img->data;
 	if (pos.x >= 0 && pos.x < img->res.x && pos.y >= 0 &&
 			pos.y < img->res.y)

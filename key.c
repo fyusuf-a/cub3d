@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 10:23:26 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 12:17:48 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 13:12:20 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int
 	if (key == RIGHT)
 		g_game.keyboard.right = 1;
 	if (key == ESCAPE)
-		g_game.keyboard.escape = 1;
+		free_and_exit_game(EXIT_SUCCESS);
 	return (EXIT_SUCCESS);
 }
 

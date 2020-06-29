@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/24 21:15:04 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 11:14:32 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 13:07:36 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ t_image			*initialize_image(t_2d_int res, int alpha)
 				ret->res.x, ret->bpp);
 	}
 	initialize_alpha(ret, alpha);
-	/*if (!(ret->buffer = malloc(ret->bpp * ret->res.x * ret->res.y)))*/
-		/*error("initialize_image: could not allocate buffer");*/
+	if (!(ret->buffer = malloc(ret->bpp * ret->res.x * ret->res.y)))
+		error("initialize_image: could not allocate buffer");
 	return (ret);
 }
 

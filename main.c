@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 09:14:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 12:17:50 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 13:26:31 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,12 @@ int
 	int			draw_bool;
 	t_2d		player_cell;
 
-	step = 0.1;
+	step = 0.02;
 	new_player = game->player;
 	update_pos(step, &new_player, &game->player);
 	current_object = what_is(new_player.pos);
-	draw_bool = !t_player_equal(&new_player, &game->player)
-		&& (current_object == VOID || current_object == OBJECT)
-		&& far_from_wall(new_player.pos);
+	draw_bool = !t_player_equal(&new_player, &game->player);
+	draw_bool = draw_bool && far_from_wall(new_player.pos);
 	if (current_object == OBJECT)
 	{
 		player_cell = what_cell(new_player.pos);
@@ -118,8 +117,8 @@ int
 				key_pressed, &g_game);
 	mlx_hook(g_game.conn.win_ptr, KeyRelease, KeyReleaseMask,
 				key_released, &g_game);
+	mlx_hook(g_game.conn.win_ptr, DestroyNotify, StructureNotifyMask,
+				free_and_exit_game, &g_game);
 	mlx_loop_hook(g_game.conn.mlx_ptr, main_loop, &g_game);
 	mlx_loop(g_game.conn.mlx_ptr);
-	free_game();
-	return (EXIT_SUCCESS);
 }

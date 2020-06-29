@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 13:28:32 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 11:19:46 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 12:46:10 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,11 @@ void		parse_check(const t_file *file)
 	copy.dim.x = g_game.map.dim.x;
 	copy.dim.y = g_game.map.dim.y;
 	recursive_check(file, &copy, g_game.player.pos.x, g_game.player.pos.y);
+	i = 0;
+	while (i < g_game.map.dim.y)
+	{
+		free(copy.grid[i]);
+		i++;
+	}
+	free(copy.grid);
 }
