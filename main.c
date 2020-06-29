@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 09:14:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 13:26:31 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 18:21:53 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,11 @@ int
 int
 	main(int argc, char *argv[])
 {
+	if (argc != 2)
+	{
+		ft_dprintf(2, "Error\nUsage: cub3d map.cub");
+		exit(EXIT_FAILURE);
+	}
 	g_black.r = 0;
 	g_black.g = 0;
 	g_black.b = 0;
@@ -107,8 +112,6 @@ int
 	g_red.r = 255;
 	g_red.g = 0;
 	g_red.b = 0;
-	if (argc != 2)
-		error("Usage: cub3d map.cub");
 	initialize_game(argv[1]);
 	draw(&g_game.player, &g_game.player);
 	/*print_bmp(g_game.img_view, "./screenshot.bmp");*/

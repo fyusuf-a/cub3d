@@ -7,7 +7,7 @@ SRCS		+= view.c view2.c key.c bmp.c
 SRCS    += utilities.c utilities2.c
 OBJS		= ${SRCS:.c=.o}
 DEBUG_ARGS = -Wextra -Wall -fsanitize=address -fno-omit-frame-pointer -g3 -O3
-$(OBJS): EXTRA_ARGS := -Wextra -Wall
+$(OBJS): EXTRA_ARGS := -Wextra -Wall -Werror
 
 TESTS = debug.c
 #OBJS_TESTS= ${TESTS:.c=.o}

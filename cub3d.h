@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 13:22:16 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 17:51:59 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,8 @@ void			initialize_game(const char *path);
 /*
 ** free.c
 */
-int				free_and_exit_game(t_game *game);
+void			free_game();
+int				free_and_exit_game();
 
 /*
 ** free2.c
