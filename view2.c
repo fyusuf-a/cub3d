@@ -6,11 +6,23 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/15 17:45:53 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 11:21:35 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 20:36:02 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void
+	draw_vertically_until(int limit, int color)
+{
+	while (g_game.pencil.y < limit)
+	{
+		*((int*)(g_game.img_view->data + g_game.pencil.y *
+			g_game.img_view->size_line + g_game.pencil.x *
+			g_game.img_view->bpp)) = color;
+		g_game.pencil.y++;
+	}
+}
 
 static void
 	find_dist_to_sprite_and_temp_angle(double *dist_to_sprite,

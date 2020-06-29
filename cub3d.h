@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 20:01:08 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 23:28:36 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,6 @@
 
 # ifndef M_PI
 #  define M_PI 3.14159265359
-# endif
-
-# ifndef BONUS
-#  define BONUS 0
 # endif
 
 /*
@@ -95,8 +91,6 @@ typedef struct	s_image {
 	int			endian;
 	void		*ptr;
 	char		*data;
-	char		*buffer;
-	int			buffered;
 }				t_image;
 
 typedef struct	s_config {
@@ -106,8 +100,6 @@ typedef struct	s_config {
 	t_image		*texture_we;
 	t_image		*texture_ea;
 	t_image		*texture_sprite;
-	/*t_color		floor;
-	t_color		ceiling;*/
 	int			floor;
 	int			ceiling;
 }				t_config;
@@ -149,6 +141,7 @@ typedef struct	s_game {
 	t_list			*ray;
 	t_image			*img_view;
 	t_image			*img_map;
+	int				map_color;
 	t_image			*drawn_texture;
 	t_connection	conn;
 	double			screen_height;
@@ -232,36 +225,44 @@ void			initialize_game(const char *path);
 ** free.c
 */
 void			free_game();
-int				free_and_exit_game();
 
 /*
 ** free2.c
 */
 void			free_ray(t_list *ray);
 void			del(void *content);
+int				free_and_exit_game();
 
 /*
 ** initialize2.c
 */
-t_image			*initialize_image(t_2d_int res, int alpha);
+t_image			*initialize_image(t_2d_int res);
 t_image			*initialize_texture(char *path);
 
 /*
-** minimap.c
+** minimap_bonus.c
 */
+# define ALPHA 0.9
+
 double			map_dim_to_pixel(t_image *image, int axis,
 									double x);
 t_2d_int		map_size_to_pixel(t_image *image, t_2d size);
 t_2d_int		map_pos_to_pixel(t_image *image, t_2d pos);
-void			draw_fov(const t_player *player, int color);
+/*void			draw_fov(const t_player *player, int color);*/
 void			draw_minimap(t_player *old_player,
 									t_player *new_player);
 
 /*
-** minimap2.c
+** minimap2_bonus.c
 */
 void			draw_walls_and_contours(void);
-void			draw_player(t_player *player, int color);
+void			draw_player(t_player *player, int hide);
+t_image			*initialize_minimap(void);
+
+/*
+** minimap3_bonus.c
+*/
+void			print_minimap(void);
 
 /*
 ** draw.c
@@ -348,13 +349,13 @@ void			draw_texture(double perceived_height, double dist,
 /*
 ** view2.c
 */
+void			draw_vertically_until(int limit, int color);
 void			draw_sprites_column(const t_player *temp_player,
 						const t_player *new_player, const t_list *ray);
 
 /*
 ** image.c
 */
-/*void			copy_from_buffer(t_image *img);*/
 int				color_from_image(t_image *img, t_2d_int pos);
 
 /*
@@ -389,10 +390,6 @@ void			parse_error(const t_file *file, int flag, const char *msg, ...);
 void			print_config(const t_config *c);
 void			initialize_map(const t_map *m);
 void			print_player(const t_player *p);
-
-int				g_white;
-int				g_red;
-int				g_black;
 
 t_game			g_game;
 t_iter			g_iter;

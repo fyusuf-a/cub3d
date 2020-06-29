@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/29 13:46:43 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 17:52:30 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 23:28:25 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ static void
 {
 	if (image->ptr)
 		mlx_destroy_image(g_game.conn.mlx_ptr, image->ptr);
-	/*if (image->buffer)*/
-		/*free(image->buffer);*/
 	free(image);
 }
 
@@ -78,19 +76,11 @@ static void
 }
 
 void
-	free_game()
+	free_game(void)
 {
 	free_map(&g_game.map);
 	free_config(&g_game.config);
 	if (g_game.ray)
 		free_ray(g_game.ray);
 	free_img_map_img_view_conn();
-}
-	
-
-int
-	free_and_exit_game()
-{
-	free_game();
-	return (EXIT_SUCCESS);
 }

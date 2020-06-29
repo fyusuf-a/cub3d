@@ -6,14 +6,14 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 16:08:01 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 19:07:41 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 23:09:17 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-/*static void		draw_contours(t_2d center, int j)*/
-static void		draw_contours(t_2d center)
+static void
+	draw_contours(t_2d center)
 {
 	t_2d			point1;
 	t_2d			point2;
@@ -25,7 +25,7 @@ static void		draw_contours(t_2d center)
 	point1.y = center.y + 0.5;
 	point2.x = center.x + 0.5;
 	point2.y = center.y + 0.5;
-	params.color = g_white;
+	params.color = g_game.map_color;
 	params.thickness = map_dim_to_pixel(g_game.img_map,
 											0, 0.01);
 	point1_img = map_pos_to_pixel(g_game.img_map, point1);
@@ -37,7 +37,8 @@ static void		draw_contours(t_2d center)
 	draw_line(g_game.img_map, &params, point1_img, point2_img);
 }
 
-static void		draw_wall(t_2d center)
+static void
+	draw_wall(t_2d center)
 {
 	t_2d		square_dim;
 	t_2d_int	square_dim_img;
@@ -47,11 +48,12 @@ static void		draw_wall(t_2d center)
 	square_dim.x = 1.0;
 	square_dim.y = 1.0;
 	square_dim_img = map_size_to_pixel(g_game.img_map, square_dim);
-	draw_rectangle_from_center(g_game.img_map, g_white, center_img,
+	draw_rectangle_from_center(g_game.img_map, g_game.map_color, center_img,
 				square_dim_img);
 }
 
-void			draw_walls_and_contours(void)
+void
+	draw_walls_and_contours(void)
 {
 	int			i;
 	int			j;
@@ -70,7 +72,6 @@ void			draw_walls_and_contours(void)
 			if (current == WALL)
 				draw_wall(center);
 			if (current == VOID || current == OBJECT)
-				/*draw_contours(center, j);*/
 				draw_contours(center);
 			j++;
 		}
@@ -78,7 +79,8 @@ void			draw_walls_and_contours(void)
 	}
 }
 
-void			draw_player(t_player *player, int color)
+void
+	draw_player(t_player *player, int hide)
 {
 	t_2d_int	player_pos_img;
 	t_2d		dim;
@@ -88,6 +90,30 @@ void			draw_player(t_player *player, int color)
 	dim.y = 0.1;
 	player_pos_img = map_pos_to_pixel(g_game.img_map, player->pos);
 	dim_img = map_size_to_pixel(g_game.img_map, dim);
-	draw_rectangle_from_center(g_game.img_map, color, player_pos_img,
-								dim_img);
+	draw_rectangle_from_center(g_game.img_map, hide ? 0 : g_game.map_color,
+			player_pos_img, dim_img);
+}
+
+t_image
+	*initialize_minimap(void)
+{
+	t_2d_int	res;
+	t_image		*ret;
+
+	if (g_game.map.dim.x < g_game.map.dim.y)
+	{
+		res.y = g_game.config.resolution.y;
+		res.x = res.y / g_game.map.dim.y * g_game.map.dim.x;
+	}
+	else
+	{
+		res.x = g_game.config.resolution.x;
+		res.y = res.x / g_game.map.dim.x * g_game.map.dim.y;
+	}
+	res.x /= 3;
+	res.y /= 3;
+	ret = initialize_image(res);
+	g_game.map_color = ~g_game.config.ceiling;
+	g_game.map_color |= 0xff000000;
+	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/07 15:29:13 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 19:05:04 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 23:07:29 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_2d_int	map_pos_to_pixel(t_image *image, t_2d pos)
 	return (map_size_to_pixel(image, pos));
 }
 
-void		draw_fov(const t_player *player, int color)
+void		draw_fov(const t_player *player, int hide)
 {
 	t_2d			dim;
 	t_line_params	params;
@@ -43,7 +43,7 @@ void		draw_fov(const t_player *player, int color)
 	t_2d_int		player_pos_img;
 	t_2d_int		dim_img;
 
-	params.color = color;
+	params.color = hide ? 0 : g_game.map_color;
 	params.thickness = map_dim_to_pixel(g_game.img_map, 0, 0.02);
 	dim.x = 0.1;
 	dim.y = 0.1;
@@ -52,7 +52,8 @@ void		draw_fov(const t_player *player, int color)
 	dim_img = map_size_to_pixel(g_game.img_map, dim);
 	impact_img = map_pos_to_pixel(g_game.img_map,
 							((t_contact*)(g_game.ray->content))->impact);
-	draw_rectangle_from_center(g_game.img_map, color, impact_img, dim_img);
+	draw_rectangle_from_center(g_game.img_map,
+			hide ? 0 : g_game.map_color, impact_img, dim_img);
 	draw_line(g_game.img_map, &params, player_pos_img, impact_img);
 }
 
@@ -62,22 +63,20 @@ void		draw_minimap(t_player *old_player, t_player *new_player)
 	double		fov;
 
 	fov = M_PI / 4;
-	draw_player(old_player, g_black);
-	draw_fov(old_player, g_black);
+	draw_player(old_player, 1);
+	draw_fov(old_player, 1);
 	temp_player = *old_player;
 	temp_player.angle = old_player->angle - fov / 2;
-	draw_fov(&temp_player, g_black);
+	draw_fov(&temp_player, 1);
 	temp_player.angle = old_player->angle + fov / 2;
-	draw_fov(&temp_player, g_black);
+	draw_fov(&temp_player, 1);
 	draw_walls_and_contours();
-	draw_player(new_player, g_white);
-	draw_fov(new_player, g_red);
+	draw_player(new_player, 0);
+	draw_fov(new_player, 0);
 	temp_player = *new_player;
 	temp_player.angle = new_player->angle - fov / 2;
-	draw_fov(&temp_player, g_white);
+	draw_fov(&temp_player, 0);
 	temp_player.angle = new_player->angle + fov / 2;
-	draw_fov(&temp_player, g_white);
-	/*copy_from_buffer(g_game.img_map);*/
-	mlx_put_image_to_window(g_game.conn.mlx_ptr, g_game.conn.win_ptr,
-			g_game.img_map->ptr, 0, 0);
+	draw_fov(&temp_player, 0);
+	print_minimap();
 }

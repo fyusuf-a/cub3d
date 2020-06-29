@@ -6,13 +6,14 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 13:28:32 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 19:02:33 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 20:39:49 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	recursive_check(const t_file *file, t_map *map, int x, int y)
+static void
+	recursive_check(const t_file *file, t_map *map, int x, int y)
 {
 	if (map->grid[y][x] == VOID || map->grid[y][x] == OBJECT)
 	{
@@ -36,7 +37,8 @@ static void	recursive_check(const t_file *file, t_map *map, int x, int y)
 	}
 }
 
-static void	check_if_exist(const t_file *file)
+static void
+	check_if_exist(const t_file *file)
 {
 	if (g_game.map.dim.x == 0)
 		parse_error(file, 0, "Map is undefined");
@@ -50,7 +52,22 @@ static void	check_if_exist(const t_file *file)
 		parse_error(file, 0, "Ceiling color is undefined");
 }
 
-void		parse_check(const t_file *file)
+static void
+	free_grid(t_map *copy)
+{
+	int	i;
+
+	i = 0;
+	while (i < g_game.map.dim.y)
+	{
+		free(copy->grid[i]);
+		i++;
+	}
+	free(copy->grid);
+}
+
+void
+	parse_check(const t_file *file)
 {
 	t_map	copy;
 	int		i;
@@ -75,11 +92,5 @@ void		parse_check(const t_file *file)
 	copy.dim.x = g_game.map.dim.x;
 	copy.dim.y = g_game.map.dim.y;
 	recursive_check(file, &copy, g_game.player.pos.x, g_game.player.pos.y);
-	i = 0;
-	while (i < g_game.map.dim.y)
-	{
-		free(copy.grid[i]);
-		i++;
-	}
-	free(copy.grid);
+	free_grid(&copy);
 }

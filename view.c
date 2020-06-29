@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/18 17:42:09 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 20:15:02 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 23:20:37 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,13 @@ void
 					(double)perceived_height_int * g_game.drawn_texture->res.y;
 		pos_texture.y = pos_texture.y >= g_game.drawn_texture->res.y ?
 							g_game.drawn_texture->res.y - 1 : pos_texture.y;
-		color = color_from_image(g_game.drawn_texture, pos_texture);
-		if (!ignore_black || color != g_black)
-			*((int*)(g_game.img_view->data + g_game.pencil.y *
-				g_game.img_view->size_line + g_game.pencil.x *
-				g_game.img_view->bpp)) = color;
+		color = *((int*)(g_game.drawn_texture->data
+			+ pos_texture.y * g_game.drawn_texture->size_line
+			+ pos_texture.x * g_game.drawn_texture->bpp));
+		if (!ignore_black || color != 0)
+			*((int*)(g_game.img_view->data
+				+ g_game.pencil.y * g_game.img_view->size_line
+				+ g_game.pencil.x * g_game.img_view->bpp)) = color;
 		g_game.pencil.y++;
 	}
 }
@@ -94,17 +96,9 @@ static void
 								(g_game.screen_height + perceived_height) / 2);
 	g_game.pencil.y = 0;
 	limit = ft_min(limit_above, g_game.img_view->res.y);
-	while (g_game.pencil.y < limit)
-	{
-		draw_pixel(g_game.img_view, g_game.config.ceiling, g_game.pencil);
-		g_game.pencil.y++;
-	}
+	draw_vertically_until(limit, g_game.config.ceiling);
 	draw_texture(perceived_height, dist_to_corner, limit_above, 0);
-	while (g_game.pencil.y < g_game.img_view->res.y)
-	{
-		draw_pixel(g_game.img_view, g_game.config.floor, g_game.pencil);
-		g_game.pencil.y++;
-	}
+	draw_vertically_until(g_game.img_view->res.y, g_game.config.floor);
 }
 
 void
@@ -126,8 +120,4 @@ void
 		temp_player.angle += angle_increment;
 		g_game.pencil.x++;
 	}
-	/*copy_from_buffer(g_game.img_view);*/
-	if (mlx_put_image_to_window(g_game.conn.mlx_ptr, g_game.conn.win_ptr,
-			g_game.img_view->ptr, 0, 0) < 0)
-		error("draw_view: mlx_put_image_to_window failed");
 }

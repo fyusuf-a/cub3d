@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
+/*   draw_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 13:17:08 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 23:05:36 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 23:07:03 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	draw(t_player *old_player, t_player *new_player)
 {
 	(void)old_player;
 	draw_view(new_player);
-	/*draw_minimap(old_player, new_player);*/
+	draw_minimap(old_player, new_player);
 	if (mlx_put_image_to_window(g_game.conn.mlx_ptr, g_game.conn.win_ptr,
 			g_game.img_view->ptr, 0, 0) < 0)
 		error("draw_view: mlx_put_image_to_window failed");
