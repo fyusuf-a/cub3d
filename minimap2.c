@@ -6,13 +6,14 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 16:08:01 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 11:31:45 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 19:07:41 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void		draw_contours(t_2d center, int j)
+/*static void		draw_contours(t_2d center, int j)*/
+static void		draw_contours(t_2d center)
 {
 	t_2d			point1;
 	t_2d			point2;
@@ -69,14 +70,15 @@ void			draw_walls_and_contours(void)
 			if (current == WALL)
 				draw_wall(center);
 			if (current == VOID || current == OBJECT)
-				draw_contours(center, j);
+				/*draw_contours(center, j);*/
+				draw_contours(center);
 			j++;
 		}
 		i++;
 	}
 }
 
-void			draw_player(t_player *player, t_color color)
+void			draw_player(t_player *player, int color)
 {
 	t_2d_int	player_pos_img;
 	t_2d		dim;

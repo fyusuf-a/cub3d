@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 15:00:18 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/15 17:26:01 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 19:49:14 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,16 @@
 	}
 }*/
 
-t_color	color_from_image(t_image *img, t_2d_int pos)
+int		color_from_image(t_image *img, t_2d_int pos)
 {
-	t_color	color;
+	/*t_color	color;*/
+	/*int color;*/
+		
+	/*color = *((int*)img->data + pos.y * img->size_line + pos.x * img->bpp);*/
+	/*return (color);*/
 
-	color.b = img->data[pos.y * img->res.x * img->bpp + pos.x * img->bpp];
+	/*color.b = img->data[pos.y * img->res.x * img->bpp + pos.x * img->bpp];
 	color.g = img->data[pos.y * img->res.x * img->bpp + pos.x * img->bpp + 1];
-	color.r = img->data[pos.y * img->res.x * img->bpp + pos.x * img->bpp + 2];
-	return (color);
+	color.r = img->data[pos.y * img->res.x * img->bpp + pos.x * img->bpp + 2];*/
+	return (*((int*)(void*)(img->data + pos.y * img->res.x * img->bpp + pos.x * img->bpp)));
 }

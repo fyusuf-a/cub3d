@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/07 15:29:13 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 13:08:22 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 19:05:04 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_2d_int	map_pos_to_pixel(t_image *image, t_2d pos)
 	return (map_size_to_pixel(image, pos));
 }
 
-void		draw_fov(const t_player *player, t_color color)
+void		draw_fov(const t_player *player, int color)
 {
 	t_2d			dim;
 	t_line_params	params;

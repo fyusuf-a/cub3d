@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 16:19:57 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 11:18:25 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 19:26:45 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,26 +55,31 @@ int
 }
 
 void
-	parse_color(t_file *file, t_color *color)
+	parse_color(t_file *file, int *color)
 {
+	int		red;
+	int		green;
+	int		blue;
+
 	file->c += 2;
 	file->c = gobble_while_elem(file->line, file->c, " ");
-	if ((color->r = parse_natural(file)) < 0 || color->r > 255)
+	if ((red = parse_natural(file)) < 0 || red > 255)
 		parse_error(file, LINE_NB | COLUMN_NB, "Bad red component");
 	file->c = gobble_while_elem(file->line, file->c, " ");
 	if (file->line[file->c] != ',')
 		parse_error(file, LINE_NB | COLUMN_NB, "Expected a comma");
 	file->c++;
 	file->c = gobble_while_elem(file->line, file->c, " ");
-	if ((color->g = parse_natural(file)) < 0 || color->g > 255)
+	if ((green = parse_natural(file)) < 0 || green > 255)
 		parse_error(file, LINE_NB | COLUMN_NB, "Bad green component");
 	file->c = gobble_while_elem(file->line, file->c, " ");
 	if (file->line[file->c] != ',')
 		parse_error(file, LINE_NB | COLUMN_NB, "Expected a comma");
 	file->c++;
 	file->c = gobble_while_elem(file->line, file->c, " ");
-	if ((color->b = parse_natural(file)) < 0 || color->b > 255)
+	if ((blue = parse_natural(file)) < 0 || blue > 255)
 		parse_error(file, LINE_NB | COLUMN_NB, "Bad blue component");
 	if (ft_strcmp(file->line + file->c, ""))
 		parse_error(file, LINE_NB | COLUMN_NB, "Trailing characters");
+	*color = blue + (green << 8) + (red << 16);
 }

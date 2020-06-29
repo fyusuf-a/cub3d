@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/24 21:15:04 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 13:07:36 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 19:33:43 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void		initialize_alpha(t_image *image, int alpha)
 
 t_image			*initialize_image(t_2d_int res, int alpha)
 {
-	int		size_line;
+	/*int		size_line;*/
 	t_image	*ret;
 
 	if (alpha < 0 || alpha > 255)
@@ -36,14 +36,14 @@ t_image			*initialize_image(t_2d_int res, int alpha)
 		error("initialize_image: could not allocate image");
 	ret->res = res;
 	ret->ptr = mlx_new_image(g_game.conn.mlx_ptr, res.x, res.y);
-	ret->data = mlx_get_data_addr(ret->ptr, &(ret->bpp), &size_line,
+	ret->data = mlx_get_data_addr(ret->ptr, &(ret->bpp), &(ret->size_line),
 			&(ret->endian));
 	ret->bpp /= 8;
-	if (size_line != ret->res.x * ret->bpp)
+	if (ret->size_line != ret->res.x * ret->bpp)
 	{
 		error("initialize_game: unexpected size %d which is not equal to the "
 				"horizontal resolution %d times the number of bytes per pixel "
-				"%d in map image", size_line,
+				"%d in map image", ret->size_line,
 				ret->res.x, ret->bpp);
 	}
 	initialize_alpha(ret, alpha);

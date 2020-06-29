@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 13:28:32 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 12:46:10 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 19:02:33 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ static void	check_if_exist(const t_file *file)
 		parse_error(file, 0, "Player position is undefined");
 	if (!g_game.config.resolution.x)
 		parse_error(file, 0, "Resolution is undefined");
-	if (g_game.config.floor.r == -1)
+	if (g_game.config.floor == -1)
 		parse_error(file, 0, "Floor color is undefined");
-	if (g_game.config.ceiling.r == -1)
+	if (g_game.config.ceiling == -1)
 		parse_error(file, 0, "Ceiling color is undefined");
 }
 

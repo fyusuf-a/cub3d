@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/18 17:42:09 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 11:32:18 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 20:15:02 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,24 @@ void
 {
 	t_2d_int	pos_texture;
 	double		perceived_height_int;
-	t_color		color;
+	int			color;
+	int			limit;
 
-	g_game.pencil.y = limit_above;
+	g_game.pencil.y = ft_max(0, limit_above);
 	perceived_height_int = convert_height(g_game.img_view, perceived_height);
 	pos_texture.x = (double)g_game.drawn_texture->res.x * dist;
-	while (g_game.pencil.y < limit_above + perceived_height_int)
+	limit = ft_min(limit_above + perceived_height_int, g_game.img_view->res.y);
+	while (g_game.pencil.y < limit)
 	{
 		pos_texture.y = (double)(g_game.pencil.y - limit_above) /
 					(double)perceived_height_int * g_game.drawn_texture->res.y;
 		pos_texture.y = pos_texture.y >= g_game.drawn_texture->res.y ?
 							g_game.drawn_texture->res.y - 1 : pos_texture.y;
 		color = color_from_image(g_game.drawn_texture, pos_texture);
-		if (ignore_black && color.r == 0 && color.g == 0 && color.b == 0)
-		{
-			g_game.pencil.y++;
-			continue ;
-		}
-		draw_pixel(g_game.img_view, color, g_game.pencil);
+		if (!ignore_black || color != g_black)
+			*((int*)(g_game.img_view->data + g_game.pencil.y *
+				g_game.img_view->size_line + g_game.pencil.x *
+				g_game.img_view->bpp)) = color;
 		g_game.pencil.y++;
 	}
 }
@@ -80,10 +80,11 @@ static void
 	draw_wall_column(const t_player *temp_player,
 					const t_player *new_player, const t_list *ray)
 {
-	int			limit_above;
-	double		perceived_height;
-	double		dist_to_wall;
-	double		dist_to_corner;
+	int		limit_above;
+	double	perceived_height;
+	double	dist_to_wall;
+	double	dist_to_corner;
+	int		limit;
 
 	dist_to_wall = dist(temp_player->pos, ((t_contact*)ray->content)->impact);
 	dist_to_wall *= cos(new_player->angle - temp_player->angle);
@@ -92,8 +93,8 @@ static void
 	limit_above = g_game.img_view->res.y - convert_height(g_game.img_view,
 								(g_game.screen_height + perceived_height) / 2);
 	g_game.pencil.y = 0;
-	while (g_game.pencil.y < limit_above &&
-				g_game.pencil.y < g_game.img_view->res.y)
+	limit = ft_min(limit_above, g_game.img_view->res.y);
+	while (g_game.pencil.y < limit)
 	{
 		draw_pixel(g_game.img_view, g_game.config.ceiling, g_game.pencil);
 		g_game.pencil.y++;

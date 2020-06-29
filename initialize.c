@@ -6,18 +6,11 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 15:28:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 13:11:45 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 19:04:05 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-static void		initialize_color(t_color *color)
-{
-	color->r = -1;
-	color->g = -1;
-	color->b = -1;
-}
 
 static t_image	*initialize_minimap(void)
 {
@@ -43,9 +36,8 @@ static t_image	*initialize_minimap(void)
 
 void			initialize_config(void)
 {
-	initialize_color(&(g_game.config.floor));
-	initialize_color(&(g_game.config.ceiling));
-
+	g_game.config.floor = -1;
+	g_game.config.ceiling = -1;
 }
 
 void			initialize_game(const char *file)
