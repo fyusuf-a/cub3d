@@ -3,7 +3,7 @@ NAME	= cub3d
 SRCS		= main.c initialize.c initialize2.c file.c error.c free.c free2.c
 SRCS		+= parse.c parse_first.c parse_second.c parse_second2.c parse_check.c
 SRCS		+= draw.c draw2.c minimap.c minimap2.c ray.c ray2.c images.c
-SRCS		+= view.c view2.c key.c bmp.c
+SRCS		+= view.c view2.c key.c
 SRCS    += utilities.c utilities2.c
 OBJS		= ${SRCS:.c=.o}
 DEBUG_ARGS = -Wextra -Wall -fsanitize=address -fno-omit-frame-pointer -g3 -O3

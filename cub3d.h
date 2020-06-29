@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 17:51:59 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/06/29 20:01:08 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@
 # define COLUMN_NB	2
 
 typedef struct	s_2d_int {
-	int	x;
+	int x;
 	int y;
 }				t_2d_int;
 
@@ -89,6 +89,7 @@ typedef struct	s_color {
 ** Contrary to mlx, here bpp is Byte per pixel and not Bit per pixel
 */
 typedef struct	s_image {
+	int			size_line;
 	int			bpp;
 	t_2d_int	res;
 	int			endian;
@@ -105,8 +106,10 @@ typedef struct	s_config {
 	t_image		*texture_we;
 	t_image		*texture_ea;
 	t_image		*texture_sprite;
-	t_color		floor;
-	t_color		ceiling;
+	/*t_color		floor;
+	t_color		ceiling;*/
+	int			floor;
+	int			ceiling;
 }				t_config;
 
 typedef struct	s_contact {
@@ -213,7 +216,7 @@ void			parse_second_pass(t_file *file);
 ** parse_second2.c
 */
 int				parse_second_pass_map(t_file *file);
-void			parse_color(t_file *file, t_color *color);
+void			parse_color(t_file *file, int *color);
 
 /*
 ** parse_check.c
@@ -250,7 +253,7 @@ double			map_dim_to_pixel(t_image *image, int axis,
 									double x);
 t_2d_int		map_size_to_pixel(t_image *image, t_2d size);
 t_2d_int		map_pos_to_pixel(t_image *image, t_2d pos);
-void			draw_fov(const t_player *player, t_color color);
+void			draw_fov(const t_player *player, int color);
 void			draw_minimap(t_player *old_player,
 									t_player *new_player);
 
@@ -258,7 +261,7 @@ void			draw_minimap(t_player *old_player,
 ** minimap2.c
 */
 void			draw_walls_and_contours(void);
-void			draw_player(t_player *player, t_color color);
+void			draw_player(t_player *player, int color);
 
 /*
 ** draw.c
@@ -269,12 +272,17 @@ void			draw_player(t_player *player, t_color color);
 */
 typedef struct	s_line_params {
 	int			thickness;
-	t_color		color;
+	int			color;
 }				t_line_params;
-void			draw_pixel(t_image *img, t_color color, t_2d_int pos);
+/*void			draw_pixel(t_image *img, t_color color, t_2d_int pos);
 void			draw_rectangle(t_image *img, t_color color, t_2d_int origin,
 							t_2d_int dim);
 void			draw_rectangle_from_center(t_image *img, t_color color,
+							t_2d_int center, t_2d_int dim);*/
+void			draw_pixel(t_image *img, int color, t_2d_int pos);
+void			draw_rectangle(t_image *img, int color, t_2d_int origin,
+							t_2d_int dim);
+void			draw_rectangle_from_center(t_image *img, int color,
 							t_2d_int center, t_2d_int dim);
 void			draw(t_player *old_player, t_player *new_player);
 
@@ -347,7 +355,7 @@ void			draw_sprites_column(const t_player *temp_player,
 ** image.c
 */
 /*void			copy_from_buffer(t_image *img);*/
-t_color			color_from_image(t_image *img, t_2d_int pos);
+int				color_from_image(t_image *img, t_2d_int pos);
 
 /*
 ** bmp.c
@@ -382,9 +390,9 @@ void			print_config(const t_config *c);
 void			initialize_map(const t_map *m);
 void			print_player(const t_player *p);
 
-t_color			g_white;
-t_color			g_red;
-t_color			g_black;
+int				g_white;
+int				g_red;
+int				g_black;
 
 t_game			g_game;
 t_iter			g_iter;
