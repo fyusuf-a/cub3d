@@ -12,10 +12,6 @@ DEBUG_ARGS = -Wextra -Wall -fsanitize=address -fno-omit-frame-pointer -g3 -O3
 CC	 = clang 
 CC_FLAGS = -Wextra -Wall -Werror
 
-TESTS = debug.c
-#OBJS_TESTS= ${TESTS:.c=.o}
-#$(OBJS_TESTS): EXTRA_ARGS := -Wall -Wextra -fsanitize=address -g3 -O0
-
 LIBS = -Llibft -LminilibX -lft -lmlx -lX11 -lXext -lm -lbsd
 
 INCLUDES = -I.
