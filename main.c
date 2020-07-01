@@ -6,39 +6,39 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 09:14:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 23:01:49 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/01 11:11:50 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 void
-	update_pos(double step, t_player *new_player, t_player *player)
+	update_pos(t_player *new_player, t_player *player)
 {
 	if (g_game.keyboard.w)
 	{
-		new_player->pos.x += step * cos(player->angle);
-		new_player->pos.y += step * sin(player->angle);
+		new_player->pos.x += STEP * cos(player->angle);
+		new_player->pos.y += STEP * sin(player->angle);
 	}
 	if (g_game.keyboard.s)
 	{
-		new_player->pos.x -= step * cos(player->angle);
-		new_player->pos.y -= step * sin(player->angle);
+		new_player->pos.x -= STEP * cos(player->angle);
+		new_player->pos.y -= STEP * sin(player->angle);
 	}
 	if (g_game.keyboard.a)
 	{
-		new_player->pos.x += step * sin(player->angle);
-		new_player->pos.y -= step * cos(player->angle);
+		new_player->pos.x += STEP * sin(player->angle);
+		new_player->pos.y -= STEP * cos(player->angle);
 	}
 	if (g_game.keyboard.d)
 	{
-		new_player->pos.x -= step * sin(player->angle);
-		new_player->pos.y += step * cos(player->angle);
+		new_player->pos.x -= STEP * sin(player->angle);
+		new_player->pos.y += STEP * cos(player->angle);
 	}
 	if (g_game.keyboard.left)
-		new_player->angle -= step;
+		new_player->angle -= STEP;
 	if (g_game.keyboard.right)
-		new_player->angle += step;
+		new_player->angle += STEP;
 }
 
 static int
@@ -69,14 +69,12 @@ int
 	main_loop(t_game *game)
 {
 	t_player	new_player;
-	double		step;
 	t_object	current_object;
 	int			draw_bool;
 	t_2d		player_cell;
 
-	step = 0.02;
 	new_player = game->player;
-	update_pos(step, &new_player, &game->player);
+	update_pos(&new_player, &game->player);
 	current_object = what_is(new_player.pos);
 	draw_bool = !t_player_equal(&new_player, &game->player);
 	draw_bool = draw_bool && far_from_wall(new_player.pos);
@@ -111,6 +109,8 @@ int
 				key_pressed, &g_game);
 	mlx_hook(g_game.conn.win_ptr, KeyRelease, KeyReleaseMask,
 				key_released, &g_game);
+	/*printf("%d %ld\n", DestroyNotify, StructureNotifyMask);*/
+	/*mlx_hook(g_game.conn.win_ptr, 33, 1L << 17,*/
 	mlx_hook(g_game.conn.win_ptr, DestroyNotify, StructureNotifyMask,
 				free_and_exit_game, &g_game);
 	mlx_loop_hook(g_game.conn.mlx_ptr, main_loop, &g_game);

@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 23:28:36 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/01 11:06:42 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,13 @@
 # endif
 
 /*
+** Player speed
+*/
+# define STEP 0.02
+
+/*
 ** Axis numbers
 */
-
 # define YAXIS 0
 # define XAXIS 1
 
