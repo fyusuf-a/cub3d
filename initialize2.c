@@ -21,7 +21,7 @@ void			initialize_mask(t_image *image)
 	{
 		while (i < image->res.x * image->res.y)
 		{
-			image->data[i * image->bpp + 3] = 255;
+			image->data[i * image->bpp + 3] = (char)255;
 			i++;
 		}
 	}

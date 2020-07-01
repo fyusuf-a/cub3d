@@ -8,7 +8,9 @@ NORMAL  = draw.c initialize.c
 BONUS		= minimap.c minimap2.c minimap3.c draw_bonus.c initialize_bonus.c
 OBJS		= ${SRCS:.c=.o}
 DEBUG_ARGS = -Wextra -Wall -fsanitize=address -fno-omit-frame-pointer -g3 -O3
-CC_FLAGS := -Wextra -Wall -Werror
+
+CC	 = clang 
+CC_FLAGS = -Wextra -Wall -Werror
 
 TESTS = debug.c
 #OBJS_TESTS= ${TESTS:.c=.o}
@@ -23,12 +25,12 @@ all:	${NAME}
 $(NAME):	${OBJS} ${NORMAL}
 	make -C libft
 	make -C minilibX
-	gcc -o ${NAME} ${OBJS} ${NORMAL} ${INCLUDES} ${LIBS}
+	${CC} -o ${NAME} ${OBJS} ${NORMAL} ${INCLUDES} ${LIBS}
 
 bonus:		${OBJS} ${BONUS}
 	make -C libft
 	make -C minilibX
-	gcc -o ${NAME} ${OBJS} ${BONUS} ${INCLUDES} ${LIBS}
+	${CC} -o ${NAME} ${OBJS} ${BONUS} ${INCLUDES} ${LIBS}
 
 clean:
 	rm -f *.gch
@@ -49,9 +51,9 @@ re:		fclean all
 test: ${OBJS} ${OBJS_TESTS}
 	make -C minilibX
 	make -C libft
-	gcc -o ./test ${OBJS} ${TESTS} ${INCLUDES} ${LIBS}
+	${CC} -o ./test ${OBJS} ${TESTS} ${INCLUDES} ${LIBS}
 
 .c.o:
-	gcc ${CC_FLAGS} -I. -c $< -o ${<:.c=.o}
+	${CC} ${CC_FLAGS} -I. -c $< -o ${<:.c=.o}
 
 .PHONY:	all clean fclean tclean re test bonus

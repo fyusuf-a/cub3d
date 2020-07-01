@@ -38,7 +38,7 @@ static int
 	while ((c = file->line[file->c]))
 	{
 		if (!ft_elem(c, "012NEWS "))
-			parse_error(file, LINE_NB || COLUMN_NB,
+			parse_error(file, LINE_NB | COLUMN_NB,
 					"Unauthorized character '%c'", c);
 		file->c++;
 	}
@@ -98,7 +98,7 @@ void
 	parse_first_pass(t_file *file)
 {
 	if (repeat_gnl(file, parse_first_pass_infos) == GNL_FILE_END)
-		parse_error(file, LINE_NB || COLUMN_NB, "eof before map");
+		parse_error(file, LINE_NB | COLUMN_NB, "eof before map");
 	if (repeat_gnl(file, parse_first_pass_map) != GNL_FILE_END)
 		repeat_gnl(file, parse_first_pass_eof);
 	allocate_map();
