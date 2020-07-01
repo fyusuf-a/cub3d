@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/18 17:42:09 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 23:20:37 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/01 20:59:27 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void
 {
 	t_2d_int	pos_texture;
 	double		perceived_height_int;
-	int			color;
+	int32_t		color;
 	int			limit;
 
 	g_game.pencil.y = ft_max(0, limit_above);
@@ -37,13 +37,10 @@ void
 					(double)perceived_height_int * g_game.drawn_texture->res.y;
 		pos_texture.y = pos_texture.y >= g_game.drawn_texture->res.y ?
 							g_game.drawn_texture->res.y - 1 : pos_texture.y;
-		color = *((int*)(g_game.drawn_texture->data
-			+ pos_texture.y * g_game.drawn_texture->size_line
-			+ pos_texture.x * g_game.drawn_texture->bpp));
+		color = (*((int32_t*)(g_game.drawn_texture->data + pos_texture.y * g_game.drawn_texture->size_line + pos_texture.x * g_game.drawn_texture->bpp)));
 		if (!ignore_black || color != 0)
-			*((int*)(g_game.img_view->data
-				+ g_game.pencil.y * g_game.img_view->size_line
-				+ g_game.pencil.x * g_game.img_view->bpp)) = color;
+			*((int32_t*)(g_game.img_view->data + g_game.pencil.y * g_game.img_view->size_line +
+					g_game.pencil.x * g_game.img_view->bpp)) = color;
 		g_game.pencil.y++;
 	}
 }
@@ -98,6 +95,7 @@ static void
 	limit = ft_min(limit_above, g_game.img_view->res.y);
 	draw_vertically_until(limit, g_game.config.ceiling);
 	draw_texture(perceived_height, dist_to_corner, limit_above, 0);
+	limit = g_game.img_view->res.y;
 	draw_vertically_until(g_game.img_view->res.y, g_game.config.floor);
 }
 

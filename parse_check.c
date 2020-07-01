@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 13:28:32 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 20:39:49 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/01 15:42:16 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,16 @@ static void
 		parse_error(file, 0, "Floor color is undefined");
 	if (g_game.config.ceiling == -1)
 		parse_error(file, 0, "Ceiling color is undefined");
+	if (!g_game.config.texture_no)
+		parse_error(file, 0, "North texture is undefined");
+	if (!g_game.config.texture_so)
+		parse_error(file, 0, "South texture is undefined");
+	if (!g_game.config.texture_ea)
+		parse_error(file, 0, "East texture is undefined");
+	if (!g_game.config.texture_we)
+		parse_error(file, 0, "West texture is undefined");
+	if (!g_game.config.texture_sprite)
+		parse_error(file, 0, "Sprite texture is undefined");
 }
 
 static void

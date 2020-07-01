@@ -6,20 +6,25 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/15 17:45:53 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 20:36:02 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/01 19:46:21 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+static inline void
+	draw_pixel(t_image *img, int32_t color, t_2d_int pos)
+{
+	*((int32_t*)(img->data + pos.y * img->size_line +
+				pos.x * img->bpp)) = color;
+}
+
 void
-	draw_vertically_until(int limit, int color)
+	draw_vertically_until(int limit, int32_t color)
 {
 	while (g_game.pencil.y < limit)
 	{
-		*((int*)(g_game.img_view->data + g_game.pencil.y *
-			g_game.img_view->size_line + g_game.pencil.x *
-			g_game.img_view->bpp)) = color;
+		draw_pixel(g_game.img_view, color, g_game.pencil);
 		g_game.pencil.y++;
 	}
 }

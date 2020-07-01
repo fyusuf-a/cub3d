@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 15:28:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 22:33:30 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/01 20:06:46 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void			initialize_config(void)
 {
 	g_game.config.floor = -1;
 	g_game.config.ceiling = -1;
+	g_game.config.resolution.x = -1;
 }
 
 void			initialize_game(const char *file)

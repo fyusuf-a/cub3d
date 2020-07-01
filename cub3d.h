@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/01 11:06:42 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/01 19:39:09 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,6 @@ typedef struct	s_map {
 	int			allocated;
 }				t_map;
 
-typedef struct	s_color {
-	int	r;
-	int g;
-	int b;
-}				t_color;
-
 /*
 ** Contrary to mlx, here bpp is Byte per pixel and not Bit per pixel
 */
@@ -95,6 +89,7 @@ typedef struct	s_image {
 	int			endian;
 	void		*ptr;
 	char		*data;
+	int			effective_width;
 }				t_image;
 
 typedef struct	s_config {
@@ -104,8 +99,8 @@ typedef struct	s_config {
 	t_image		*texture_we;
 	t_image		*texture_ea;
 	t_image		*texture_sprite;
-	int			floor;
-	int			ceiling;
+	int32_t		floor;
+	int32_t		ceiling;
 }				t_config;
 
 typedef struct	s_contact {
@@ -145,7 +140,7 @@ typedef struct	s_game {
 	t_list			*ray;
 	t_image			*img_view;
 	t_image			*img_map;
-	int				map_color;
+	int32_t			map_color;
 	t_image			*drawn_texture;
 	t_connection	conn;
 	double			screen_height;
@@ -188,7 +183,7 @@ void			close_file(t_file *file);
 /*
 ** parse.c
 */
-void	parse(const char *path);
+void			parse(const char *path);
 /*
 ** Repeats action until EOF has been reached, or when action returns 0
 ** (indicating that action is done). Return is 0 if EOF is reached, 1 if
@@ -213,7 +208,7 @@ void			parse_second_pass(t_file *file);
 ** parse_second2.c
 */
 int				parse_second_pass_map(t_file *file);
-void			parse_color(t_file *file, int *color);
+void			parse_color(t_file *file, int32_t *color);
 
 /*
 ** parse_check.c
@@ -252,7 +247,6 @@ double			map_dim_to_pixel(t_image *image, int axis,
 									double x);
 t_2d_int		map_size_to_pixel(t_image *image, t_2d size);
 t_2d_int		map_pos_to_pixel(t_image *image, t_2d pos);
-/*void			draw_fov(const t_player *player, int color);*/
 void			draw_minimap(t_player *old_player,
 									t_player *new_player);
 
@@ -277,17 +271,12 @@ void			print_minimap(void);
 */
 typedef struct	s_line_params {
 	int			thickness;
-	int			color;
+	int32_t		color;
 }				t_line_params;
-/*void			draw_pixel(t_image *img, t_color color, t_2d_int pos);
-void			draw_rectangle(t_image *img, t_color color, t_2d_int origin,
+/*void			draw_pixel(t_image *img, int32_t color, t_2d_int pos);*/
+void			draw_rectangle(t_image *img, int32_t color, t_2d_int origin,
 							t_2d_int dim);
-void			draw_rectangle_from_center(t_image *img, t_color color,
-							t_2d_int center, t_2d_int dim);*/
-void			draw_pixel(t_image *img, int color, t_2d_int pos);
-void			draw_rectangle(t_image *img, int color, t_2d_int origin,
-							t_2d_int dim);
-void			draw_rectangle_from_center(t_image *img, int color,
+void			draw_rectangle_from_center(t_image *img, int32_t color,
 							t_2d_int center, t_2d_int dim);
 void			draw(t_player *old_player, t_player *new_player);
 
@@ -353,14 +342,14 @@ void			draw_texture(double perceived_height, double dist,
 /*
 ** view2.c
 */
-void			draw_vertically_until(int limit, int color);
+void			draw_vertically_until(int limit, int32_t color);
 void			draw_sprites_column(const t_player *temp_player,
 						const t_player *new_player, const t_list *ray);
 
 /*
 ** image.c
 */
-int				color_from_image(t_image *img, t_2d_int pos);
+int32_t			color_from_image(t_image *img, t_2d_int pos);
 
 /*
 ** bmp.c

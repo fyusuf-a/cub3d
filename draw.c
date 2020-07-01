@@ -6,18 +6,21 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 13:17:08 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 23:05:36 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/01 20:56:05 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_pixel(t_image *img, int color, t_2d_int pos)
+static inline void
+	draw_pixel(t_image *img, int32_t color, t_2d_int pos)
 {
-	*((int*)(img->data + pos.y * img->size_line + pos.x * img->bpp)) = color;
+	*((int32_t*)(img->data + pos.y * img->size_line +
+				pos.x * img->bpp)) = color;
 }
 
-void	draw_rectangle(t_image *img, int color, t_2d_int origin,
+void
+	draw_rectangle(t_image *img, int32_t color, t_2d_int origin,
 							t_2d_int dim)
 {
 	int			i;
@@ -39,7 +42,8 @@ void	draw_rectangle(t_image *img, int color, t_2d_int origin,
 	}
 }
 
-void	draw_rectangle_from_center(t_image *img, int color,
+void
+	draw_rectangle_from_center(t_image *img, int32_t color,
 			t_2d_int center, t_2d_int dim)
 {
 	center.x -= dim.x / 2;
@@ -47,7 +51,8 @@ void	draw_rectangle_from_center(t_image *img, int color,
 	draw_rectangle(img, color, center, dim);
 }
 
-void	draw(t_player *old_player, t_player *new_player)
+void
+	draw(t_player *old_player, t_player *new_player)
 {
 	(void)old_player;
 	draw_view(new_player);

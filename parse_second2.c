@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 16:19:57 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 19:26:45 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/01 19:26:39 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int
 		return (GNL_DONE);
 	while ((c = file->line[file->c]))
 	{
-		if (c == '0')
-			g_game.map.grid[i][file->c] = VOID;
+		if (c == '1')
+			g_game.map.grid[i][file->c] = WALL;
 		if (c == '2')
 			g_game.map.grid[i][file->c] = OBJECT;
 		if (ft_elem(c, "NEWS"))
@@ -54,32 +54,34 @@ int
 	return (GNL_NOT_DONE);
 }
 
-void
-	parse_color(t_file *file, int *color)
+static int
+	parse_color_acc(t_file *file)
 {
-	int		red;
-	int		green;
-	int		blue;
+	int ret;
 
+	file->c = gobble_while_elem(file->line, file->c, " ");
+	if ((ret = parse_natural(file)) < 0 || ret > 255)
+		parse_error(file, LINE_NB | COLUMN_NB, "Bad color component");
+	file->c = gobble_while_elem(file->line, file->c, " ");
+	return (ret);
+}
+
+void
+	parse_color(t_file *file, int32_t *color)
+{
+	if (*color != -1)
+		parse_error(file, LINE_NB, "Color defined twice");
 	file->c += 2;
 	file->c = gobble_while_elem(file->line, file->c, " ");
-	if ((red = parse_natural(file)) < 0 || red > 255)
-		parse_error(file, LINE_NB | COLUMN_NB, "Bad red component");
-	file->c = gobble_while_elem(file->line, file->c, " ");
-	if (file->line[file->c] != ',')
+	*color = parse_color_acc(file) << 16;
+	if (file->line[file->c++] != ',')
 		parse_error(file, LINE_NB | COLUMN_NB, "Expected a comma");
-	file->c++;
 	file->c = gobble_while_elem(file->line, file->c, " ");
-	if ((green = parse_natural(file)) < 0 || green > 255)
-		parse_error(file, LINE_NB | COLUMN_NB, "Bad green component");
-	file->c = gobble_while_elem(file->line, file->c, " ");
-	if (file->line[file->c] != ',')
+	*color += parse_color_acc(file) << 8;
+	if (file->line[file->c++] != ',')
 		parse_error(file, LINE_NB | COLUMN_NB, "Expected a comma");
-	file->c++;
 	file->c = gobble_while_elem(file->line, file->c, " ");
-	if ((blue = parse_natural(file)) < 0 || blue > 255)
-		parse_error(file, LINE_NB | COLUMN_NB, "Bad blue component");
+	*color += parse_color_acc(file);
 	if (ft_strcmp(file->line + file->c, ""))
 		parse_error(file, LINE_NB | COLUMN_NB, "Trailing characters");
-	*color = blue + (green << 8) + (red << 16);
 }

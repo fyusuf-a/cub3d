@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:45:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/20 11:17:02 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/01 12:27:28 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void
 		j = 0;
 		while (j < g_game.map.dim.x)
 		{
-			g_game.map.grid[i][j] = WALL;
+			g_game.map.grid[i][j] = VOID;
 			j++;
 		}
 		i++;
