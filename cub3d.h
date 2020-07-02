@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/01 19:39:09 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/02 09:59:20 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,6 +285,16 @@ void			draw(t_player *old_player, t_player *new_player);
 */
 void			draw_line(t_image *img, t_line_params *params, t_2d_int point1,
 							t_2d_int point2);
+
+/*
+** movement.c
+*/
+t_player		update_pos(t_player new_player);
+
+/*
+** movement2.c
+*/
+void			update_angle(t_player *player);
 
 /*
 ** ray.c

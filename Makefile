@@ -2,12 +2,13 @@ NAME	= cub3d
 
 SRCS		= main.c initialize2.c file.c error.c free.c free2.c
 SRCS		+= parse.c parse_first.c parse_second.c parse_second2.c parse_check.c
-SRCS		+= draw2.c ray.c ray2.c view.c view2.c
+SRCS		+= movement2.c ray.c ray2.c view.c view2.c
 SRCS    += utilities.c utilities2.c key.c
-NORMAL  = draw.c initialize.c
-BONUS		= minimap.c minimap2.c minimap3.c draw_bonus.c initialize_bonus.c
+NORMAL  = movement.c draw.c initialize.c
+BONUS   = movement_bonus.c draw_bonus.c initialize_bonus.c
+BONUS		+= minimap_bonus.c minimap2_bonus.c minimap3_bonus.c draw2_bonus.c
 OBJS		= ${SRCS:.c=.o}
-DEBUG_ARGS = -Wextra -Wall -fsanitize=address -fno-omit-frame-pointer -g3 -O3
+DEBUG_ARGS = -Wextra -Wall -fsanitize=address -fno-omit-frame-pointer -g3
 
 CC	 = clang 
 CC_FLAGS = -Wextra -Wall -Werror
