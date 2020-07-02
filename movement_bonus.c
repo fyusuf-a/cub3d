@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movement.c                                         :+:      :+:    :+:   */
+/*   movement_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 23:56:52 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/02 09:56:34 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/02 10:27:38 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ int
 	t_2d		player_cell;
 	t_object	current_object;
 
-	/*ret = !t_player_equal(new_player, &g_game.player);*/
-	/*ret = far_from_wall(new_player->pos) && ret;*/
 	ret = far_from_wall(new_player->pos);
 	current_object = what_is(new_player->pos);
 	if (current_object == OBJECT)
@@ -63,25 +61,24 @@ t_player
 
 	copy = player;
 	if (g_game.keyboard.w)
-	{
 		copy.pos.x += STEP * cos(g_game.player.angle);
-		copy.pos.y += STEP * sin(g_game.player.angle);
-	}
 	if (g_game.keyboard.s)
-	{
 		copy.pos.x -= STEP * cos(g_game.player.angle);
-		copy.pos.y -= STEP * sin(g_game.player.angle);
-	}
 	if (g_game.keyboard.a)
-	{
 		copy.pos.x += STEP * sin(g_game.player.angle);
-		copy.pos.y -= STEP * cos(g_game.player.angle);
-	}
 	if (g_game.keyboard.d)
-	{
 		copy.pos.x -= STEP * sin(g_game.player.angle);
+	if (is_update_needed(&copy))
+		player = copy;
+	copy = player;
+	if (g_game.keyboard.w)
+		copy.pos.y += STEP * sin(g_game.player.angle);
+	if (g_game.keyboard.s)
+		copy.pos.y -= STEP * sin(g_game.player.angle);
+	if (g_game.keyboard.a)
+		copy.pos.y -= STEP * cos(g_game.player.angle);
+	if (g_game.keyboard.d)
 		copy.pos.y += STEP * cos(g_game.player.angle);
-	}
 	if (is_update_needed(&copy))
 		player = copy;
 	return (player);
