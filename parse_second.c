@@ -6,18 +6,18 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 20:45:34 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/01 15:28:47 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/14 11:49:11 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	parse_texture(t_file *file, t_image **image)
+static void	parse_texture(t_file *file, t_image **img)
 {
-	if (*image)
+	if (*img)
 		parse_error(file, LINE_NB, "Texture defined twice");
-	*image = NULL;
-	*image = initialize_texture(file->line + file->c);
+	*img = NULL;
+	*img = initialize_texture(file->line + file->c);
 }
 
 static void	parse_path(t_file *file)

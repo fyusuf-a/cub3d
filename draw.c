@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 13:17:08 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/01 20:56:05 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/14 11:46:22 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void
 {
 	(void)old_player;
 	draw_view(new_player);
-	/*draw_minimap(old_player, new_player);*/
 	if (mlx_put_image_to_window(g_game.conn.mlx_ptr, g_game.conn.win_ptr,
 			g_game.img_view->ptr, 0, 0) < 0)
 		error("draw_view: mlx_put_image_to_window failed");

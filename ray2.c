@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 16:32:11 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/06 18:50:12 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/14 11:47:32 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ static t_2d
 void
 	initialize_iter(const t_player *player, t_iter *iter)
 {
-	t_contact	*contact;
-
 	iter->vector = what_direction(player->angle);
 	iter->current = HORIZONTAL;
 	iter->x.cardinal_point = determine_cardinal_point(iter);
@@ -61,12 +59,6 @@ void
 	if (iter->vector.y == 0)
 		iter->y.impact.y = player->pos.y;
 	ft_lstclear(&iter->ray, del);
-	if (what_is(player->pos) == OBJECT)
-	{
-		contact = malloc(sizeof(t_contact));
-		contact->impact = player->pos;
-		add_object_to_list(iter, contact);
-	}
 }
 
 void

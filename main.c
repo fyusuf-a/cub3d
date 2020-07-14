@@ -6,31 +6,17 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 09:14:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/02 10:02:16 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/14 11:51:02 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <time.h>
-
-struct timespec before, now;
 
 int
 	main_loop(t_game *game)
 {
 	t_player	new_player;
-	/*static int	frames;*/
-	/*u_int64_t	diff;*/
 
-	/*clock_gettime(CLOCK_MONOTONIC_RAW, &now);*/
-	/*diff = (now.tv_sec - before.tv_sec) * 1000000 + (now.tv_nsec - before.tv_nsec) / 1000;*/
-	/*if (diff > 1000000)*/
-	/*{*/
-		/*printf("frames : %d\n", frames);*/
-		/*before = now;*/
-		/*frames = 0;*/
-	/*}*/
-	/*frames++;*/
 	new_player = update_pos(g_game.player);
 	update_angle(&new_player);
 	if (!t_player_equal(&g_game.player, &new_player))
@@ -50,7 +36,6 @@ int
 		ft_dprintf(2, "Error\nUsage: cub3d map.cub");
 		exit(EXIT_FAILURE);
 	}
-	/*clock_gettime(CLOCK_MONOTONIC_RAW, &before);*/
 	initialize_game(argv[1]);
 	draw(&g_game.player, &g_game.player);
 	/*print_bmp(g_game.img_view, "./screenshot.bmp");*/

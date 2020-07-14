@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minimap2.c                                         :+:      :+:    :+:   */
+/*   minimap2_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 16:08:01 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/06/29 23:09:17 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/14 11:40:28 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,21 @@ static void
 				square_dim_img);
 }
 
+static void
+	draw_sprite(t_2d center)
+{
+	t_2d		square_dim;
+	t_2d_int	square_dim_img;
+	t_2d_int	center_img;
+
+	center_img = map_pos_to_pixel(g_game.img_map, center);
+	square_dim.x = 0.5;
+	square_dim.y = 0.5;
+	square_dim_img = map_size_to_pixel(g_game.img_map, square_dim);
+	draw_rectangle_from_center(g_game.img_map, g_game.map_color, center_img,
+				square_dim_img);
+}
+
 void
 	draw_walls_and_contours(void)
 {
@@ -71,6 +86,8 @@ void
 			current = g_game.map.grid[i][j];
 			if (current == WALL)
 				draw_wall(center);
+			if (current == OBJECT)
+				draw_sprite(center);
 			if (current == VOID || current == OBJECT)
 				draw_contours(center);
 			j++;
@@ -92,28 +109,4 @@ void
 	dim_img = map_size_to_pixel(g_game.img_map, dim);
 	draw_rectangle_from_center(g_game.img_map, hide ? 0 : g_game.map_color,
 			player_pos_img, dim_img);
-}
-
-t_image
-	*initialize_minimap(void)
-{
-	t_2d_int	res;
-	t_image		*ret;
-
-	if (g_game.map.dim.x < g_game.map.dim.y)
-	{
-		res.y = g_game.config.resolution.y;
-		res.x = res.y / g_game.map.dim.y * g_game.map.dim.x;
-	}
-	else
-	{
-		res.x = g_game.config.resolution.x;
-		res.y = res.x / g_game.map.dim.x * g_game.map.dim.y;
-	}
-	res.x /= 3;
-	res.y /= 3;
-	ret = initialize_image(res);
-	g_game.map_color = ~g_game.config.ceiling;
-	g_game.map_color |= 0xff000000;
-	return (ret);
 }

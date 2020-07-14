@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/02 09:59:20 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/14 11:48:18 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ typedef struct	s_image {
 	int			endian;
 	void		*ptr;
 	char		*data;
-	int			effective_width;
 }				t_image;
 
 typedef struct	s_config {

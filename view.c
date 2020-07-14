@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/18 17:42:09 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/01 20:59:27 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/12 11:57:35 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,13 @@ void
 					(double)perceived_height_int * g_game.drawn_texture->res.y;
 		pos_texture.y = pos_texture.y >= g_game.drawn_texture->res.y ?
 							g_game.drawn_texture->res.y - 1 : pos_texture.y;
-		color = (*((int32_t*)(g_game.drawn_texture->data + pos_texture.y * g_game.drawn_texture->size_line + pos_texture.x * g_game.drawn_texture->bpp)));
+		color = (*((int32_t*)(g_game.drawn_texture->data +
+						pos_texture.y * g_game.drawn_texture->size_line +
+						pos_texture.x * g_game.drawn_texture->bpp)));
 		if (!ignore_black || color != 0)
-			*((int32_t*)(g_game.img_view->data + g_game.pencil.y * g_game.img_view->size_line +
-					g_game.pencil.x * g_game.img_view->bpp)) = color;
+			*((int32_t*)(g_game.img_view->data + g_game.pencil.y *
+				g_game.img_view->size_line + g_game.pencil.x *
+				g_game.img_view->bpp)) = color;
 		g_game.pencil.y++;
 	}
 }
