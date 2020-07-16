@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/14 11:48:18 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/16 13:03:16 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,7 +363,7 @@ int32_t			color_from_image(t_image *img, t_2d_int pos);
 /*
 ** bmp.c
 */
-void			print_bmp(const t_image *img, const char *path);
+void			print_bmp(const char *path);
 
 /*
 ** utilities.c
