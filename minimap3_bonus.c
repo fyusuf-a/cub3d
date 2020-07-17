@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 21:01:54 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/14 11:44:57 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/16 13:59:09 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ t_image
 	res.x /= 3;
 	res.y /= 3;
 	ret = initialize_image(res);
-	g_game.map_color = ~g_game.config.ceiling;
+	g_game.map_color = (g_game.config.ceiling | 0xff000000) == 0xffffffff ?
+		0x00fefefe : ~g_game.config.ceiling;
 	g_game.map_color |= 0xff000000;
 	return (ret);
 }

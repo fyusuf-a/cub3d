@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/16 13:03:16 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/16 13:51:09 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,7 +272,6 @@ typedef struct	s_line_params {
 	int			thickness;
 	int32_t		color;
 }				t_line_params;
-/*void			draw_pixel(t_image *img, int32_t color, t_2d_int pos);*/
 void			draw_rectangle(t_image *img, int32_t color, t_2d_int origin,
 							t_2d_int dim);
 void			draw_rectangle_from_center(t_image *img, int32_t color,
