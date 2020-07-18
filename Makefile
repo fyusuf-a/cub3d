@@ -34,12 +34,12 @@ all:	${NAME}
 $(NAME):	${OBJS} ${NORMAL}
 	make -C libft
 	make -C ${MINILIBX}
-	${CC} -o ${NAME} ${OBJS} ${NORMAL} ${INCLUDES} ${LIBS}
+	${CC} ${CC_FLAGS} -o ${NAME} ${OBJS} ${NORMAL} ${INCLUDES} ${LIBS}
 
 bonus:		${OBJS} ${BONUS}
 	make -C libft
 	make -C ${MINILIBX}
-	${CC} -o ${NAME} ${OBJS} ${BONUS} ${INCLUDES} ${LIBS}
+	${CC} ${CC_FLAGS} -o ${NAME} ${OBJS} ${BONUS} ${INCLUDES} ${LIBS}
 
 clean:
 	rm -f *.gch

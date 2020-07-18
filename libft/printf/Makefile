@@ -30,10 +30,10 @@ $(NAME):	${OBJS}
 	ar -rcs ${NAME} ${OBJS}
 
 .c.o:
-	${CC} ${CC_ARGS} -I. -c $< -o ${<:.c=.o}
+	${CC} ${CC_FLAGS} -I. -c $< -o ${<:.c=.o}
 
 test:		${NAME} test/main.c
-	${CC} ${CC_ARGS} -I. -o test/test test/main.c ${NAME}
+	${CC} ${CC_FLAGS} -I. -o test/test test/main.c ${NAME}
 	test/test
 
 .PHONY:	all clean fclean cclean re test bonus libft
