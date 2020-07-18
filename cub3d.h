@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/16 13:51:09 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/18 09:10:32 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,15 @@
 # include <math.h>
 # include <X11/Xlib.h>
 # include "libft/libft.h"
-# include "minilibX/mlx.h"
+# ifdef __linux__
+#  include "minilibx-linux/mlx.h"
+# else
+#  ifdef __APPLE__
+#   include "minilibx-mac/mlx.h"
+#  else
+#   error OS not supported
+#  endif
+# endif
 
 # define GNL_ERROR		-1
 # define GNL_FILE_END	0

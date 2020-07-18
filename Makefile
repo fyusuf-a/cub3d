@@ -13,25 +13,37 @@ DEBUG_ARGS = -Wextra -Wall -fsanitize=address -fno-omit-frame-pointer -g3
 CC	 = clang 
 CC_FLAGS = -Wextra -Wall -Werror
 
-LIBS = -Llibft -LminilibX -lft -lmlx -lX11 -lXext -lm -lbsd
+UNAME_S = $(shell uname -s)
+ifeq ($(UNAME_S), Linux)
+	MINILIBX = minilibx-linux
+else
+ifeq ($(UNAME_S), Darwin)
+	MINILIBX = minilibx-mac
+else
+$(error OS not supported)
+endif
+endif
+
+LIBS = -Llibft -L${MINILIBX} -lft -lmlx -lX11 -lXext -lm -lbsd
 
 INCLUDES = -I.
+
 
 all:	${NAME}
 
 $(NAME):	${OBJS} ${NORMAL}
 	make -C libft
-	make -C minilibX
+	make -C ${MINILIBX}
 	${CC} -o ${NAME} ${OBJS} ${NORMAL} ${INCLUDES} ${LIBS}
 
 bonus:		${OBJS} ${BONUS}
 	make -C libft
-	make -C minilibX
+	make -C ${MINILIBX}
 	${CC} -o ${NAME} ${OBJS} ${BONUS} ${INCLUDES} ${LIBS}
 
 clean:
 	rm -f *.gch
-	make -C minilibX clean
+	make -C ${MINILIBX} clean
 	make -C libft clean
 	rm -f ${OBJS}
 
@@ -39,7 +51,7 @@ tclean:		clean
 	rm -f ${OBJS_TESTS}
 
 fclean:		clean
-	make -C minilibX clean
+	make -C ${MINILIBX} clean
 	make -C libft fclean
 	rm -f ${NAME}
 
