@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 09:14:47 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/16 13:37:52 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/18 10:53:30 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ int
 	initialize_game(argv[1]);
 	draw(&g_game.player, &g_game.player);
 	if (argc == 3)
+	{
 		print_bmp("./screenshot.bmp");
+		exit(EXIT_SUCCESS);
+	}
 	mlx_do_key_autorepeaton(g_game.conn.mlx_ptr);
 	mlx_hook(g_game.conn.win_ptr, KeyPress, KeyPressMask,
 				key_pressed, &g_game);
