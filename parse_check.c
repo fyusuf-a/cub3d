@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 13:28:32 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/01 15:42:16 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/18 11:07:12 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void
 		parse_error(file, 0, "Map is undefined");
 	if (g_game.player.pos.x == -1)
 		parse_error(file, 0, "Player position is undefined");
-	if (!g_game.config.resolution.x)
+	if (g_game.config.resolution.x == -1)
 		parse_error(file, 0, "Resolution is undefined");
 	if (g_game.config.floor == -1)
 		parse_error(file, 0, "Floor color is undefined");
