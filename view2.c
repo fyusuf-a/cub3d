@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/15 17:45:53 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/23 09:44:16 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/23 10:29:45 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void
 		pos_equals(temp_player->pos, contact->impact) ?
 		temp_player->pos : displaced(contact));
 	*dist_to_sprite = dist(temp_player->pos, center);
-	*temp_angle = temp_player->angle - 
+	*temp_angle = temp_player->angle -
 		atan((center.y - temp_player->pos.y) / (center.x - temp_player->pos.x));
 }
 
