@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:32:45 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/18 09:10:32 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/23 10:12:33 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -347,10 +347,8 @@ void			bad_angle_update(const t_player *player, t_iter *iter);
 ** view.c
 */
 # define WALL_HEIGHT		2.0
-# define EYE_HEIGHT			1.0
 # define SCREEN_DISTANCE	0.1
 
-int				convert_height(t_image *img, double height);
 void			draw_view(t_player *new_player);
 void			draw_texture(double perceived_height, double dist,
 								int limit_above, int ignore_black);

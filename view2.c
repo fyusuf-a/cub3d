@@ -6,7 +6,7 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/15 17:45:53 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/22 10:34:14 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/23 09:44:16 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,8 @@ void
 			dist_to_sprite /= cos(temp_angle);
 			perceived_height = SCREEN_DISTANCE * WALL_HEIGHT / abs_val(
 				dist_to_sprite * cos(new_player->angle - temp_player->angle));
-			limit_above = g_game.img_view->res.y - convert_height(
-					g_game.img_view,
-					(g_game.screen_height + perceived_height) / 2);
+			limit_above = (g_game.screen_height - perceived_height) / 2
+							/ g_game.screen_height * g_game.img_view->res.y;
 			g_game.drawn_texture = g_game.config.texture_sprite;
 			draw_texture(perceived_height, 0.5 + dist_contact_to_sprite,
 							limit_above, 1);

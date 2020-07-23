@@ -6,16 +6,16 @@
 /*   By: fyusuf-a <fyusuf-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/18 17:42:09 by fyusuf-a          #+#    #+#             */
-/*   Updated: 2020/07/12 11:57:35 by fyusuf-a         ###   ########.fr       */
+/*   Updated: 2020/07/23 09:44:43 by fyusuf-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int
-	convert_height(t_image *img, double height)
+static inline int
+	convert_height(double height)
 {
-	return (height / g_game.screen_height * img->res.y);
+	return (height / g_game.screen_height * g_game.img_view->res.y);
 }
 
 void
@@ -28,7 +28,7 @@ void
 	int			limit;
 
 	g_game.pencil.y = ft_max(0, limit_above);
-	perceived_height_int = convert_height(g_game.img_view, perceived_height);
+	perceived_height_int = convert_height(perceived_height);
 	pos_texture.x = (double)g_game.drawn_texture->res.x * dist;
 	limit = ft_min(limit_above + perceived_height_int, g_game.img_view->res.y);
 	while (g_game.pencil.y < limit)
@@ -92,8 +92,8 @@ static void
 	dist_to_wall *= cos(new_player->angle - temp_player->angle);
 	perceived_height = SCREEN_DISTANCE * WALL_HEIGHT / dist_to_wall;
 	find_texture_and_dist_to_corner(&dist_to_corner, ray->content);
-	limit_above = g_game.img_view->res.y - convert_height(g_game.img_view,
-								(g_game.screen_height + perceived_height) / 2);
+	limit_above = (g_game.screen_height - perceived_height) / 2
+						* g_game.img_view->res.y / g_game.screen_height;
 	g_game.pencil.y = 0;
 	limit = ft_min(limit_above, g_game.img_view->res.y);
 	draw_vertically_until(limit, g_game.config.ceiling);
