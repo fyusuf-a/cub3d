@@ -1,0 +1,4 @@
+Makefile.gen
+test/mlx-test
+*.o
+*.a
