@@ -1,2 +1,0 @@
-42TESTERS_GNL
-Get_Next_Line_Tester
